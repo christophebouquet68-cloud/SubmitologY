@@ -31,14 +31,14 @@ const SEED_TECHNIQUES = [
   {
     id: 2, name: "Half Guard", category: "Guards", difficulty: "Intermediate",
     description: "One of the opponent's legs is trapped between yours. Acts as both a defensive shield and a platform for deep-half sweeps, back takes, and leg-lock entries.",
-    image: "images/bjj_underconstruction.jpg?w=600&q=80",
+    image: "images/bjj_guard_half.jpg?w=600&q=80",
     youtube: "https://www.youtube.com/watch?v=B_Zn0tYNBdw",
     keyPoints: ["Win the underhook battle", "Recover guard with hip escape", "Sweep to top"],
   },
   {
     id: 3, name: "Spider Guard", category: "Guards", difficulty: "Intermediate",
     description: "Sleeve grips combined with feet on biceps create a web of tension. An elite sport-BJJ platform for triangles, omoplatas, and balloon sweeps.",
-    image: "images/bjj_underconstruction.jpg?w=600&q=80",
+    image: "images/bjj_guard_spider.jpg?w=600&q=80",
     youtube: "https://www.youtube.com/watch?v=RqWxP4uRzUU",
     keyPoints: ["Maintain sleeve control", "Push/pull to break posture", "Extend to create openings"],
   },
@@ -64,16 +64,24 @@ const SEED_TECHNIQUES = [
     keyPoints: ["Thumb up = elbow vulnerable", "Squeeze knees, bridge hips", "Control the wrist firmly"],
   },
   {
+    id: 13, name: "Turtle", category: "Transitions", difficulty: "Beginner",
+    description: "A defensive position with all fours on the floow. May be an intermediate step to recovery in certain difficult situations, or to avoid other controls by the opponent. However, can be dangerous as it opens the opportunity for the opponent to attack the back. Some practitionners use turtle offensively.",
+    image: "/images/bjj_trans_turtle.jpg?w=600&q=80",
+    youtube: "https://www.youtube.com/watch?v=U2gI5R5Hbio",
+    keyPoints: ["Slow, controlled pressure", "Distinguish from choke", "Never crank in drilling"],
+  },
+  {
     id: 7, name: "Guard Pass to Side Control", category: "Transitions", difficulty: "Beginner",
     description: "Transitioning from inside the guard to dominant side control is the most fundamental positional improvement in BJJ. Master the toreando and knee-slice as your bread-and-butter passes.",
-    image: "images/bjj_underconstruction.jpg?w=600&q=80",
+    image: "images/bjj_trans_passtoside.jpg?w=600&q=80",
     youtube: "https://www.youtube.com/watch?v=g7WLY0r1-IA",
     keyPoints: ["Control hips before moving", "Keep pressure throughout", "Establish cross-face immediately"],
   },
+
   {
     id: 8, name: "Mount to Back Take", category: "Transitions", difficulty: "Intermediate",
     description: "When the opponent turns to escape mount, you flow to their back. Recognising this reactive window separates good grapplers from great ones.",
-    image: "images/bjj_underconstruction.jpg?w=600&q=80",
+    image: "images/bjj_trans_mounttoback.jpg?w=600&q=80",
     youtube: "https://www.youtube.com/watch?v=B_Zn0tYNBdw",
     keyPoints: ["Anticipate the bridge-and-roll", "Chest stays glued to their back", "Insert hooks immediately"],
   },
@@ -87,7 +95,7 @@ const SEED_TECHNIQUES = [
   {
     id: 10, name: "Seoi Nage", category: "Takedowns", difficulty: "Intermediate",
     description: "A classic judo shoulder throw that translates beautifully to BJJ. Entry requires breaking the opponent's balance forward, then loading them across your back.",
-    image: "images/bjj_underconstruction.jpg?w=600&q=80",
+    image: "images/bjj_throw_seoinage.jpg?w=600&q=80",
     youtube: "https://www.youtube.com/watch?v=aVHFPsrpDiE",
     keyPoints: ["Break posture forward first", "Elbow drives under armpit", "Explosive hip rotation"],
   },
@@ -101,7 +109,7 @@ const SEED_TECHNIQUES = [
   {
     id: 12, name: "Neck Crank", category: "Dark BJJ", difficulty: "Advanced",
     description: "A spinal compression or lateral neck force. Highly effective but carries real injury risk. Used in no-gi submission-only rulesets. Not a beginner technique — context and control are everything.",
-    image: "himages/bjj_underconstruction.jpg?w=600&q=80",
+    image: "/images/bjj_sub_neckcrank.jpg?w=600&q=80",
     youtube: "https://www.youtube.com/watch?v=U2gI5R5Hbio",
     keyPoints: ["Slow, controlled pressure", "Distinguish from choke", "Never crank in drilling"],
   },
@@ -130,7 +138,7 @@ const NAV   = ["Overview", "Concepts", "Techniques", "About"];
 const CAT_COLORS  = { Guards: "#4cc9f0", Submissions: "#e85d04", Transitions: "#a29bfe", Takedowns: "#55efc4", "Dark BJJ": "#d63031" };
 const DIFF_COLORS = { Beginner: "#2ecc71", Intermediate: "#f39c12", Advanced: "#e74c3c" };
 
-const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&q=80";
+const DEFAULT_IMAGE = "/images/bjj_underconstruction.jpg?w=600&q=80";
 
 const JSON_TEMPLATE = `[
   {
@@ -138,7 +146,7 @@ const JSON_TEMPLATE = `[
     "category": "Guards",
     "difficulty": "Intermediate",
     "description": "Seated guard with insteps hooked under opponent's thighs. A powerful sweeping platform used extensively in no-gi.",
-    "image": "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=600&q=80",
+    "image": "/images/bjj_underconstruction.jpg?w=600&q=80",
     "youtube": "https://www.youtube.com/watch?v=example",
     "keyPoints": [
       "Stay upright and active",
@@ -649,7 +657,7 @@ function About() {
           The Grapple Lab is a structured BJJ knowledge base built to help practitioners of all levels explore positions, submissions, transitions, and takedowns in an organised, visual way.
         </p>
         <p style={S.aboutBody}>
-          Each technique entry includes a description, coaching key points, difficulty rating, and a link to external video resources. Use the <strong style={{ color: "#ede8df" }}>+ Add</strong> nav button to extend the library with your own techniques at any time — one by one via the form, or in bulk via JSON.
+          Each technique entry includes a description, coaching key points, difficulty rating, and a link to external video resources. 
         </p>
         <div style={S.addDivider} />
         <h3 style={S.aboutSub}>Categories Explained</h3>
