@@ -68,7 +68,7 @@ const SEED_TECHNIQUES = [
     description: "A defensive position with all fours on the floow. May be an intermediate step to recovery in certain difficult situations, or to avoid other controls by the opponent. However, can be dangerous as it opens the opportunity for the opponent to attack the back. Some practitionners use turtle offensively.",
     image: "/images/bjj_trans_turtle.jpg?w=600&q=80",
     youtube: "https://www.youtube.com/watch?v=U2gI5R5Hbio",
-    keyPoints: ["Slow, controlled pressure", "Distinguish from choke", "Never crank in drilling"],
+    keyPoints: ["Defensive, stabilisation", "Opportunity for attack", "Risk of back-take"],
   },
   {
     id: 7, name: "Guard Pass to Side Control", category: "Transitions", difficulty: "Beginner",
@@ -162,7 +162,7 @@ const JSON_TEMPLATE = `[
 const ADMIN_PASSWORD = "osss2026singapore";
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
-export default function GrappleLab() {
+export default function SubmitologY() {
   const [page, setPage]         = useState("Overview");
   const [techniques, setTechs]  = useState(SEED_TECHNIQUES);
   const [cat, setCat]           = useState("All");
@@ -213,7 +213,7 @@ export default function GrappleLab() {
       <nav style={S.nav}>
         <div style={S.navBrand} onClick={() => setPage("Overview")}>
           <span style={S.navLogo}>⬡</span>
-          <span style={S.navTitle}>The <em>Grapple</em> Lab</span>
+          <span style={S.navTitle}>SubmitologY</span>
         </div>
         <div style={S.navLinks}>
           {NAV.map(n => (
@@ -650,11 +650,11 @@ function About() {
   return (
     <div>
       <div style={S.pageHeader}>
-        <h2 style={S.pageTitle}>About The Grapple Lab</h2>
+        <h2 style={S.pageTitle}>About SubmitologY</h2>
       </div>
       <div style={S.aboutCard}>
         <p style={S.aboutBody}>
-          The Grapple Lab is a structured BJJ knowledge base built to help practitioners of all levels explore positions, submissions, transitions, and takedowns in an organised, visual way.
+          SubmitologY is a structured BJJ knowledge base built to help practitioners of all levels explore positions, submissions, transitions, and takedowns in an organised, visual way.
         </p>
         <p style={S.aboutBody}>
           Each technique entry includes a description, coaching key points, difficulty rating, and a link to external video resources. 
