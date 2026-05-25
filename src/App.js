@@ -1,120 +1,13 @@
 import { useState } from "react";
+import { LANGUAGES, T, t } from "./i18n";
 
 // ╔══════════════════════════════════════════════════════════════════════════════╗
 // ║                        📌 ADD NEW TECHNIQUES HERE                          ║
-// ║                                                                            ║
-// ║  This is the permanent technique database for the app.                     ║
-// ║                                                                            ║
-// ║  WORKFLOW:                                                                 ║
-// ║  1. Use the Admin panel ("+ Add") to compose & preview a technique         ║
-// ║  2. Click "Export JSON" on the success screen to copy the object           ║
-// ║  3. Paste it at the BOTTOM of the list below (before the closing ];)       ║
-// ║  4. Assign the next sequential id (last id + 1)                            ║
-// ║  5. Save the file and republish — the technique will appear for everyone   ║
-// ║                                                                            ║
-// ║  REQUIRED fields:  name · category · description                           ║
-// ║  OPTIONAL fields:  difficulty · image · youtube · keyPoints[]              ║
-// ║                                                                            ║
-// ║  Valid categories:  Guards · Submissions · Transitions                     ║
-// ║                     Takedowns · Dark BJJ                                   ║
-// ║  Valid difficulty:  Beginner · Intermediate · Advanced                     ║
+// ║  Technique names, descriptions, and keyPoints are in English.              ║
+// ║  The UI language selection translates all navigation and labels.           ║
 // ╚══════════════════════════════════════════════════════════════════════════════╝
 
 const SEED_TECHNIQUES = [
-  /*
-  {
-    id: 1, name: "Closed Guard", category: "Guards", difficulty: "Beginner",
-    description: "The cornerstone of BJJ. You're on your back with both legs locked around the opponent's waist. From here you control posture and launch attacks: triangles, armbars, sweeps, omoplatas.",
-    image: "/images/bjj_guard_closed.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=g7WLY0r1-IA",
-    keyPoints: ["Break opponent's posture first", "Control collar & sleeve", "Hip angle unlocks attacks"],
-  },
-  {
-    id: 2, name: "Half Guard", category: "Guards", difficulty: "Intermediate",
-    description: "One of the opponent's legs is trapped between yours. Acts as both a defensive shield and a platform for deep-half sweeps, back takes, and leg-lock entries.",
-    image: "images/bjj_guard_half.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=B_Zn0tYNBdw",
-    keyPoints: ["Win the underhook battle", "Recover guard with hip escape", "Sweep to top"],
-  },
-  {
-    id: 3, name: "Spider Guard", category: "Guards", difficulty: "Intermediate",
-    description: "Sleeve grips combined with feet on biceps create a web of tension. An elite sport-BJJ platform for triangles, omoplatas, and balloon sweeps.",
-    image: "images/bjj_guard_spider.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=RqWxP4uRzUU",
-    keyPoints: ["Maintain sleeve control", "Push/pull to break posture", "Extend to create openings"],
-  },
-  {
-    id: 4, name: "Rear Naked Choke", category: "Submissions", difficulty: "Beginner",
-    description: "The highest-percentage finish in grappling. Applied from back control, the choking arm wraps the throat while the other arm frames the head — cutting off carotid blood flow.",
-    image: "/images/bjj_sub_rnc.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=aVHFPsrpDiE",
-    keyPoints: ["Chin-over-shoulder principle", "Squeeze elbow-to-elbow", "Hips away to finish"],
-  },
-  {
-    id: 5, name: "Triangle Choke", category: "Submissions", difficulty: "Intermediate",
-    description: "One of BJJ's most iconic chokes. Legs form a triangle around the opponent's neck and one arm, creating a blood choke. Can be hit from guard, mount, or back.",
-    image: "/images/bjj_sub_triangle.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=OqWbcfLsEAA",
-    keyPoints: ["Cut the angle 45°", "Pull head down", "Squeeze knees together"],
-  },
-  {
-    id: 6, name: "Armbar", category: "Submissions", difficulty: "Beginner",
-    description: "A hyper-extension of the elbow joint. Can be applied from mount, guard, back, and countless transitional positions. The most versatile submission in the game.",
-    image: "/images/bjj_sub_armbar.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-    keyPoints: ["Thumb up = elbow vulnerable", "Squeeze knees, bridge hips", "Control the wrist firmly"],
-  },
-  {
-    id: 13, name: "Turtle", category: "Transitions", difficulty: "Beginner",
-    description: "A defensive position with all fours on the floow. May be an intermediate step to recovery in certain difficult situations, or to avoid other controls by the opponent. However, can be dangerous as it opens the opportunity for the opponent to attack the back. Some practitionners use turtle offensively.",
-    image: "/images/bjj_trans_turtle.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-    keyPoints: ["Defensive, stabilisation", "Opportunity for attack", "Risk of back-take"],
-  },
-  {
-    id: 7, name: "Guard Pass to Side Control", category: "Transitions", difficulty: "Beginner",
-    description: "Transitioning from inside the guard to dominant side control is the most fundamental positional improvement in BJJ. Master the toreando and knee-slice as your bread-and-butter passes.",
-    image: "images/bjj_trans_passtoside.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=g7WLY0r1-IA",
-    keyPoints: ["Control hips before moving", "Keep pressure throughout", "Establish cross-face immediately"],
-  },
-
-  {
-    id: 8, name: "Mount to Back Take", category: "Transitions", difficulty: "Intermediate",
-    description: "When the opponent turns to escape mount, you flow to their back. Recognising this reactive window separates good grapplers from great ones.",
-    image: "images/bjj_trans_mounttoback.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=B_Zn0tYNBdw",
-    keyPoints: ["Anticipate the bridge-and-roll", "Chest stays glued to their back", "Insert hooks immediately"],
-  },
-  {
-    id: 9, name: "Double Leg Takedown", category: "Takedowns", difficulty: "Beginner",
-    description: "The cornerstone of wrestling-based takedowns. Shoot low, drive through, finish to side or top. Combining a level change with explosive penetration step is key.",
-    image: "/images/bjj_throw_doubleleg.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=RqWxP4uRzUU",
-    keyPoints: ["Level change first", "Drive knee to the mat", "Head outside, lift & turn"],
-  },
-  {
-    id: 10, name: "Seoi Nage", category: "Takedowns", difficulty: "Intermediate",
-    description: "A classic judo shoulder throw that translates beautifully to BJJ. Entry requires breaking the opponent's balance forward, then loading them across your back.",
-    image: "images/bjj_throw_seoinage.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=aVHFPsrpDiE",
-    keyPoints: ["Break posture forward first", "Elbow drives under armpit", "Explosive hip rotation"],
-  },
-  {
-    id: 11, name: "Heel Hook", category: "Dark BJJ", difficulty: "Advanced",
-    description: "The most devastating leg lock in the modern game. It rotates the knee joint beyond its limits by levering the heel. Banned in many beginner competitions — learn structure and defence before attempting.",
-    image: "/images/bjj_sub_heelhook.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/watch?v=OqWbcfLsEAA",
-    keyPoints: ["Understand the 'reap' position", "Control before rotating", "Tap early — damage is silent"],
-  },
-  {
-    id: 12, name: "Neck Crank", category: "Dark BJJ", difficulty: "Advanced",
-    description: "A spinal compression or lateral neck force. Highly effective but carries real injury risk. Used in no-gi submission-only rulesets. Not a beginner technique — context and control are everything.",
-    image: "/images/bjj_sub_neckcrank.jpg?w=600&q=80",
-    youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-    keyPoints: ["Slow, controlled pressure", "Distinguish from choke", "Never crank in drilling"],
-  },
-  */
  {
   id: 1, name: "Closed guard", category: "Guards", difficulty: "Beginner",
   description: "The closed guard is the foundation of BJJ, where you wrap your legs around your opponent's waist to control them from the bottom. It limits their movement and gives you a platform to attack with sweeps and submissions. Mastering closed guard is essential before progressing to open guard variations.",
@@ -186,215 +79,198 @@ const SEED_TECHNIQUES = [
   keyPoints: ["Pull the opponent's arm across your centre line before shooting the triangle", "Angle your hips 45 degrees to the side of the trapped arm", "Lock your shin across the back of the neck and squeeze your knees"],
   },
   {
-  id: 11, name: "Guillotine choke", category: "Submissions", difficulty: "Intermediate",
-  description: "The guillotine attacks the neck when the opponent shoots in for a takedown or drops their head. The arm-in variation is powerful and used at all levels of competition. Proper blade positioning under the chin and hip placement determine the finish.",
+  id: 11, name: "Kimura", category: "Submissions", difficulty: "Beginner",
+  description: "The kimura is a double-wrist lock attacking the shoulder joint. It can be applied from half guard, side control, north-south, or closed guard. Named after Masahiko Kimura, who used it to defeat Hélio Gracie in 1951.",
+  image: "/images/bjj_sub_kimura.jpg?w=600&q=80",
+  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
+  keyPoints: ["Secure the figure-four grip before breaking posture", "Keep the elbow above the wrist at all times", "Rotate the arm behind the back — not just upward"],
+  },
+  {
+  id: 12, name: "Guillotine choke", category: "Submissions", difficulty: "Beginner",
+  description: "The guillotine is a front headlock choke applied when the opponent shoots for a takedown or ducks their head. There are arm-in and arm-out variants; the arm-in version also compresses the trachea. One of the most common submissions in all of grappling.",
   image: "/images/bjj_sub_guillotine.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Get a deep bite under the chin — not on top of it", "Secure a high guard or squeeze the knees to cut off the escape", "Arch back and squeeze the elbow towards your hip to finish"],
+  keyPoints: ["Lock the figure-four under the chin — not the face", "Pull up and squeeze with the forearm across the throat", "Guard pull finish: close guard and arch back to increase pressure"],
   },
   {
-  id: 12, name: "Omoplata", category: "Submissions", difficulty: "Intermediate",
-  description: "The omoplata uses the legs to attack the shoulder joint by rotating the arm into a painful extension. It also serves as a sweep and a back-take setup. It is commonly set up from spider guard or failed triangle attempts.",
+  id: 13, name: "Omoplata", category: "Submissions", difficulty: "Intermediate",
+  description: "The omoplata uses your legs to trap and rotate the opponent's shoulder from the guard. It doubles as a sweep when the opponent rolls to escape. A high-level tool that requires excellent hip flexibility.",
   image: "/images/bjj_sub_omoplata.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Shoot the leg over the shoulder before the opponent can posture up", "Sit up and get perpendicular to your opponent to prevent the roll", "Use your outside arm to block the opponent's hip if they try to roll"],
+  keyPoints: ["Secure the figure-four with your legs before rotating", "Sit up to prevent the opponent from rolling", "Lean forward and apply shoulder pressure to finish"],
   },
   {
-  id: 13, name: "Heel hook (outside)", category: "Submissions", difficulty: "Intermediate",
-  description: "The outside heel hook attacks the knee by rotating the foot and lower leg to create torsional stress on the joint. It is one of the most effective leg attacks in no-gi grappling. Proper entanglement (outside sankaku) is required before attacking.",
+  id: 14, name: "Americana (keylock)", category: "Submissions", difficulty: "Beginner",
+  description: "The americana is a shoulder lock applied from top positions — mount, side control — by bending the opponent's arm into an L-shape and rotating it. One of the first submissions taught at white belt. Low-risk entry with a reliable finish.",
+  image: "/images/bjj_sub_americana.jpg?w=600&q=80",
+  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
+  keyPoints: ["Pin the wrist to the mat before engaging the elbow", "Keep your own elbows tight — don't let your frame collapse", "Move the arm like a windshield wiper toward their hip"],
+  },
+  {
+  id: 15, name: "Bow and arrow choke", category: "Submissions", difficulty: "Intermediate",
+  description: "The bow and arrow is a powerful gi choke applied from back control. You grip the collar with one hand and a leg or pants with the other, then extend your body to apply crushing pressure. Considered one of the most powerful gi submissions.",
+  image: "/images/bjj_sub_bowarrow.jpg?w=600&q=80",
+  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
+  keyPoints: ["Secure a deep collar grip before transitioning", "Control the opposite leg or pants to prevent the turn", "Extend and arch — think of drawing a bow"],
+  },
+  {
+  id: 16, name: "Heel hook", category: "Submissions", difficulty: "Advanced",
+  description: "The heel hook is the most devastating leg lock in the modern game. It rotates the knee joint beyond its limits by levering the heel. Banned in many beginner competitions — learn structure and defence before attempting.",
   image: "/images/bjj_sub_heelhook.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Secure the outside sankaku entanglement before hunting the heel", "Cup the heel close to your armpit — not at the ankle", "Rotate your whole body, not just your arms, to apply pressure"],
+  keyPoints: ["Understand the 'reap' position before drilling", "Control the hip and knee before rotating", "Tap early — knee damage from heel hooks is silent and severe"],
   },
   {
-  id: 14, name: "Rear triangle", category: "Submissions", difficulty: "Advanced",
-  description: "The rear triangle is applied from back control, using the legs to choke from behind rather than the arms. It is highly effective when the opponent defends the rear naked choke well. Transitioning from back control requires hip mobility and timing.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 17, name: "Toe hold", category: "Submissions", difficulty: "Intermediate",
+  description: "The toe hold attacks the ankle and knee by gripping the foot and rotating it. Applied from top leg-lock positions. Legal at brown and black belt in many gi rulesets. Requires control of the hip to prevent escape.",
+  image: "/images/bjj_sub_toehold.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Enter when the opponent tucks their chin to defend the RNC", "Shoot one leg over the shoulder and lock the figure-four behind the neck", "Squeeze the knees and push your hips forward to finish"],
+  keyPoints: ["Figure-four grip on the foot — palm facing you", "Keep the hip controlled to prevent the opponent from turning", "Rotate the foot as if turning a steering wheel"],
   },
   {
-  id: 15, name: "Calf slicer", category: "Submissions", difficulty: "Advanced",
-  description: "The calf slicer (also called the calf crush) compresses the calf muscle against the shinbone of the attacking leg. It is legal in many competition formats and extremely painful when applied correctly. Entry is typically from turtle position or failed takedowns.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 18, name: "Guard pass to side control", category: "Transitions", difficulty: "Beginner",
+  description: "Transitioning from inside the guard to dominant side control is the most fundamental positional improvement in BJJ. Master the toreando and knee-slice as your bread-and-butter passes.",
+  image: "/images/bjj_trans_passtoside.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Lace your leg deep into the back of the opponent's knee", "Use a figure-four or gable grip on your own shin to create the lever", "Drive your knee forward while pulling the foot towards you"],
+  keyPoints: ["Control hips before moving", "Keep pressure throughout the pass", "Establish cross-face immediately upon landing"],
   },
   {
-  id: 16, name: "Guard pull to closed guard", category: "Transitions", difficulty: "Beginner",
-  description: "Pulling guard is a controlled takedown alternative that immediately establishes bottom closed guard. It is a common competition strategy, especially in the gi. Proper execution requires grips and timing to avoid ending up in a bad position.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 19, name: "Mount to back take", category: "Transitions", difficulty: "Intermediate",
+  description: "When the opponent turns to escape mount, you flow to their back. Recognising this reactive window separates good grapplers from great ones.",
+  image: "/images/bjj_trans_mounttoback.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Secure collar and sleeve grips before pulling", "Pull simultaneously with both grips — don't just sit down", "Land with your hips high and legs locked immediately"],
+  keyPoints: ["Anticipate the bridge-and-roll escape", "Chest stays glued to their back during the transition", "Insert hooks immediately before the opponent can react"],
   },
   {
-  id: 17, name: "Mount escape (upa)", category: "Transitions", difficulty: "Beginner",
-  description: "The upa (bridge and roll) is the primary escape from the mounted position, using a powerful hip bridge to off-balance the top player. It requires trapping an arm and a foot before executing the bridge. Timing and commitment to the bridge are everything.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 20, name: "Knee on belly", category: "Transitions", difficulty: "Beginner",
+  description: "Knee on belly is a pressure position between side control and mount. It scores points in competition and creates discomfort that forces reactions, opening submissions and transitions.",
+  image: "/images/bjj_trans_kneeonbelly.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Trap the arm on the same side as the foot you trap", "Bridge explosively — a half-hearted bridge won't work", "Follow the roll and end in guard or on top"],
+  keyPoints: ["Drive the knee into the solar plexus — not the ribs", "Post your far foot out wide for base", "Flow immediately to mount or back when they push the knee"],
   },
   {
-  id: 18, name: "Side control to mount", category: "Transitions", difficulty: "Beginner",
-  description: "Transitioning from side control to mount is a fundamental positional advance that increases submission options. The knee-slide method is the most reliable path for beginners. Patience and weight distribution prevent the opponent from recapturing half guard.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 21, name: "Back control (back take)", category: "Transitions", difficulty: "Beginner",
+  description: "Back control is the highest-value position in BJJ — you have full visibility, they have none. Establishing hooks and the seatbelt is the foundation for the rear naked choke.",
+  image: "/images/bjj_trans_back.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Keep consistent downward pressure through the transition", "Slide the knee over the opponent's belt line — don't jump", "Land in a high mount position with your weight forward"],
+  keyPoints: ["Seatbelt grip first, then insert hooks", "Keep your hips connected — don't let them flatten you", "Control the hand fighting to prevent choke defence"],
   },
   {
-  id: 19, name: "Back take from turtle", category: "Transitions", difficulty: "Intermediate",
-  description: "The turtle position (opponent on all fours) presents excellent back-take opportunities using the seatbelt grip and hook insertion. It commonly arises after a failed guard pass or takedown defence. Maintaining the seatbelt while inserting the second hook is the critical challenge.",
+  id: 22, name: "Turtle position", category: "Transitions", difficulty: "Beginner",
+  description: "A defensive position with all fours on the floor. May be an intermediate step to recovery in certain difficult situations, or to avoid other controls by the opponent. However, it opens the opportunity for the opponent to attack the back.",
   image: "/images/bjj_trans_turtle.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Secure seatbelt grip before attempting any back take", "Insert bottom hook first, then roll to insert the second", "Never release the seatbelt until both hooks are in"],
-  },
-  {
-  id: 20, name: "Knee slice pass", category: "Transitions", difficulty: "Intermediate",
-  description: "The knee slice is one of the most reliable guard passes at all levels, cutting through the guard with the knee. It works against both open and half guard and pairs naturally with the torreando pass. Weight distribution and angle control prevent the underhook.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
-  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Drive your knee across the opponent's thigh — not over it", "Use shoulder pressure on the far hip or chest to flatten them", "Block the near hip with your free hand to prevent re-guarding"],
-  },
-  {
-  id: 21, name: "Leg drag pass", category: "Transitions", difficulty: "Advanced",
-  description: "The leg drag is a modern passing system that controls one leg while dragging it across the body to pass the guard. It is highly effective against flexible guards and De La Riva. Controlling the hip and collar simultaneously prevents the opponent from recovering.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
-  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Pinch the leg between your hip and arm — don't grip the ankle", "Drop your hip to the mat to drag the leg across", "Move to side control or north-south quickly to prevent leg re-entanglement"],
-  },
-  {
-  id: 22, name: "Berimbolo to back take", category: "Transitions", difficulty: "Advanced",
-  description: "The berimbolo back take is a high-level sequence where an inversion from De La Riva guard leads directly to back control. It has become a defining technique of modern competition BJJ. Requires strong DLR fundamentals and comfortable inversion ability.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
-  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Enter on a failed De La Riva sweep attempt", "Stay tight to the opponent's hips during the inversion", "Come out behind the opponent and immediately secure seatbelt grip"],
+  keyPoints: ["Defensive — useful to stabilise", "Creates opportunity to recover guard", "High risk of back-take if you stay too long"],
   },
   {
   id: 23, name: "Double leg takedown", category: "Takedowns", difficulty: "Beginner",
-  description: "The double leg is the most fundamental wrestling takedown and a critical part of any BJJ game. It involves shooting low, driving through both legs, and finishing with proper technique. A failed double leg risks a guillotine, so head position is vital.",
+  description: "The cornerstone of wrestling-based takedowns. Shoot low, drive through, finish to side or top. Combining a level change with explosive penetration step is key.",
   image: "/images/bjj_throw_doubleleg.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Level change must be sharp and low — don't telegraph it", "Keep your head to the outside of the opponent's hip", "Drive through and past the opponent, not straight down"],
+  keyPoints: ["Level change first — don't just bend forward", "Drive your knee to the mat on the penetration step", "Head outside, lift and turn to finish"],
   },
   {
-  id: 24, name: "Single leg takedown", category: "Takedowns", difficulty: "Beginner",
-  description: "The single leg is highly reliable in BJJ because it requires less commitment than the double leg and offers multiple finishes. It can be entered from ties or after a failed double. The trip, run-the-pipe, and back-take finishes are the most common.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 24, name: "Seoi nage (shoulder throw)", category: "Takedowns", difficulty: "Intermediate",
+  description: "A classic judo shoulder throw that translates beautifully to BJJ. Entry requires breaking the opponent's balance forward, then loading them across your back.",
+  image: "/images/bjj_throw_seoinage.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Capture the leg high — under the knee is too low", "Keep the leg tight to your chest using both arms and your body", "Head outside prevents the guillotine — always check head position"],
+  keyPoints: ["Break posture forward first with kuzushi", "Elbow drives under the armpit to load the throw", "Explosive hip rotation — not arm strength"],
   },
   {
-  id: 25, name: "Osoto gari", category: "Takedowns", difficulty: "Intermediate",
-  description: "Osoto gari is a major outer reap from judo that off-balances the opponent backwards and sweeps their lead leg. It requires a strong collar and sleeve grip and works well when the opponent is heavy on their heels. The combination version following a failed kouchi gari is very effective.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 25, name: "Tomoe nage (sacrifice throw)", category: "Takedowns", difficulty: "Intermediate",
+  description: "A sacrifice throw where you fall backward and use your foot on the opponent's hip to launch them overhead. High-risk, high-reward. Pairs well with guard pulling entries.",
+  image: "/images/bjj_throw_tomoenage.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Kuzushi (off-balance) is essential before the reap — don't skip it", "Drive your chest through the opponent's chest as you reap", "Commit fully — a half-hearted reap just bounces off"],
+  keyPoints: ["Fall straight back — don't step offline", "Foot placement on the lower abdomen generates height", "Maintain grips and follow into guard as they land"],
   },
   {
-  id: 26, name: "Uchi mata", category: "Takedowns", difficulty: "Intermediate",
-  description: "Uchi mata is an inner thigh throw from judo used extensively in gi BJJ. It attacks the opponent's inner thigh with a lifting reaping motion to throw them over your hip. It requires coordination and proper off-balancing to execute cleanly.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 26, name: "Heel hook", category: "Dark BJJ", difficulty: "Advanced",
+  description: "The heel hook in a dark BJJ context emphasises the dangers and ethical considerations of this technique. The rotation is silent — damage accumulates before the tap. Essential to study for defence.",
+  image: "/images/bjj_sub_heelhook.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Pull the opponent forward and up before initiating the reap", "Drive your reaping leg between and upward through the thighs", "Keep your head up and posture strong throughout the entry"],
+  keyPoints: ["Understand the 'reap' position", "Control before rotating", "Tap early — damage is silent"],
   },
   {
-  id: 27, name: "Foot sweep (kouchi gari)", category: "Takedowns", difficulty: "Advanced",
-  description: "Kouchi gari is a subtle inside foot sweep that trips the opponent's near leg as they step. It requires excellent timing and grip work to execute. Often used as a combination entry or when the opponent is focused on defending other attacks.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
+  id: 27, name: "Neck crank (can opener)", category: "Dark BJJ", difficulty: "Intermediate",
+  description: "The can opener attacks the cervical spine by posting the hands on the forehead and driving the head towards the mat. It is illegal in many competition formats but forces the guard to open. Understanding it helps you defend.",
+  image: "/images/bjj_sub_neckcrank.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Time the sweep with the opponent's weight shift — not when they are loaded", "Use your grip to break balance in the direction of the sweep", "Follow immediately into guard or top position — foot sweeps can be loose"],
+  keyPoints: ["Often used to force an opponent to open closed guard", "Tuck your chin hard to your chest to reduce the pressure", "Counter with armbar entry as they stand"],
   },
   {
   id: 28, name: "Wrist lock", category: "Dark BJJ", difficulty: "Beginner",
-  description: "The wrist lock attacks the wrist joint and can be applied from almost any position — guard, mount, side control, or even standing. It is often overlooked and catches opponents completely off guard. Even a light application causes significant pain due to the small joint involved.",
+  description: "The wrist lock attacks the wrist joint from almost any position. It is often overlooked and catches opponents completely off guard. Even a light application causes significant pain due to the small joint involved.",
   image: "/images/bjj_underconstruction.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Attacks are most effective when the opponent's hand is flat or posted", "Apply slowly and precisely — the tap comes fast with wrist locks", "Set up wrist locks when your opponent is focused on defending larger submissions"],
+  keyPoints: ["Most effective when the opponent's hand is flat or posted", "Apply slowly — the tap comes fast with wrist locks", "Set up when the opponent is focused on defending larger submissions"],
   },
   {
   id: 29, name: "Twister", category: "Dark BJJ", difficulty: "Intermediate",
-  description: "The twister is a spinal rotation submission made famous by Eddie Bravo. It attacks the spine and is applied from a body triangle or hooks-in back position. It requires securing the twister hook (heel on the hip) and pulling the opponent's head in the opposite direction.",
+  description: "The twister is a spinal rotation submission made famous by Eddie Bravo. Applied from a body triangle or hooks-in back position. Requires securing the twister hook and pulling the opponent's head in the opposite direction.",
   image: "/images/bjj_underconstruction.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Secure the twister hook (leg across their hip) before hunting the finish", "Thread your arm behind the opponent's head from the back position", "Pull the head away from the spine rotation — the two directions create the submission"],
+  keyPoints: ["Secure the twister hook (leg across their hip) first", "Thread your arm behind the opponent's head from back position", "Pull head away from the spine rotation — two directions create the submission"],
   },
   {
-  id: 30, name: "Banana split", category: "Dark BJJ", difficulty: "Intermediate",
-  description: "The banana split is a brutal groin-stretching submission targeting hip flexibility. It is applied from leg entanglement positions and is legal in many submission-only formats. It is particularly effective against inflexible opponents.",
+  id: 30, name: "Electric chair", category: "Dark BJJ", difficulty: "Advanced",
+  description: "The electric chair targets the groin, hip, and inner thigh from a modified half guard or deep half. A signature technique of the 10th Planet system. The finish requires pulling the opponent's leg across their own body.",
   image: "/images/bjj_underconstruction.jpg?w=600&q=80",
   youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Enter from a single leg X or saddle entanglement", "Control one leg with your legs and the other with your arms — pulling them in opposite directions", "Apply gradually — it can cause serious injury if cranked suddenly"],
+  keyPoints: ["Secure a deep underhook on the far leg from half guard", "Use your body like a lever — drive hips forward, pull leg back", "Control the near leg to prevent the opponent from posturing"],
   },
-  {
-  id: 31, name: "Neck crank (can opener)", category: "Dark BJJ", difficulty: "Intermediate",
-  description: "The can opener attacks the cervical spine by posting the hands on the forehead and driving the head towards the mat while in the opponent's closed guard. It is illegal in many competition formats but forces the guard to open. Understanding it helps you defend against it.",
-  image: "/images/bjj_sub_neckcrank.jpg?w=600&q=80",
-  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Often used to force an opponent to open their closed guard", "Tuck your chin hard to your chest to reduce the pressure", "Counter by pulling your opponent's elbows in and going for an armbar as they stand"],
-  },
-  {
-  id: 32, name: "Electric chair", category: "Dark BJJ", difficulty: "Advanced",
-  description: "The electric chair is a powerful stretching submission targeting the groin, hip, and inner thigh, applied from a modified half guard or deep half position. It is a signature technique of the 10th Planet system. The finish requires pulling the opponent's leg across their own body.",
-  image: "/images/bjj_underconstruction.jpg?w=600&q=80",
-  youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  keyPoints: ["Secure a deep underhook on the opponent's far leg from half guard", "Use your body like a lever — drive your hips forward and pull the leg back", "Maintain control of the near leg with your legs to prevent the opponent from posturing"],
-  },
-
   // ▼▼▼ PASTE NEW TECHNIQUES BELOW THIS LINE ▼▼▼
-  // Use the Admin panel → Export JSON to generate the correct format,
-  // then paste the object here and assign the next id (13, 14, 15 …)
   // ▲▲▲ END OF TECHNIQUE LIST ▲▲▲
-  // Template
-  //{
-  //id: 01, name: "nnn", category: "ccc", difficulty: "ddd",
-  //description: "xxx",
-  //image: "/images/bjj_underconstruction.jpg?w=600&q=80",
-  //youtube: "https://www.youtube.com/channel/UC73abh10iBYDsSwRSpg6-eg",
-  //keyPoints: ["kkk1", "kkk2", "kkk3"],
-  //},
-  //
 ];
 
-const CONCEPTS = [
-  { icon: "⚖️", title: "Positional Hierarchy", body: "BJJ ranks positions by dominance: back control → mount → knee-on-belly → side control → guard. The higher on the ladder, the more control and submission options you have." },
-  { icon: "🔄", title: "The Guard", body: "Unique to BJJ — fighting effectively from your back. The guard is not defensive; it is an attacking platform. Developing a strong guard changed martial arts forever." },
-  { icon: "🌊", title: "Flowing & Chaining", body: "Techniques are rarely isolated. A failed armbar should flow into a triangle; a blocked triangle feeds an omoplata. Train combinations, not just individual moves." },
-  { icon: "🎯", title: "Base & Posture", body: "Before attacking, establish base (hips low, weight distributed) and posture (spine neutral). Neglecting these fundamentals is the fastest way to get submitted." },
-  { icon: "⏱️", title: "Timing Over Force", body: "BJJ was designed so a smaller person can overcome a larger one. Timing, leverage, and technique consistently beat raw strength — especially over a long roll." },
-  { icon: "🦺", title: "Tap Early, Tap Often", body: "Tapping is not failure — it's the mechanism that lets training continue safely. Pride in refusing to tap leads to injuries. The mats will always be there tomorrow." },
-];
-
-// ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const CATS  = ["All", "Guards", "Submissions", "Transitions", "Takedowns", "Dark BJJ"];
 const DIFFS = ["All", "Beginner", "Intermediate", "Advanced"];
-// Nav order: Overview → Concepts → Techniques → About
-const NAV   = ["Overview", "Concepts", "Techniques", "About"];
+const NAV_KEYS = ["Overview", "Concepts", "Techniques", "About"];
 
 const CAT_COLORS  = { Guards: "#4cc9f0", Submissions: "#e85d04", Transitions: "#a29bfe", Takedowns: "#55efc4", "Dark BJJ": "#d63031" };
 const DIFF_COLORS = { Beginner: "#2ecc71", Intermediate: "#f39c12", Advanced: "#e74c3c" };
-
 const DEFAULT_IMAGE = "/images/bjj_underconstruction.jpg?w=600&q=80";
+const ADMIN_PASSWORD = "osss2026singapore";
 
 const JSON_TEMPLATE = `[
   {
     "name": "Butterfly Guard",
     "category": "Guards",
     "difficulty": "Intermediate",
-    "description": "Seated guard with insteps hooked under opponent's thighs. A powerful sweeping platform used extensively in no-gi.",
+    "description": "Seated guard with insteps hooked under opponent's thighs.",
     "image": "/images/bjj_underconstruction.jpg?w=600&q=80",
     "youtube": "https://www.youtube.com/watch?v=example",
-    "keyPoints": [
-      "Stay upright and active",
-      "Hook lift is explosive",
-      "Combine with underhook"
-    ]
+    "keyPoints": ["Stay upright and active","Hook lift is explosive","Combine with underhook"]
   }
 ]`;
 
-// ─── ADMIN ────────────────────────────────────────────────────────────────────
-// Change this password before deploying. It lives client-side, so it's
-// casual protection — enough to keep regular users out of the Add panel.
-const ADMIN_PASSWORD = "osss2026singapore";
+// ─── LANGUAGE SELECTOR ────────────────────────────────────────────────────────
+function LangSelector({ lang, setLang }) {
+  const [open, setOpen] = useState(false);
+  const current = LANGUAGES.find(l => l.code === lang);
+  return (
+    <div style={{ position: "relative", marginLeft: 12 }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        title="Select language"
+        style={{ background: "none", border: "1px solid #2a2a2a", borderRadius: 6, cursor: "pointer", padding: "4px 9px", display: "flex", alignItems: "center", gap: 5, fontSize: 16, color: "#ede8df", lineHeight: 1 }}
+      >
+        <span>{current.flag}</span>
+        <span style={{ fontSize: 10, fontFamily: "monospace", color: "#666", letterSpacing: "0.05em" }}>▾</span>
+      </button>
+      {open && (
+        <div style={{ position: "absolute", top: "calc(100% + 6px)", right: 0, background: "#141414", border: "1px solid #2a2a2a", borderRadius: 8, overflow: "hidden", zIndex: 200, minWidth: 150, boxShadow: "0 8px 24px rgba(0,0,0,0.6)" }}>
+          {LANGUAGES.map(l => (
+            <button key={l.code} onClick={() => { setLang(l.code); setOpen(false); }}
+              style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", background: l.code === lang ? "#1e1e1e" : "none", border: "none", color: l.code === lang ? "#ede8df" : "#888", fontSize: 13, fontFamily: "monospace", padding: "9px 14px", cursor: "pointer", textAlign: "left" }}>
+              <span style={{ fontSize: 18 }}>{l.flag}</span>
+              <span>{l.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
 export default function SubmitologY() {
@@ -405,6 +281,7 @@ export default function SubmitologY() {
   const [selected, setSelected] = useState(null);
   const [isAdmin, setIsAdmin]   = useState(false);
   const [showGate, setShowGate] = useState(false);
+  const [lang, setLang]         = useState("en");
 
   const filtered = techniques.filter(p =>
     (cat  === "All" || p.category   === cat) &&
@@ -412,35 +289,20 @@ export default function SubmitologY() {
   );
 
   const handleImport = (newItems) => {
-    const maxId = techniques.reduce((m, t) => Math.max(m, t.id || 0), 0);
-    const stamped = newItems.map((t, i) => ({
-      difficulty: "Beginner",
-      image: DEFAULT_IMAGE,
-      youtube: "",
-      keyPoints: [],
-      ...t,
-      id: maxId + i + 1,
-    }));
+    const maxId = techniques.reduce((m, t2) => Math.max(m, t2.id || 0), 0);
+    const stamped = newItems.map((t2, i) => ({ difficulty: "Beginner", image: DEFAULT_IMAGE, youtube: "", keyPoints: [], ...t2, id: maxId + i + 1 }));
     setTechs(prev => [...prev, ...stamped]);
     setPage("Techniques");
   };
 
-  // "+ Add" click — show gate if not yet authenticated
-  const handleAddClick = () => {
-    if (isAdmin) { setPage("Add"); }
-    else         { setShowGate(true); }
-  };
+  const handleAddClick = () => { if (isAdmin) { setPage("Add"); } else { setShowGate(true); } };
+  const handleUnlock   = () => { setIsAdmin(true); setShowGate(false); setPage("Add"); };
+  const handleLock     = () => { setIsAdmin(false); if (page === "Add") setPage("Overview"); };
 
-  const handleUnlock = () => {
-    setIsAdmin(true);
-    setShowGate(false);
-    setPage("Add");
-  };
-
-  const handleLock = () => {
-    setIsAdmin(false);
-    if (page === "Add") setPage("Overview");
-  };
+  const navLabel = (key) => ({
+    Overview: t(T.nav.overview, lang), Concepts: t(T.nav.concepts, lang),
+    Techniques: t(T.nav.techniques, lang), About: t(T.nav.about, lang),
+  }[key]);
 
   return (
     <div style={S.root}>
@@ -451,69 +313,56 @@ export default function SubmitologY() {
           <span style={S.navTitle}>SubmitologY</span>
         </div>
         <div style={S.navLinks}>
-          {NAV.map(n => (
+          {NAV_KEYS.map(n => (
             <button key={n} onClick={() => setPage(n)}
               style={{ ...S.navBtn, ...(page === n ? S.navActive : {}) }}>
-              {n}
+              {navLabel(n)}
             </button>
           ))}
-          {/* Admin controls */}
           {isAdmin
             ? <>
-                <button onClick={handleAddClick}
-                  style={{ ...S.navBtn, ...(page === "Add" ? S.navAddActive : S.navAdd) }}>
-                  + Add
-                </button>
-                <button onClick={handleLock}
-                  style={{ ...S.navBtn, ...S.navLockBtn }} title="Exit admin mode">
-                  🔓 Admin
-                </button>
+                <button onClick={handleAddClick} style={{ ...S.navBtn, ...(page === "Add" ? S.navAddActive : S.navAdd) }}>{t(T.nav.addBtn, lang)}</button>
+                <button onClick={handleLock} style={{ ...S.navBtn, ...S.navLockBtn }} title="Exit admin mode">{t(T.nav.exitAdmin, lang)}</button>
               </>
-            : <button onClick={handleAddClick} style={{ ...S.navBtn, ...S.navAdd }}>
-                🔒 Admin
-              </button>
+            : <button onClick={handleAddClick} style={{ ...S.navBtn, ...S.navAdd }}>{t(T.nav.addAdmin, lang)}</button>
           }
+          <LangSelector lang={lang} setLang={setLang} />
         </div>
       </nav>
 
       <main style={S.main}>
-        {page === "Overview"   && <Overview   techniques={techniques} goTo={setPage} />}
-        {page === "Concepts"   && <Concepts />}
-        {page === "Techniques" && <Techniques filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} />}
-        {page === "About"      && <About />}
-        {page === "Add"        && isAdmin && <AddTechniques onImport={handleImport} />}
+        {page === "Overview"   && <Overview   techniques={techniques} goTo={setPage} lang={lang} />}
+        {page === "Concepts"   && <Concepts   lang={lang} />}
+        {page === "Techniques" && <Techniques filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} lang={lang} />}
+        {page === "About"      && <About      lang={lang} />}
+        {page === "Add"        && isAdmin && <AddTechniques onImport={handleImport} lang={lang} />}
       </main>
 
-      {selected   && <Modal       pos={selected} onClose={() => setSelected(null)} />}
-      {showGate   && <PasswordGate onUnlock={handleUnlock} onCancel={() => setShowGate(false)} />}
+      {selected  && <Modal       pos={selected} onClose={() => setSelected(null)} lang={lang} />}
+      {showGate  && <PasswordGate onUnlock={handleUnlock} onCancel={() => setShowGate(false)} lang={lang} />}
     </div>
   );
 }
 
 // ─── OVERVIEW ─────────────────────────────────────────────────────────────────
-function Overview({ techniques, goTo }) {
+function Overview({ techniques, goTo, lang }) {
   return (
     <div style={S.overviewWrap}>
       <div style={S.hero}>
-        <div style={S.heroTag}>Brazilian Jiu-Jitsu Knowledge Base</div>
-        <h1 style={S.heroTitle}>The Art of<br /><span style={S.heroAccent}>Human Chess</span></h1>
-        <p style={S.heroBody}>
-          BJJ is a ground-based martial art built on leverage, timing, and positional strategy.
-          A smaller practitioner can — and regularly does — defeat larger opponents using technique alone.
-          This lab is your structured guide to positions, submissions, and concepts.
-        </p>
+        <div style={S.heroTag}>{t(T.overview.tag, lang)}</div>
+        <h1 style={S.heroTitle}>{t(T.overview.titleLine1, lang)}<br /><span style={S.heroAccent}>{t(T.overview.titleLine2, lang)}</span></h1>
+        <p style={S.heroBody}>{t(T.overview.body, lang)}</p>
         <div style={S.heroCtas}>
-          <button style={S.ctaPrimary}   onClick={() => goTo("Techniques")}>Explore Techniques →</button>
-          <button style={S.ctaSecondary} onClick={() => goTo("Concepts")}>Basic Concepts</button>
+          <button style={S.ctaPrimary}   onClick={() => goTo("Techniques")}>{t(T.overview.exploreCta, lang)}</button>
+          <button style={S.ctaSecondary} onClick={() => goTo("Concepts")}>{t(T.overview.conceptsCta, lang)}</button>
         </div>
       </div>
-
       <div style={S.statRow}>
         {[
-          [String(techniques.length), "Techniques Indexed"],
-          [String(CATS.length - 1),   "Categories"],
-          ["3",                        "Difficulty Levels"],
-          ["∞",                        "Combinations"],
+          [String(techniques.length), t(T.overview.statTech, lang)],
+          [String(CATS.length - 1),   t(T.overview.statCats, lang)],
+          ["3",                        t(T.overview.statDiffs, lang)],
+          ["∞",                        t(T.overview.statCombo, lang)],
         ].map(([n, l]) => (
           <div key={l} style={S.stat}>
             <span style={S.statNum}>{n}</span>
@@ -521,17 +370,15 @@ function Overview({ techniques, goTo }) {
           </div>
         ))}
       </div>
-
       <div style={S.catGrid}>
         {CATS.slice(1).map(c => (
-          <div key={c}
-            style={{ ...S.catCard, borderColor: CAT_COLORS[c] + "33" }}
+          <div key={c} style={{ ...S.catCard, borderColor: CAT_COLORS[c] + "33" }}
             onClick={() => goTo("Techniques")}
             onMouseEnter={e => e.currentTarget.style.borderColor = CAT_COLORS[c]}
             onMouseLeave={e => e.currentTarget.style.borderColor = CAT_COLORS[c] + "33"}>
             <span style={{ ...S.catDot, background: CAT_COLORS[c] }} />
-            <span style={S.catName}>{c}</span>
-            <span style={S.catCount}>{techniques.filter(p => p.category === c).length} techniques</span>
+            <span style={S.catName}>{t(T.cats[c], lang)}</span>
+            <span style={S.catCount}>{techniques.filter(p => p.category === c).length} {t(T.overview.techCount, lang)}</span>
           </div>
         ))}
       </div>
@@ -540,19 +387,19 @@ function Overview({ techniques, goTo }) {
 }
 
 // ─── CONCEPTS ─────────────────────────────────────────────────────────────────
-function Concepts() {
+function Concepts({ lang }) {
   return (
     <div>
       <div style={S.pageHeader}>
-        <h2 style={S.pageTitle}>Basic Concepts</h2>
-        <p style={S.pageSubtitle}>The mental models every BJJ practitioner should internalise from day one.</p>
+        <h2 style={S.pageTitle}>{t(T.concepts.pageTitle, lang)}</h2>
+        <p style={S.pageSubtitle}>{t(T.concepts.pageSubtitle, lang)}</p>
       </div>
       <div style={S.conceptGrid}>
-        {CONCEPTS.map(c => (
-          <div key={c.title} style={S.conceptCard}>
+        {T.conceptItems.map(c => (
+          <div key={c.title.en} style={S.conceptCard}>
             <div style={S.conceptIcon}>{c.icon}</div>
-            <h3 style={S.conceptTitle}>{c.title}</h3>
-            <p style={S.conceptBody}>{c.body}</p>
+            <h3 style={S.conceptTitle}>{t(c.title, lang)}</h3>
+            <p style={S.conceptBody}>{t(c.body, lang)}</p>
           </div>
         ))}
       </div>
@@ -561,44 +408,45 @@ function Concepts() {
 }
 
 // ─── TECHNIQUES ───────────────────────────────────────────────────────────────
-function Techniques({ filtered, cat, setCat, diff, setDiff, onSelect }) {
+function Techniques({ filtered, cat, setCat, diff, setDiff, onSelect, lang }) {
+  const count = filtered.length;
   return (
     <div>
       <div style={S.filterBar}>
         <div style={S.filterGroup}>
-          <span style={S.filterLabel}>Type</span>
+          <span style={S.filterLabel}>{t(T.techniques.typeLabel, lang)}</span>
           <div style={S.pills}>
             {CATS.map(c => (
               <button key={c} onClick={() => setCat(c)}
                 style={{ ...S.pill, ...(cat === c ? { ...S.pillActive, borderColor: CAT_COLORS[c] || "#e85d04", color: CAT_COLORS[c] || "#e85d04" } : {}) }}>
-                {c}
+                {t(T.cats[c], lang)}
               </button>
             ))}
           </div>
         </div>
         <div style={S.filterGroup}>
-          <span style={S.filterLabel}>Level</span>
+          <span style={S.filterLabel}>{t(T.techniques.levelLabel, lang)}</span>
           <div style={S.pills}>
             {DIFFS.map(d => (
               <button key={d} onClick={() => setDiff(d)}
                 style={{ ...S.pill, ...(diff === d ? { ...S.pillActive, borderColor: DIFF_COLORS[d] || "#e85d04", color: DIFF_COLORS[d] || "#e85d04" } : {}) }}>
-                {d}
+                {t(T.diffs[d], lang)}
               </button>
             ))}
           </div>
         </div>
-        <div style={S.filterCount}>{filtered.length} result{filtered.length !== 1 ? "s" : ""}</div>
+        <div style={S.filterCount}>{count} {count !== 1 ? t(T.techniques.results, lang) : t(T.techniques.result, lang)}</div>
       </div>
       <div style={S.grid}>
         {filtered.length === 0
-          ? <div style={S.empty}>No techniques match these filters.</div>
-          : filtered.map(p => <Card key={p.id} pos={p} onSelect={onSelect} />)}
+          ? <div style={S.empty}>{t(T.techniques.noResults, lang)}</div>
+          : filtered.map(p => <Card key={p.id} pos={p} onSelect={onSelect} lang={lang} />)}
       </div>
     </div>
   );
 }
 
-function Card({ pos, onSelect }) {
+function Card({ pos, onSelect, lang }) {
   const [hov, setHov] = useState(false);
   return (
     <div style={{ ...S.card, ...(hov ? S.cardHov : {}) }}
@@ -607,43 +455,103 @@ function Card({ pos, onSelect }) {
       <div style={S.cardImgWrap}>
         <img src={pos.image || DEFAULT_IMAGE} alt={pos.name} style={S.cardImg} />
         <div style={S.cardImgOverlay} />
-        <span style={{ ...S.badge, background: DIFF_COLORS[pos.difficulty] || "#888" }}>{pos.difficulty}</span>
+        <span style={{ ...S.badge, background: DIFF_COLORS[pos.difficulty] || "#888" }}>{t(T.diffs[pos.difficulty], lang)}</span>
       </div>
       <div style={S.cardBody}>
-        <span style={{ ...S.cardCat, color: CAT_COLORS[pos.category] || "#e85d04" }}>{pos.category}</span>
+        <span style={{ ...S.cardCat, color: CAT_COLORS[pos.category] || "#e85d04" }}>{t(T.cats[pos.category], lang)}</span>
         <h3 style={S.cardTitle}>{pos.name}</h3>
         <p style={S.cardDesc}>{pos.description.slice(0, 90)}…</p>
-        <span style={S.cardCta}>Open →</span>
+        <span style={S.cardCta}>{t(T.techniques.openCta, lang)}</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── MODAL ────────────────────────────────────────────────────────────────────
+function Modal({ pos, onClose, lang }) {
+  return (
+    <div style={S.overlay} onClick={onClose}>
+      <div style={S.modal} onClick={e => e.stopPropagation()}>
+        <button style={S.closeBtn} onClick={onClose}>✕</button>
+        <div style={S.modalImgWrap}>
+          <img src={pos.image || DEFAULT_IMAGE} alt={pos.name} style={S.modalImg} />
+          <div style={S.modalImgGrad} />
+          <div style={S.modalImgMeta}>
+            <span style={{ ...S.cardCat, color: CAT_COLORS[pos.category] || "#e85d04", fontSize: 10 }}>{t(T.cats[pos.category], lang)}</span>
+            <h2 style={S.modalTitle}>{pos.name}</h2>
+            <span style={{ ...S.badge, background: DIFF_COLORS[pos.difficulty] || "#888", position: "static" }}>{t(T.diffs[pos.difficulty], lang)}</span>
+          </div>
+        </div>
+        <div style={S.modalBody}>
+          <p style={S.modalDesc}>{pos.description}</p>
+          {pos.keyPoints?.length > 0 && (
+            <div style={S.kpBox}>
+              <div style={S.kpHead}>{t(T.modal.keyPoints, lang)}</div>
+              {pos.keyPoints.map((kp, i) => (
+                <div key={i} style={S.kpRow}>
+                  <span style={{ ...S.catDot, background: CAT_COLORS[pos.category] || "#e85d04" }} />
+                  {kp}
+                </div>
+              ))}
+            </div>
+          )}
+          {pos.youtube && (
+            <a href={pos.youtube} target="_blank" rel="noopener noreferrer" style={S.ytBtn}>{t(T.modal.watchYT, lang)}</a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── ABOUT ────────────────────────────────────────────────────────────────────
+function About({ lang }) {
+  return (
+    <div>
+      <div style={S.pageHeader}>
+        <h2 style={S.pageTitle}>{t(T.about.pageTitle, lang)}</h2>
+      </div>
+      <div style={S.aboutCard}>
+        <p style={S.aboutBody}>{t(T.about.body1, lang)}</p>
+        <p style={S.aboutBody}>{t(T.about.body2, lang)}</p>
+        <div style={S.addDivider} />
+        <h3 style={S.aboutSub}>{t(T.about.catsTitle, lang)}</h3>
+        {CATS.slice(1).map(c => (
+          <div key={c} style={S.aboutCatRow}>
+            <span style={{ ...S.catDot, background: CAT_COLORS[c], flexShrink: 0, marginTop: 3 }} />
+            <div>
+              <strong style={{ color: CAT_COLORS[c] }}>{t(T.cats[c], lang)}</strong>
+              <span style={{ color: "#777", marginLeft: 10, fontSize: 13 }}>{t(T.about.catDescs[c], lang)}</span>
+            </div>
+          </div>
+        ))}
+        <div style={S.addDivider} />
+        <p style={{ ...S.aboutBody, color: "#444", fontSize: 12 }}>{t(T.about.footer, lang)}</p>
       </div>
     </div>
   );
 }
 
 // ─── ADD TECHNIQUES ───────────────────────────────────────────────────────────
-function AddTechniques({ onImport }) {
+function AddTechniques({ onImport, lang }) {
   const [mode, setMode]     = useState("form");
   const [jsonText, setJson] = useState(JSON_TEMPLATE);
   const [jsonErr, setErr]   = useState("");
   const [done, setDone]     = useState(false);
   const [addedCount, setAddedCount] = useState(0);
-
-  // Form state
   const blank = { name: "", category: "Guards", difficulty: "Beginner", description: "", image: "", youtube: "", kp1: "", kp2: "", kp3: "" };
   const [form, setForm]     = useState(blank);
   const [formErr, setFErr]  = useState("");
+  const [copied, setCopied] = useState(false);
 
-  const finishImport = (items) => {
-    onImport(items);
-    setAddedCount(items.length);
-    setDone(true);
-  };
+  const finishImport = (items) => { onImport(items); setAddedCount(items.length); setDone(true); };
 
   const handleJsonImport = () => {
     setErr("");
     try {
       const parsed = JSON.parse(jsonText);
       const arr = Array.isArray(parsed) ? parsed : [parsed];
-      const bad = arr.filter(t => !t.name || !t.category || !t.description);
+      const bad = arr.filter(t2 => !t2.name || !t2.category || !t2.description);
       if (bad.length) { setErr(`${bad.length} item(s) missing required fields: name, category, description.`); return; }
       finishImport(arr);
     } catch (e) { setErr("Invalid JSON — " + e.message); }
@@ -654,85 +562,47 @@ function AddTechniques({ onImport }) {
     if (!form.name.trim())        { setFErr("Name is required."); return; }
     if (!form.description.trim()) { setFErr("Description is required."); return; }
     const kps = [form.kp1, form.kp2, form.kp3].map(s => s.trim()).filter(Boolean);
-    finishImport([{
-      name: form.name.trim(),
-      category: form.category,
-      difficulty: form.difficulty,
-      description: form.description.trim(),
-      image: form.image.trim() || DEFAULT_IMAGE,
-      youtube: form.youtube.trim(),
-      keyPoints: kps,
-    }]);
+    finishImport([{ name: form.name.trim(), category: form.category, difficulty: form.difficulty, description: form.description.trim(), image: form.image.trim() || DEFAULT_IMAGE, youtube: form.youtube.trim(), keyPoints: kps }]);
   };
 
   const F = (label, key, opts = {}) => (
     <div style={S.addField}>
       <label style={S.addLabel}>{label}</label>
       {opts.textarea
-        ? <textarea value={form[key]} rows={3}
-            onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-            style={{ ...S.addInput, resize: "vertical" }}
-            placeholder={opts.ph || ""} />
+        ? <textarea value={form[key]} rows={3} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={{ ...S.addInput, resize: "vertical" }} placeholder={opts.ph || ""} />
         : opts.select
         ? <select value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={S.addInput}>
             {opts.options.map(o => <option key={o}>{o}</option>)}
           </select>
-        : <input value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-            style={S.addInput} placeholder={opts.ph || ""} />}
+        : <input value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={S.addInput} placeholder={opts.ph || ""} />}
     </div>
   );
 
-  // Build a clean exportable JSON string from the last imported items
-  const buildExportJSON = () => {
-    const obj = {
-      name:        form.name.trim()        || "Untitled",
-      category:    form.category,
-      difficulty:  form.difficulty,
-      description: form.description.trim(),
-      image:       form.image.trim()       || DEFAULT_IMAGE,
-      youtube:     form.youtube.trim()     || "",
-      keyPoints:   [form.kp1, form.kp2, form.kp3].map(s => s.trim()).filter(Boolean),
-    };
-    return JSON.stringify(obj, null, 2);
-  };
+  const buildExportJSON = () => JSON.stringify({ name: form.name.trim() || "Untitled", category: form.category, difficulty: form.difficulty, description: form.description.trim(), image: form.image.trim() || DEFAULT_IMAGE, youtube: form.youtube.trim() || "", keyPoints: [form.kp1, form.kp2, form.kp3].map(s => s.trim()).filter(Boolean) }, null, 2);
 
-  const [copied, setCopied] = useState(false);
   const handleCopyExport = () => {
-    const text = mode === "form" ? buildExportJSON() : jsonText;
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    navigator.clipboard.writeText(mode === "form" ? buildExportJSON() : jsonText).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
   };
 
   if (done) return (
     <div style={S.successBox}>
       <div style={{ fontSize: 44, marginBottom: 14 }}>✓</div>
       <h3 style={{ margin: "0 0 8px", fontSize: 22, letterSpacing: "-0.5px" }}>
-        {addedCount} Technique{addedCount !== 1 ? "s" : ""} Added to Session
+        {addedCount} {addedCount !== 1 ? t(T.success.techsAdded, lang) : t(T.success.techAdded, lang)} {t(T.success.addedTo, lang)}
       </h3>
-      <p style={{ color: "#666", fontSize: 14, marginBottom: 6, maxWidth: 420 }}>
-        The library is updated for this session. To make it permanent, export the JSON and paste it into <code style={S.code}>SEED_TECHNIQUES</code> in the source file, then republish.
-      </p>
-
-      {/* Export box */}
+      <p style={{ color: "#666", fontSize: 14, marginBottom: 6, maxWidth: 420 }}>{t(T.success.body, lang)}</p>
       <div style={S.exportBox}>
         <div style={S.exportHeader}>
-          <span style={S.addLabel}>📋 Export JSON — paste into SEED_TECHNIQUES</span>
+          <span style={S.addLabel}>{t(T.success.exportLbl, lang)}</span>
           <button style={copied ? S.exportCopiedBtn : S.exportCopyBtn} onClick={handleCopyExport}>
-            {copied ? "✓ Copied!" : "Copy"}
+            {copied ? t(T.success.copied, lang) : t(T.success.copy, lang)}
           </button>
         </div>
         <pre style={S.exportPre}>{mode === "form" ? buildExportJSON() : jsonText}</pre>
-        <p style={S.exportHint}>
-          Assign the next sequential <code style={S.code}>id</code>, paste above the <code style={S.code}>▲▲▲ END OF TECHNIQUE LIST</code> marker, and republish.
-        </p>
+        <p style={S.exportHint}>{t(T.success.hint, lang)}</p>
       </div>
-
       <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 20 }}>
-        <button style={S.ctaPrimary} onClick={() => { setDone(false); setForm(blank); setJson(JSON_TEMPLATE); setCopied(false); }}>
-          Add Another
-        </button>
+        <button style={S.ctaPrimary} onClick={() => { setDone(false); setForm(blank); setJson(JSON_TEMPLATE); setCopied(false); }}>{t(T.success.addAnother, lang)}</button>
       </div>
     </div>
   );
@@ -740,86 +610,45 @@ function AddTechniques({ onImport }) {
   return (
     <div>
       <div style={S.pageHeader}>
-        <h2 style={S.pageTitle}>Add Techniques</h2>
-        <p style={S.pageSubtitle}>
-          Extend the library with new entries. Use the <strong style={{ color: "#ede8df" }}>Form</strong> for one technique at a time,
-          or paste a <strong style={{ color: "#ede8df" }}>JSON</strong> array to import many at once.
-        </p>
+        <h2 style={S.pageTitle}>{t(T.add.pageTitle, lang)}</h2>
+        <p style={S.pageSubtitle}>{t(T.add.pageSubtitle, lang)}</p>
       </div>
-
-      {/* Mode tabs */}
       <div style={S.modeTabs}>
-        {[["form", "📝  Form (single)"], ["json", "{ }  JSON (batch)"]].map(([m, lbl]) => (
-          <button key={m} onClick={() => setMode(m)}
-            style={{ ...S.modeTab, ...(mode === m ? S.modeTabActive : {}) }}>
-            {lbl}
-          </button>
+        {[["form", t(T.add.formTab, lang)], ["json", t(T.add.jsonTab, lang)]].map(([m, lbl]) => (
+          <button key={m} onClick={() => setMode(m)} style={{ ...S.modeTab, ...(mode === m ? S.modeTabActive : {}) }}>{lbl}</button>
         ))}
       </div>
-
-      {/* ── FORM MODE ── */}
       {mode === "form" && (
         <div style={S.addCard}>
           <div style={S.addGrid2}>
-            {F("Technique Name *", "name", { ph: "e.g. Butterfly Guard" })}
-            {F("Category *", "category", { select: true, options: CATS.slice(1) })}
+            {F(t(T.add.nameLbl, lang), "name", { ph: t(T.add.namePh, lang) })}
+            {F(t(T.add.catLbl, lang), "category", { select: true, options: CATS.slice(1) })}
           </div>
           <div style={S.addGrid2}>
-            {F("Difficulty", "difficulty", { select: true, options: DIFFS.slice(1) })}
-            {F("Image URL", "image", { ph: "https://… (leave blank for default)" })}
+            {F(t(T.add.diffLbl, lang), "difficulty", { select: true, options: DIFFS.slice(1) })}
+            {F(t(T.add.imgLbl, lang), "image", { ph: t(T.add.imgPh, lang) })}
           </div>
-          {F("Description *", "description", { textarea: true, ph: "Describe the position, its purpose, and when it's used." })}
-          {F("YouTube URL", "youtube", { ph: "https://www.youtube.com/watch?v=…" })}
-
+          {F(t(T.add.descLbl, lang), "description", { textarea: true, ph: t(T.add.descPh, lang) })}
+          {F(t(T.add.ytLbl, lang), "youtube", { ph: t(T.add.ytPh, lang) })}
           <div style={{ ...S.addDivider, margin: "20px 0 14px" }} />
-          <div style={S.addLabel}>Key Points (up to 3 — optional)</div>
+          <div style={S.addLabel}>{t(T.add.kpLbl, lang)}</div>
           <div style={S.addGrid3}>
-            {F("Point 1", "kp1", { ph: "e.g. Break posture first" })}
-            {F("Point 2", "kp2", { ph: "e.g. Control the sleeve" })}
-            {F("Point 3", "kp3", { ph: "e.g. Hip angle matters" })}
+            {F("1", "kp1", { ph: t(T.add.kp1Ph, lang) })}
+            {F("2", "kp2", { ph: t(T.add.kp2Ph, lang) })}
+            {F("3", "kp3", { ph: t(T.add.kp3Ph, lang) })}
           </div>
           {formErr && <div style={S.errBox}>{formErr}</div>}
-          <button style={{ ...S.ctaPrimary, marginTop: 22 }} onClick={handleFormImport}>Add to Library →</button>
+          <button style={{ ...S.ctaPrimary, marginTop: 22 }} onClick={handleFormImport}>{t(T.add.addBtn, lang)}</button>
         </div>
       )}
-
-      {/* ── JSON MODE ── */}
       {mode === "json" && (
         <div style={S.addCard}>
-          <div style={{ marginBottom: 14 }}>
-            <p style={{ ...S.addLabel, textTransform: "none", letterSpacing: 0, color: "#888", fontSize: 13, margin: "0 0 6px" }}>
-              Paste a JSON array. Each object needs at minimum{" "}
-              <code style={S.code}>name</code>, <code style={S.code}>category</code>, <code style={S.code}>description</code>.
-            </p>
-            <p style={{ ...S.addLabel, textTransform: "none", letterSpacing: 0, color: "#555", fontSize: 11, margin: 0 }}>
-              Categories: {CATS.slice(1).join(" · ")} &nbsp;|&nbsp; Difficulty: {DIFFS.slice(1).join(" · ")}
-            </p>
-          </div>
-          <textarea
-            value={jsonText}
-            onChange={e => { setJson(e.target.value); setErr(""); }}
-            style={S.jsonArea}
-            spellCheck={false}
-          />
+          <textarea value={jsonText} onChange={e => { setJson(e.target.value); setErr(""); }} style={S.jsonArea} spellCheck={false} />
           {jsonErr && <div style={S.errBox}>{jsonErr}</div>}
           <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
-            <button style={S.ctaPrimary}   onClick={handleJsonImport}>Import JSON →</button>
-            <button style={S.ctaSecondary} onClick={() => { setJson(JSON_TEMPLATE); setErr(""); }}>Reset Template</button>
+            <button style={S.ctaPrimary}   onClick={handleJsonImport}>{t(T.add.importBtn, lang)}</button>
+            <button style={S.ctaSecondary} onClick={() => { setJson(JSON_TEMPLATE); setErr(""); }}>{t(T.add.resetBtn, lang)}</button>
           </div>
-
-          <div style={{ ...S.addDivider, margin: "28px 0 18px" }} />
-          <div style={S.addLabel}>Full Field Reference</div>
-          <pre style={S.schemaBox}>{`{
-  "name":        string           ← required
-  "category":    "Guards" | "Submissions" | "Transitions"
-                 "Takedowns" | "Dark BJJ"   ← required
-  "description": string           ← required
-  "difficulty":  "Beginner" | "Intermediate" | "Advanced"
-                                  ← default: "Beginner"
-  "image":       string (URL)     ← optional
-  "youtube":     string (URL)     ← optional
-  "keyPoints":   string[]         ← optional, ≤ 3 items
-}`}</pre>
         </div>
       )}
     </div>
@@ -827,127 +656,34 @@ function AddTechniques({ onImport }) {
 }
 
 // ─── PASSWORD GATE ────────────────────────────────────────────────────────────
-function PasswordGate({ onUnlock, onCancel }) {
+function PasswordGate({ onUnlock, onCancel, lang }) {
   const [pw, setPw]       = useState("");
   const [err, setErr]     = useState("");
   const [shake, setShake] = useState(false);
 
   const attempt = () => {
-    if (pw === ADMIN_PASSWORD) {
-      onUnlock();
-    } else {
-      setErr("Incorrect password.");
-      setPw("");
-      setShake(true);
-      setTimeout(() => setShake(false), 500);
-    }
-  };
-
-  const handleKey = (e) => {
-    if (e.key === "Enter") attempt();
-    if (e.key === "Escape") onCancel();
+    if (pw === ADMIN_PASSWORD) { onUnlock(); }
+    else { setErr(t(T.gate.wrong, lang)); setPw(""); setShake(true); setTimeout(() => setShake(false), 500); }
   };
 
   return (
     <div style={S.overlay} onClick={onCancel}>
-      <div
-        style={{ ...S.gateBox, ...(shake ? S.gateShake : {}) }}
-        onClick={e => e.stopPropagation()}
-      >
+      <div style={{ ...S.gateBox, ...(shake ? S.gateShake : {}) }} onClick={e => e.stopPropagation()}>
         <div style={S.gateLock}>🔒</div>
-        <h3 style={S.gateTitle}>Admin Access</h3>
-        <p style={S.gateSub}>Enter the admin password to manage techniques.</p>
-        <input
-          type="password"
-          value={pw}
-          onChange={e => { setPw(e.target.value); setErr(""); }}
-          onKeyDown={handleKey}
-          placeholder="Password"
-          autoFocus
-          style={{ ...S.addInput, marginBottom: 6, fontSize: 14, letterSpacing: "0.1em" }}
-        />
+        <h3 style={S.gateTitle}>{t(T.gate.title, lang)}</h3>
+        <p style={S.gateSub}>{t(T.gate.sub, lang)}</p>
+        <input type="password" value={pw} onChange={e => { setPw(e.target.value); setErr(""); }}
+          onKeyDown={e => { if (e.key === "Enter") attempt(); if (e.key === "Escape") onCancel(); }}
+          placeholder={t(T.gate.ph, lang)} autoFocus
+          style={{ ...S.addInput, marginBottom: 6, fontSize: 14, letterSpacing: "0.1em" }} />
         {err && <div style={{ ...S.errBox, marginBottom: 10 }}>{err}</div>}
         <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-          <button style={S.ctaPrimary}   onClick={attempt}>Unlock →</button>
-          <button style={S.ctaSecondary} onClick={onCancel}>Cancel</button>
+          <button style={S.ctaPrimary}   onClick={attempt}>{t(T.gate.unlock, lang)}</button>
+          <button style={S.ctaSecondary} onClick={onCancel}>{t(T.gate.cancel, lang)}</button>
         </div>
         <p style={S.gateHint}>
-          Hint: the default password is <code style={S.code}>osss2024</code>.
-          Change <code style={S.code}>ADMIN_PASSWORD</code> in the source before deploying.
+          {t(T.gate.hint, lang)} <code style={S.code}>osss2026singapore</code>{t(T.gate.hintEnd, lang)}
         </p>
-      </div>
-    </div>
-  );
-}
-
-// ─── ABOUT ────────────────────────────────────────────────────────────────────
-function About() {
-  return (
-    <div>
-      <div style={S.pageHeader}>
-        <h2 style={S.pageTitle}>About SubmitologY</h2>
-      </div>
-      <div style={S.aboutCard}>
-        <p style={S.aboutBody}>
-          SubmitologY is a structured BJJ knowledge base built to help practitioners of all levels explore positions, submissions, transitions, and takedowns in an organised, visual way.
-        </p>
-        <p style={S.aboutBody}>
-          Each technique entry includes a description, coaching key points, difficulty rating, and a link to external video resources. 
-        </p>
-        <div style={S.addDivider} />
-        <h3 style={S.aboutSub}>Categories Explained</h3>
-        {CATS.slice(1).map(c => (
-          <div key={c} style={S.aboutCatRow}>
-            <span style={{ ...S.catDot, background: CAT_COLORS[c], flexShrink: 0, marginTop: 3 }} />
-            <div>
-              <strong style={{ color: CAT_COLORS[c] }}>{c}</strong>
-              <span style={{ color: "#777", marginLeft: 10, fontSize: 13 }}>
-                {{ Guards: "Bottom positions to control, sweep, or submit.", Submissions: "Force a tap via joint locks or chokes.", Transitions: "Movement between positions — where grappling really lives.", Takedowns: "Getting the fight to the ground on your terms.", "Dark BJJ": "High-risk techniques — study carefully, apply with control." }[c]}
-              </span>
-            </div>
-          </div>
-        ))}
-        <div style={S.addDivider} />
-        <p style={{ ...S.aboutBody, color: "#444", fontSize: 12 }}>
-          Built with React · Images via Unsplash · Video links via YouTube
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ─── MODAL ────────────────────────────────────────────────────────────────────
-function Modal({ pos, onClose }) {
-  return (
-    <div style={S.overlay} onClick={onClose}>
-      <div style={S.modal} onClick={e => e.stopPropagation()}>
-        <button style={S.closeBtn} onClick={onClose}>✕</button>
-        <div style={S.modalImgWrap}>
-          <img src={pos.image || DEFAULT_IMAGE} alt={pos.name} style={S.modalImg} />
-          <div style={S.modalImgGrad} />
-          <div style={S.modalImgMeta}>
-            <span style={{ ...S.cardCat, color: CAT_COLORS[pos.category] || "#e85d04", fontSize: 10 }}>{pos.category}</span>
-            <h2 style={S.modalTitle}>{pos.name}</h2>
-            <span style={{ ...S.badge, background: DIFF_COLORS[pos.difficulty] || "#888", position: "static" }}>{pos.difficulty}</span>
-          </div>
-        </div>
-        <div style={S.modalBody}>
-          <p style={S.modalDesc}>{pos.description}</p>
-          {pos.keyPoints?.length > 0 && (
-            <div style={S.kpBox}>
-              <div style={S.kpHead}>Key Points</div>
-              {pos.keyPoints.map((kp, i) => (
-                <div key={i} style={S.kpRow}>
-                  <span style={{ ...S.catDot, background: CAT_COLORS[pos.category] || "#e85d04" }} />
-                  {kp}
-                </div>
-              ))}
-            </div>
-          )}
-          {pos.youtube && (
-            <a href={pos.youtube} target="_blank" rel="noopener noreferrer" style={S.ytBtn}>▶ Watch on YouTube</a>
-          )}
-        </div>
       </div>
     </div>
   );
@@ -962,8 +698,6 @@ function Grain() {
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 const S = {
   root: { minHeight: "100vh", background: "#0a0a0a", color: "#ede8df", fontFamily: "'Georgia','Times New Roman',serif", position: "relative" },
-
-  // NAV
   nav: { position: "sticky", top: 0, zIndex: 50, background: "rgba(10,10,10,0.94)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1a1a1a", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 },
   navBrand: { display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" },
   navLogo: { fontSize: 19, color: "#e85d04" },
@@ -974,17 +708,12 @@ const S = {
   navAdd: { color: "#444", borderLeft: "1px solid #1e1e1e", marginLeft: 8, paddingLeft: 14 },
   navAddActive: { color: "#e85d04", borderLeft: "1px solid #1e1e1e", marginLeft: 8, paddingLeft: 14 },
   navLockBtn: { color: "#2ecc71", fontSize: 11, borderLeft: "1px solid #1e1e1e", marginLeft: 4, paddingLeft: 12 },
-
-  // PASSWORD GATE
   gateBox: { background: "#141414", border: "1px solid #2a2a2a", borderRadius: 12, padding: "36px 32px", maxWidth: 360, width: "100%", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" },
   gateLock: { fontSize: 36, marginBottom: 12 },
   gateTitle: { fontSize: 20, fontWeight: 700, margin: "0 0 6px", letterSpacing: "-0.4px" },
   gateSub: { fontSize: 13, color: "#666", margin: "0 0 20px", lineHeight: 1.5 },
   gateHint: { fontSize: 11, color: "#444", marginTop: 18, lineHeight: 1.6, fontFamily: "monospace" },
-
   main: { position: "relative", zIndex: 1, padding: "40px 32px 80px", maxWidth: 1100, margin: "0 auto" },
-
-  // OVERVIEW
   overviewWrap: { display: "flex", flexDirection: "column", gap: 50 },
   hero: { paddingTop: 18 },
   heroTag: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.22em", color: "#555", textTransform: "uppercase", marginBottom: 12 },
@@ -1003,8 +732,6 @@ const S = {
   catDot: { display: "inline-block", width: 7, height: 7, borderRadius: "50%" },
   catName: { fontSize: 13, fontWeight: 700 },
   catCount: { fontSize: 10, color: "#555", fontFamily: "monospace" },
-
-  // FILTER
   filterBar: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, padding: "15px 18px", marginBottom: 22, display: "flex", flexDirection: "column", gap: 11 },
   filterGroup: { display: "flex", alignItems: "center", gap: 11, flexWrap: "wrap" },
   filterLabel: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.12em", color: "#555", textTransform: "uppercase", minWidth: 30 },
@@ -1012,8 +739,6 @@ const S = {
   pill: { background: "none", border: "1px solid #222", color: "#666", padding: "4px 12px", borderRadius: 20, fontSize: 11, fontFamily: "monospace", cursor: "pointer", transition: "all 0.15s" },
   pillActive: { background: "rgba(232,93,4,0.07)" },
   filterCount: { fontFamily: "monospace", fontSize: 11, color: "#444", marginLeft: "auto" },
-
-  // GRID / CARD
   grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(265px,1fr))", gap: 16 },
   empty: { gridColumn: "1/-1", textAlign: "center", color: "#444", padding: 60, fontFamily: "monospace" },
   card: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, overflow: "hidden", cursor: "pointer", transition: "transform 0.2s, border-color 0.2s" },
@@ -1027,8 +752,6 @@ const S = {
   cardTitle: { fontSize: 17, margin: "4px 0 7px", fontWeight: 700, letterSpacing: "-0.3px" },
   cardDesc: { fontSize: 12, color: "#777", lineHeight: 1.6, margin: "0 0 9px" },
   cardCta: { fontSize: 11, color: "#e85d04", fontFamily: "monospace" },
-
-  // CONCEPTS
   pageHeader: { marginBottom: 30 },
   pageTitle: { fontSize: 32, fontWeight: 700, letterSpacing: "-1px", margin: "0 0 8px" },
   pageSubtitle: { color: "#666", fontSize: 14, lineHeight: 1.6, margin: 0 },
@@ -1037,14 +760,10 @@ const S = {
   conceptIcon: { fontSize: 24, marginBottom: 9 },
   conceptTitle: { fontSize: 14, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.2px" },
   conceptBody: { fontSize: 12, color: "#888", lineHeight: 1.7, margin: 0 },
-
-  // ABOUT
   aboutCard: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, padding: "26px 30px", maxWidth: 660 },
   aboutBody: { fontSize: 14, color: "#999", lineHeight: 1.85, margin: "0 0 13px" },
   aboutSub: { fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", color: "#555", textTransform: "uppercase", margin: "0 0 13px", fontWeight: 400 },
   aboutCatRow: { display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13 },
-
-  // ADD TECHNIQUES
   modeTabs: { display: "flex", gap: 0, marginBottom: 18, border: "1px solid #1e1e1e", borderRadius: 6, overflow: "hidden", maxWidth: 360 },
   modeTab: { flex: 1, background: "none", border: "none", borderRight: "1px solid #1e1e1e", color: "#555", fontSize: 12, fontFamily: "monospace", padding: "9px 0", cursor: "pointer", transition: "all 0.15s" },
   modeTabActive: { background: "#161616", color: "#ede8df" },
@@ -1057,7 +776,6 @@ const S = {
   addDivider: { borderTop: "1px solid #1a1a1a", margin: "22px 0" },
   errBox: { background: "rgba(214,48,49,0.09)", border: "1px solid #d63031", borderRadius: 5, color: "#d63031", fontSize: 11, fontFamily: "monospace", padding: "8px 11px", marginTop: 10 },
   jsonArea: { width: "100%", boxSizing: "border-box", background: "#0d0d0d", border: "1px solid #252525", borderRadius: 6, color: "#a8d8a8", fontFamily: "monospace", fontSize: 12, padding: "13px", lineHeight: 1.65, height: 290, resize: "vertical", outline: "none", display: "block" },
-  schemaBox: { background: "#0d0d0d", border: "1px solid #1a1a1a", borderRadius: 6, color: "#666", fontFamily: "monospace", fontSize: 11, lineHeight: 1.75, padding: "13px 15px", margin: "10px 0 0", overflowX: "auto", whiteSpace: "pre" },
   code: { background: "#1a1a1a", color: "#4cc9f0", padding: "1px 5px", borderRadius: 3, fontSize: 11 },
   successBox: { textAlign: "center", padding: "60px 20px" },
   exportBox: { background: "#0d0d0d", border: "1px solid #252525", borderRadius: 8, padding: "16px 18px", marginTop: 22, maxWidth: 580, width: "100%", textAlign: "left" },
@@ -1066,8 +784,6 @@ const S = {
   exportHint: { fontSize: 11, color: "#555", fontFamily: "monospace", marginTop: 12, marginBottom: 0, lineHeight: 1.6 },
   exportCopyBtn: { background: "#1a1a1a", border: "1px solid #333", color: "#aaa", fontSize: 11, fontFamily: "monospace", padding: "4px 12px", borderRadius: 4, cursor: "pointer" },
   exportCopiedBtn: { background: "rgba(46,204,113,0.15)", border: "1px solid #2ecc71", color: "#2ecc71", fontSize: 11, fontFamily: "monospace", padding: "4px 12px", borderRadius: 4, cursor: "pointer" },
-
-  // MODAL
   overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.88)", backdropFilter: "blur(6px)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 },
   modal: { background: "#141414", border: "1px solid #222", borderRadius: 12, width: "100%", maxWidth: 540, maxHeight: "92vh", overflowY: "auto", position: "relative" },
   closeBtn: { position: "absolute", top: 12, right: 12, background: "rgba(0,0,0,0.5)", border: "1px solid #333", color: "#aaa", width: 28, height: 28, borderRadius: "50%", cursor: "pointer", zIndex: 2, fontSize: 12, display: "flex", alignItems: "center", justifyContent: "center" },
