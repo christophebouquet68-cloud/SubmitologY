@@ -224,7 +224,7 @@ const SEED_TECHNIQUES = [
 
 const CATS  = ["All", "Guards", "Submissions", "Transitions", "Takedowns", "Dark BJJ"];
 const DIFFS = ["All", "Beginner", "Intermediate", "Advanced"];
-const NAV_KEYS = ["Overview", "Concepts", "Techniques", "About"];
+const NAV_KEYS = ["Overview", "Concepts", "Techniques", "About", "Merchandise"];
 
 const CAT_COLORS  = { Guards: "#4cc9f0", Submissions: "#e85d04", Transitions: "#a29bfe", Takedowns: "#55efc4", "Dark BJJ": "#d63031" };
 const DIFF_COLORS = { Beginner: "#2ecc71", Intermediate: "#f39c12", Advanced: "#e74c3c" };
@@ -302,6 +302,7 @@ export default function SubmitologY() {
   const navLabel = (key) => ({
     Overview: t(T.nav.overview, lang), Concepts: t(T.nav.concepts, lang),
     Techniques: t(T.nav.techniques, lang), About: t(T.nav.about, lang),
+    Merchandise: t(T.nav.merchandise, lang),
   }[key]);
 
   return (
@@ -335,6 +336,7 @@ export default function SubmitologY() {
         {page === "Concepts"   && <Concepts   lang={lang} />}
         {page === "Techniques" && <Techniques filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} lang={lang} />}
         {page === "About"      && <About      lang={lang} />}
+        {page === "Merchandise"&& <Merchandise lang={lang} />}
         {page === "Add"        && isAdmin && <AddTechniques onImport={handleImport} lang={lang} />}
       </main>
 
@@ -351,10 +353,12 @@ function Overview({ techniques, goTo, lang }) {
       <div style={S.hero}>
         <div style={S.heroTag}>{t(T.overview.tag, lang)}</div>
         <h1 style={S.heroTitle}>{t(T.overview.titleLine1, lang)}<br /><span style={S.heroAccent}>{t(T.overview.titleLine2, lang)}</span></h1>
-        <p style={S.heroBody}>{t(T.overview.body, lang)}</p>
+        <p style={S.heroBody}>{t(T.overview.body1, lang)}</p>
+        <p style={S.heroBody}>{t(T.overview.body2, lang)}</p>
         <div style={S.heroCtas}>
           <button style={S.ctaPrimary}   onClick={() => goTo("Techniques")}>{t(T.overview.exploreCta, lang)}</button>
           <button style={S.ctaSecondary} onClick={() => goTo("Concepts")}>{t(T.overview.conceptsCta, lang)}</button>
+          <button style={S.ctaSecondary} onClick={() => goTo("Merchandise")}>{t(T.overview.merchCta, lang)}</button>
         </div>
       </div>
       <div style={S.statRow}>
@@ -512,6 +516,8 @@ function About({ lang }) {
         <h2 style={S.pageTitle}>{t(T.about.pageTitle, lang)}</h2>
       </div>
       <div style={S.aboutCard}>
+        <p style={{ ...S.aboutBody, color: "#ede8df", fontWeight: 600, fontStyle: "italic" }}>{t(T.about.mission, lang)}</p>
+        <div style={S.addDivider} />
         <p style={S.aboutBody}>{t(T.about.body1, lang)}</p>
         <p style={S.aboutBody}>{t(T.about.body2, lang)}</p>
         <div style={S.addDivider} />
@@ -527,6 +533,23 @@ function About({ lang }) {
         ))}
         <div style={S.addDivider} />
         <p style={{ ...S.aboutBody, color: "#444", fontSize: 12 }}>{t(T.about.footer, lang)}</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── MERCHANDISE ──────────────────────────────────────────────────────────────
+function Merchandise({ lang }) {
+  return (
+    <div>
+      <div style={S.pageHeader}>
+        <h2 style={S.pageTitle}>{t(T.merch.pageTitle, lang)}</h2>
+        <p style={S.pageSubtitle}>{t(T.merch.pageSubtitle, lang)}</p>
+      </div>
+      <div style={{ ...S.aboutCard, textAlign: "center", padding: "60px 30px" }}>
+        <div style={{ fontSize: 40, marginBottom: 14 }}>🥋</div>
+        <h3 style={{ ...S.aboutSub, fontSize: 22, color: "#ede8df", textTransform: "none", letterSpacing: "normal", fontFamily: "inherit" }}>{t(T.merch.comingSoon, lang)}</h3>
+        <p style={{ ...S.aboutBody, marginTop: 10 }}>{t(T.merch.comingSoonSub, lang)}</p>
       </div>
     </div>
   );
