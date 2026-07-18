@@ -224,24 +224,27 @@ const SEED_TECHNIQUES = [
 
 const CATS  = ["All", "Guards", "Submissions", "Transitions", "Takedowns", "Dark BJJ"];
 const DIFFS = ["All", "Beginner", "Intermediate", "Advanced"];
-const NAV_KEYS = ["Overview", "Concepts", "Techniques", "About", "Merchandise"];
+// Merchandise and Mental Health are promoted higher in the nav per brand refresh.
+const NAV_KEYS = ["Overview", "Merchandise", "Techniques", "Concepts", "MentalHealth", "About"];
 
 const CAT_COLORS  = { Guards: "#4cc9f0", Submissions: "#e85d04", Transitions: "#a29bfe", Takedowns: "#55efc4", "Dark BJJ": "#d63031" };
 const DIFF_COLORS = { Beginner: "#2ecc71", Intermediate: "#f39c12", Advanced: "#e74c3c" };
 const DEFAULT_IMAGE = "/images/bjj_underconstruction.jpg?w=600&q=80";
-const ADMIN_PASSWORD = "osss2026singapore";
 
-const JSON_TEMPLATE = `[
-  {
-    "name": "Butterfly Guard",
-    "category": "Guards",
-    "difficulty": "Intermediate",
-    "description": "Seated guard with insteps hooked under opponent's thighs.",
-    "image": "/images/bjj_underconstruction.jpg?w=600&q=80",
-    "youtube": "https://www.youtube.com/watch?v=example",
-    "keyPoints": ["Stay upright and active","Hook lift is explosive","Combine with underhook"]
-  }
-]`;
+// ── Brand refresh: mental-health accent (clinical/neural teal) alongside the
+// ── existing BJJ-energy orange. Used for the mission banner, Mental Health
+// ── nav item, and donation callouts throughout the site.
+const MH_ACCENT = "#8c7ae6";
+
+// ── Launch collection — sourced from the Business Proposal §5.1 product range.
+const MERCH_PRODUCTS = [
+  { id: "gi", name: "BJJ Gi (Adult)", spec: "Pearl weave 350–450 GSM, IBJJF legal", price: "$120 – $160", icon: "🥋" },
+  { id: "rg-ls", name: "Rashguard (Long Sleeve)", spec: "Poly-spandex sublimation, flatlock stitch", price: "$60 – $80", icon: "🧠" },
+  { id: "rg-ss", name: "Rashguard (Short Sleeve)", spec: "Poly-spandex sublimation, flatlock stitch", price: "$55 – $75", icon: "🧠" },
+  { id: "shorts", name: "No-Gi Shorts", spec: "Stretch ripstop, 4-way stretch", price: "$65 – $85", icon: "⚡" },
+  { id: "spats", name: "Spats / Compression", spec: "Poly-spandex, full sublimation", price: "$60 – $75", icon: "⚡" },
+  { id: "belt", name: "Belt", spec: "Cotton, custom woven label", price: "$25 – $35", icon: "🎗️" },
+];
 
 // ─── LANGUAGE SELECTOR ────────────────────────────────────────────────────────
 function LangSelector({ lang, setLang }) {
@@ -252,16 +255,16 @@ function LangSelector({ lang, setLang }) {
       <button
         onClick={() => setOpen(o => !o)}
         title="Select language"
-        style={{ background: "none", border: "1px solid #2a2a2a", borderRadius: 6, cursor: "pointer", padding: "4px 9px", display: "flex", alignItems: "center", gap: 5, fontSize: 16, color: "#ede8df", lineHeight: 1 }}
+        style={{ background: "none", border: "1px solid #332a3a", borderRadius: 6, cursor: "pointer", padding: "4px 9px", display: "flex", alignItems: "center", gap: 5, fontSize: 16, color: "#ede8df", lineHeight: 1 }}
       >
         <span>{current.flag}</span>
         <span style={{ fontSize: 10, fontFamily: "monospace", color: "#666", letterSpacing: "0.05em" }}>▾</span>
       </button>
       {open && (
-        <div style={{ position: "absolute", top: "calc(100% + 6px)", right: 0, background: "#141414", border: "1px solid #2a2a2a", borderRadius: 8, overflow: "hidden", zIndex: 200, minWidth: 150, boxShadow: "0 8px 24px rgba(0,0,0,0.6)" }}>
+        <div style={{ position: "absolute", top: "calc(100% + 6px)", right: 0, background: "#17121b", border: "1px solid #332a3a", borderRadius: 8, overflow: "hidden", zIndex: 200, minWidth: 150, boxShadow: "0 8px 24px rgba(0,0,0,0.6)" }}>
           {LANGUAGES.map(l => (
             <button key={l.code} onClick={() => { setLang(l.code); setOpen(false); }}
-              style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", background: l.code === lang ? "#1e1e1e" : "none", border: "none", color: l.code === lang ? "#ede8df" : "#888", fontSize: 13, fontFamily: "monospace", padding: "9px 14px", cursor: "pointer", textAlign: "left" }}>
+              style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", background: l.code === lang ? "#241c2a" : "none", border: "none", color: l.code === lang ? "#ede8df" : "#888", fontSize: 13, fontFamily: "monospace", padding: "9px 14px", cursor: "pointer", textAlign: "left" }}>
               <span style={{ fontSize: 18 }}>{l.flag}</span>
               <span>{l.label}</span>
             </button>
@@ -275,12 +278,10 @@ function LangSelector({ lang, setLang }) {
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
 export default function SubmitologY() {
   const [page, setPage]         = useState("Overview");
-  const [techniques, setTechs]  = useState(SEED_TECHNIQUES);
+  const [techniques]            = useState(SEED_TECHNIQUES);
   const [cat, setCat]           = useState("All");
   const [diff, setDiff]         = useState("All");
   const [selected, setSelected] = useState(null);
-  const [isAdmin, setIsAdmin]   = useState(false);
-  const [showGate, setShowGate] = useState(false);
   const [lang, setLang]         = useState("en");
 
   const filtered = techniques.filter(p =>
@@ -288,26 +289,15 @@ export default function SubmitologY() {
     (diff === "All" || p.difficulty === diff)
   );
 
-  const handleImport = (newItems) => {
-    const maxId = techniques.reduce((m, t2) => Math.max(m, t2.id || 0), 0);
-    const stamped = newItems.map((t2, i) => ({ difficulty: "Beginner", image: DEFAULT_IMAGE, youtube: "", keyPoints: [], ...t2, id: maxId + i + 1 }));
-    setTechs(prev => [...prev, ...stamped]);
-    setPage("Techniques");
-  };
-
-  const handleAddClick = () => { if (isAdmin) { setPage("Add"); } else { setShowGate(true); } };
-  const handleUnlock   = () => { setIsAdmin(true); setShowGate(false); setPage("Add"); };
-  const handleLock     = () => { setIsAdmin(false); if (page === "Add") setPage("Overview"); };
-
   const navLabel = (key) => ({
     Overview: t(T.nav.overview, lang), Concepts: t(T.nav.concepts, lang),
     Techniques: t(T.nav.techniques, lang), About: t(T.nav.about, lang),
-    Merchandise: t(T.nav.merchandise, lang),
+    Merchandise: t(T.nav.merchandise, lang), MentalHealth: t(T.nav.mentalHealth, lang),
   }[key]);
 
   return (
     <div style={S.root}>
-      <Grain />
+      <SynapticField />
       <nav style={S.nav}>
         <div style={S.navBrand} onClick={() => setPage("Overview")}>
           <span style={S.navLogo}>⬡</span>
@@ -320,28 +310,26 @@ export default function SubmitologY() {
               {navLabel(n)}
             </button>
           ))}
-          {isAdmin
-            ? <>
-                <button onClick={handleAddClick} style={{ ...S.navBtn, ...(page === "Add" ? S.navAddActive : S.navAdd) }}>{t(T.nav.addBtn, lang)}</button>
-                <button onClick={handleLock} style={{ ...S.navBtn, ...S.navLockBtn }} title="Exit admin mode">{t(T.nav.exitAdmin, lang)}</button>
-              </>
-            : <button onClick={handleAddClick} style={{ ...S.navBtn, ...S.navAdd }}>{t(T.nav.addAdmin, lang)}</button>
-          }
           <LangSelector lang={lang} setLang={setLang} />
         </div>
       </nav>
+
+      <button style={S.banner} onClick={() => setPage("MentalHealth")}>
+        <span style={S.bannerDot} />
+        <span style={S.bannerText}>{t(T.banner.text, lang)}</span>
+        <span style={S.bannerCta}>{t(T.banner.cta, lang)}</span>
+      </button>
 
       <main style={S.main}>
         {page === "Overview"   && <Overview   techniques={techniques} goTo={setPage} lang={lang} />}
         {page === "Concepts"   && <Concepts   lang={lang} />}
         {page === "Techniques" && <Techniques filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} lang={lang} />}
-        {page === "About"      && <About      lang={lang} />}
+        {page === "About"      && <About      goTo={setPage} lang={lang} />}
         {page === "Merchandise"&& <Merchandise lang={lang} />}
-        {page === "Add"        && isAdmin && <AddTechniques onImport={handleImport} lang={lang} />}
+        {page === "MentalHealth" && <MentalHealth lang={lang} />}
       </main>
 
       {selected  && <Modal       pos={selected} onClose={() => setSelected(null)} lang={lang} />}
-      {showGate  && <PasswordGate onUnlock={handleUnlock} onCancel={() => setShowGate(false)} lang={lang} />}
     </div>
   );
 }
@@ -356,9 +344,10 @@ function Overview({ techniques, goTo, lang }) {
         <p style={S.heroBody}>{t(T.overview.body1, lang)}</p>
         <p style={S.heroBody}>{t(T.overview.body2, lang)}</p>
         <div style={S.heroCtas}>
-          <button style={S.ctaPrimary}   onClick={() => goTo("Techniques")}>{t(T.overview.exploreCta, lang)}</button>
+          <button style={S.ctaPrimary}   onClick={() => goTo("Merchandise")}>{t(T.overview.merchCta, lang)}</button>
+          <button style={S.ctaSecondary} onClick={() => goTo("Techniques")}>{t(T.overview.exploreCta, lang)}</button>
           <button style={S.ctaSecondary} onClick={() => goTo("Concepts")}>{t(T.overview.conceptsCta, lang)}</button>
-          <button style={S.ctaSecondary} onClick={() => goTo("Merchandise")}>{t(T.overview.merchCta, lang)}</button>
+          <button style={S.ctaMission}   onClick={() => goTo("MentalHealth")}>{t(T.overview.missionCta, lang)}</button>
         </div>
       </div>
       <div style={S.statRow}>
@@ -367,9 +356,10 @@ function Overview({ techniques, goTo, lang }) {
           [String(CATS.length - 1),   t(T.overview.statCats, lang)],
           ["3",                        t(T.overview.statDiffs, lang)],
           ["∞",                        t(T.overview.statCombo, lang)],
-        ].map(([n, l]) => (
+          ["1%",                       t(T.overview.statGive, lang), true],
+        ].map(([n, l, give]) => (
           <div key={l} style={S.stat}>
-            <span style={S.statNum}>{n}</span>
+            <span style={{ ...S.statNum, ...(give ? { color: MH_ACCENT } : {}) }}>{n}</span>
             <span style={S.statLabel}>{l}</span>
           </div>
         ))}
@@ -509,7 +499,7 @@ function Modal({ pos, onClose, lang }) {
 }
 
 // ─── ABOUT ────────────────────────────────────────────────────────────────────
-function About({ lang }) {
+function About({ goTo, lang }) {
   return (
     <div>
       <div style={S.pageHeader}>
@@ -534,6 +524,20 @@ function About({ lang }) {
         <div style={S.addDivider} />
         <p style={{ ...S.aboutBody, color: "#444", fontSize: 12 }}>{t(T.about.footer, lang)}</p>
       </div>
+
+      <div style={{ ...S.aboutCard, marginTop: 18, background: "rgba(140,122,230,0.05)", borderColor: "rgba(140,122,230,0.2)" }}>
+        <h3 style={{ ...S.aboutSub, color: MH_ACCENT }}>{t(T.about.linksTitle, lang)}</h3>
+        <p style={S.aboutBody}>{t(T.about.linksBody, lang)}</p>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <button style={S.ctaPrimary} onClick={() => goTo("Merchandise")}>{t(T.about.shopLink, lang)}</button>
+          <button style={S.ctaMission} onClick={() => goTo("MentalHealth")}>{t(T.about.missionLink, lang)}</button>
+        </div>
+      </div>
+
+      <div style={S.invitationBox}>
+        <span style={S.invitationTag}>{t(T.about.invitationTitle, lang)}</span>
+        <p style={S.invitationText}>{t(T.about.invitation, lang)}</p>
+      </div>
     </div>
   );
 }
@@ -543,199 +547,123 @@ function Merchandise({ lang }) {
   return (
     <div>
       <div style={S.pageHeader}>
+        <div style={S.merchTag}>{t(T.merch.pageTag, lang)}</div>
         <h2 style={S.pageTitle}>{t(T.merch.pageTitle, lang)}</h2>
         <p style={S.pageSubtitle}>{t(T.merch.pageSubtitle, lang)}</p>
       </div>
-      <div style={{ ...S.aboutCard, textAlign: "center", padding: "60px 30px" }}>
-        <div style={{ fontSize: 40, marginBottom: 14 }}>🥋</div>
-        <h3 style={{ ...S.aboutSub, fontSize: 22, color: "#ede8df", textTransform: "none", letterSpacing: "normal", fontFamily: "inherit" }}>{t(T.merch.comingSoon, lang)}</h3>
-        <p style={{ ...S.aboutBody, marginTop: 10 }}>{t(T.merch.comingSoonSub, lang)}</p>
+
+      <div style={S.merchGrid}>
+        {MERCH_PRODUCTS.map(p => (
+          <div key={p.id} style={S.merchCard}>
+            <div style={S.merchCardTop}>
+              <span style={S.merchIcon}>{p.icon}</span>
+              <span style={S.merchSoon}>{t(T.merch.comingSoon, lang)}</span>
+            </div>
+            <h3 style={S.merchName}>{p.name}</h3>
+            <p style={S.merchSpec}><span style={S.merchSpecLbl}>{t(T.merch.specLbl, lang)}</span> {p.spec}</p>
+            <div style={S.merchPriceRow}>
+              <span style={S.merchPriceLbl}>{t(T.merch.priceLbl, lang)}</span>
+              <span style={S.merchPrice}>{p.price} SGD</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ ...S.merchNotifyCard }}>
+        <span style={{ ...S.bannerDot, marginRight: 2 }} />
+        <span style={S.merchNotifyText}>{t(T.merch.pageTag, lang)} — {t(T.merch.notify, lang)}</span>
+      </div>
+
+      <div style={S.pageHeader}>
+        <h2 style={{ ...S.pageTitle, fontSize: 22 }}>{t(T.merch.pillarsTitle, lang)}</h2>
+      </div>
+      <div style={S.conceptGrid}>
+        {T.merch.pillars.map((p, i) => (
+          <div key={i} style={S.conceptCard}>
+            <h3 style={S.conceptTitle}>{t(p.title, lang)}</h3>
+            <p style={S.conceptBody}>{t(p.body, lang)}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-// ─── ADD TECHNIQUES ───────────────────────────────────────────────────────────
-function AddTechniques({ onImport, lang }) {
-  const [mode, setMode]     = useState("form");
-  const [jsonText, setJson] = useState(JSON_TEMPLATE);
-  const [jsonErr, setErr]   = useState("");
-  const [done, setDone]     = useState(false);
-  const [addedCount, setAddedCount] = useState(0);
-  const blank = { name: "", category: "Guards", difficulty: "Beginner", description: "", image: "", youtube: "", kp1: "", kp2: "", kp3: "" };
-  const [form, setForm]     = useState(blank);
-  const [formErr, setFErr]  = useState("");
-  const [copied, setCopied] = useState(false);
-
-  const finishImport = (items) => { onImport(items); setAddedCount(items.length); setDone(true); };
-
-  const handleJsonImport = () => {
-    setErr("");
-    try {
-      const parsed = JSON.parse(jsonText);
-      const arr = Array.isArray(parsed) ? parsed : [parsed];
-      const bad = arr.filter(t2 => !t2.name || !t2.category || !t2.description);
-      if (bad.length) { setErr(`${bad.length} item(s) missing required fields: name, category, description.`); return; }
-      finishImport(arr);
-    } catch (e) { setErr("Invalid JSON — " + e.message); }
-  };
-
-  const handleFormImport = () => {
-    setFErr("");
-    if (!form.name.trim())        { setFErr("Name is required."); return; }
-    if (!form.description.trim()) { setFErr("Description is required."); return; }
-    const kps = [form.kp1, form.kp2, form.kp3].map(s => s.trim()).filter(Boolean);
-    finishImport([{ name: form.name.trim(), category: form.category, difficulty: form.difficulty, description: form.description.trim(), image: form.image.trim() || DEFAULT_IMAGE, youtube: form.youtube.trim(), keyPoints: kps }]);
-  };
-
-  const F = (label, key, opts = {}) => (
-    <div style={S.addField}>
-      <label style={S.addLabel}>{label}</label>
-      {opts.textarea
-        ? <textarea value={form[key]} rows={3} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={{ ...S.addInput, resize: "vertical" }} placeholder={opts.ph || ""} />
-        : opts.select
-        ? <select value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={S.addInput}>
-            {opts.options.map(o => <option key={o}>{o}</option>)}
-          </select>
-        : <input value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} style={S.addInput} placeholder={opts.ph || ""} />}
-    </div>
-  );
-
-  const buildExportJSON = () => JSON.stringify({ name: form.name.trim() || "Untitled", category: form.category, difficulty: form.difficulty, description: form.description.trim(), image: form.image.trim() || DEFAULT_IMAGE, youtube: form.youtube.trim() || "", keyPoints: [form.kp1, form.kp2, form.kp3].map(s => s.trim()).filter(Boolean) }, null, 2);
-
-  const handleCopyExport = () => {
-    navigator.clipboard.writeText(mode === "form" ? buildExportJSON() : jsonText).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
-  };
-
-  if (done) return (
-    <div style={S.successBox}>
-      <div style={{ fontSize: 44, marginBottom: 14 }}>✓</div>
-      <h3 style={{ margin: "0 0 8px", fontSize: 22, letterSpacing: "-0.5px" }}>
-        {addedCount} {addedCount !== 1 ? t(T.success.techsAdded, lang) : t(T.success.techAdded, lang)} {t(T.success.addedTo, lang)}
-      </h3>
-      <p style={{ color: "#666", fontSize: 14, marginBottom: 6, maxWidth: 420 }}>{t(T.success.body, lang)}</p>
-      <div style={S.exportBox}>
-        <div style={S.exportHeader}>
-          <span style={S.addLabel}>{t(T.success.exportLbl, lang)}</span>
-          <button style={copied ? S.exportCopiedBtn : S.exportCopyBtn} onClick={handleCopyExport}>
-            {copied ? t(T.success.copied, lang) : t(T.success.copy, lang)}
-          </button>
-        </div>
-        <pre style={S.exportPre}>{mode === "form" ? buildExportJSON() : jsonText}</pre>
-        <p style={S.exportHint}>{t(T.success.hint, lang)}</p>
-      </div>
-      <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 20 }}>
-        <button style={S.ctaPrimary} onClick={() => { setDone(false); setForm(blank); setJson(JSON_TEMPLATE); setCopied(false); }}>{t(T.success.addAnother, lang)}</button>
-      </div>
-    </div>
-  );
-
+// ─── MENTAL HEALTH ────────────────────────────────────────────────────────────
+function MentalHealth({ lang }) {
   return (
     <div>
       <div style={S.pageHeader}>
-        <h2 style={S.pageTitle}>{t(T.add.pageTitle, lang)}</h2>
-        <p style={S.pageSubtitle}>{t(T.add.pageSubtitle, lang)}</p>
+        <div style={{ ...S.merchTag, color: MH_ACCENT }}>{t(T.mh.pageTag, lang)}</div>
+        <h2 style={S.pageTitle}>{t(T.mh.pageTitle, lang)}</h2>
+        <div style={S.mhPlanNote}>
+          <span style={{ ...S.bannerDot, marginTop: 5 }} />
+          <span>{t(T.mh.planNote, lang)}</span>
+        </div>
       </div>
-      <div style={S.modeTabs}>
-        {[["form", t(T.add.formTab, lang)], ["json", t(T.add.jsonTab, lang)]].map(([m, lbl]) => (
-          <button key={m} onClick={() => setMode(m)} style={{ ...S.modeTab, ...(mode === m ? S.modeTabActive : {}) }}>{lbl}</button>
+
+      <div style={{ ...S.aboutCard, maxWidth: 760, borderColor: "rgba(140,122,230,0.25)" }}>
+        <p style={S.aboutBody}>{t(T.mh.lead, lang)}</p>
+        <p style={S.aboutBody}>{t(T.mh.lead2, lang)}</p>
+      </div>
+
+      <div style={{ ...S.mhDonateBox, marginTop: 22 }}>
+        <span style={S.mhDonateNum}>1%</span>
+        <div>
+          <h3 style={S.mhDonateTitle}>{t(T.mh.donationTitle, lang)}</h3>
+          <p style={S.mhDonateBody}>{t(T.mh.donationBody, lang)}</p>
+        </div>
+      </div>
+
+      <div style={{ ...S.pageHeader, marginTop: 40 }}>
+        <h2 style={{ ...S.pageTitle, fontSize: 22 }}>{t(T.mh.pillarsTitle, lang)}</h2>
+      </div>
+      <div style={S.conceptGrid}>
+        {T.mh.pillars.map((p, i) => (
+          <div key={i} style={{ ...S.conceptCard, borderColor: "rgba(140,122,230,0.15)" }}>
+            <div style={S.conceptIcon}>{p.icon}</div>
+            <h3 style={S.conceptTitle}>{t(p.title, lang)}</h3>
+            <p style={S.conceptBody}>{t(p.body, lang)}</p>
+          </div>
         ))}
       </div>
-      {mode === "form" && (
-        <div style={S.addCard}>
-          <div style={S.addGrid2}>
-            {F(t(T.add.nameLbl, lang), "name", { ph: t(T.add.namePh, lang) })}
-            {F(t(T.add.catLbl, lang), "category", { select: true, options: CATS.slice(1) })}
-          </div>
-          <div style={S.addGrid2}>
-            {F(t(T.add.diffLbl, lang), "difficulty", { select: true, options: DIFFS.slice(1) })}
-            {F(t(T.add.imgLbl, lang), "image", { ph: t(T.add.imgPh, lang) })}
-          </div>
-          {F(t(T.add.descLbl, lang), "description", { textarea: true, ph: t(T.add.descPh, lang) })}
-          {F(t(T.add.ytLbl, lang), "youtube", { ph: t(T.add.ytPh, lang) })}
-          <div style={{ ...S.addDivider, margin: "20px 0 14px" }} />
-          <div style={S.addLabel}>{t(T.add.kpLbl, lang)}</div>
-          <div style={S.addGrid3}>
-            {F("1", "kp1", { ph: t(T.add.kp1Ph, lang) })}
-            {F("2", "kp2", { ph: t(T.add.kp2Ph, lang) })}
-            {F("3", "kp3", { ph: t(T.add.kp3Ph, lang) })}
-          </div>
-          {formErr && <div style={S.errBox}>{formErr}</div>}
-          <button style={{ ...S.ctaPrimary, marginTop: 22 }} onClick={handleFormImport}>{t(T.add.addBtn, lang)}</button>
-        </div>
-      )}
-      {mode === "json" && (
-        <div style={S.addCard}>
-          <textarea value={jsonText} onChange={e => { setJson(e.target.value); setErr(""); }} style={S.jsonArea} spellCheck={false} />
-          {jsonErr && <div style={S.errBox}>{jsonErr}</div>}
-          <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
-            <button style={S.ctaPrimary}   onClick={handleJsonImport}>{t(T.add.importBtn, lang)}</button>
-            <button style={S.ctaSecondary} onClick={() => { setJson(JSON_TEMPLATE); setErr(""); }}>{t(T.add.resetBtn, lang)}</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
-// ─── PASSWORD GATE ────────────────────────────────────────────────────────────
-function PasswordGate({ onUnlock, onCancel, lang }) {
-  const [pw, setPw]       = useState("");
-  const [err, setErr]     = useState("");
-  const [shake, setShake] = useState(false);
-
-  const attempt = () => {
-    if (pw === ADMIN_PASSWORD) { onUnlock(); }
-    else { setErr(t(T.gate.wrong, lang)); setPw(""); setShake(true); setTimeout(() => setShake(false), 500); }
-  };
-
-  return (
-    <div style={S.overlay} onClick={onCancel}>
-      <div style={{ ...S.gateBox, ...(shake ? S.gateShake : {}) }} onClick={e => e.stopPropagation()}>
-        <div style={S.gateLock}>🔒</div>
-        <h3 style={S.gateTitle}>{t(T.gate.title, lang)}</h3>
-        <p style={S.gateSub}>{t(T.gate.sub, lang)}</p>
-        <input type="password" value={pw} onChange={e => { setPw(e.target.value); setErr(""); }}
-          onKeyDown={e => { if (e.key === "Enter") attempt(); if (e.key === "Escape") onCancel(); }}
-          placeholder={t(T.gate.ph, lang)} autoFocus
-          style={{ ...S.addInput, marginBottom: 6, fontSize: 14, letterSpacing: "0.1em" }} />
-        {err && <div style={{ ...S.errBox, marginBottom: 10 }}>{err}</div>}
-        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-          <button style={S.ctaPrimary}   onClick={attempt}>{t(T.gate.unlock, lang)}</button>
-          <button style={S.ctaSecondary} onClick={onCancel}>{t(T.gate.cancel, lang)}</button>
-        </div>
-        <p style={S.gateHint}>
-          {t(T.gate.hint, lang)} <code style={S.code}>osss2026singapore</code>{t(T.gate.hintEnd, lang)}
-        </p>
+      <div style={{ ...S.pageHeader, marginTop: 40 }}>
+        <h2 style={{ ...S.pageTitle, fontSize: 22 }}>{t(T.mh.designTitle, lang)}</h2>
       </div>
+      <div style={S.aboutCard}>
+        <p style={S.aboutBody}>{t(T.mh.designBody, lang)}</p>
+      </div>
+
+      <p style={S.mhSupportNote}>{t(T.mh.supportNote, lang)}</p>
     </div>
   );
 }
 
-// ─── GRAIN ────────────────────────────────────────────────────────────────────
-function Grain() {
-  return <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0.28,
-    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")` }} />;
+// ─── SYNAPTIC BACKGROUND ────────────────────────────────────────────────────
+// Low-opacity, inline-generated node-and-line pattern (no image file) that
+// echoes the brand's own "neural network and synaptic patterns" design
+// language sitewide, not just on the Mental Health page. Kept deliberately
+// faint so it never competes with technique photography or long-form copy.
+function SynapticField() {
+  return <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0.05,
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3Cpattern id='net' width='150' height='150' patternUnits='userSpaceOnUse'%3E%3Cg fill='none' stroke='%238c7ae6' stroke-width='0.6'%3E%3Cline x1='18' y1='22' x2='72' y2='10'/%3E%3Cline x1='72' y1='10' x2='120' y2='46'/%3E%3Cline x1='18' y1='22' x2='42' y2='80'/%3E%3Cline x1='42' y1='80' x2='120' y2='46'/%3E%3Cline x1='42' y1='80' x2='96' y2='128'/%3E%3Cline x1='120' y1='46' x2='140' y2='110'/%3E%3C/g%3E%3Cg fill='%238c7ae6'%3E%3Ccircle cx='18' cy='22' r='1.8'/%3E%3Ccircle cx='72' cy='10' r='1.8'/%3E%3Ccircle cx='120' cy='46' r='1.8'/%3E%3Ccircle cx='42' cy='80' r='1.8'/%3E%3Ccircle cx='96' cy='128' r='1.8'/%3E%3Ccircle cx='140' cy='110' r='1.8'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23net)'/%3E%3C/svg%3E")` }} />;
 }
 
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 const S = {
-  root: { minHeight: "100vh", background: "#0a0a0a", color: "#ede8df", fontFamily: "'Georgia','Times New Roman',serif", position: "relative" },
-  nav: { position: "sticky", top: 0, zIndex: 50, background: "rgba(10,10,10,0.94)", backdropFilter: "blur(12px)", borderBottom: "1px solid #1a1a1a", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 },
+  root: { minHeight: "100vh", background: "#120e16", color: "#ede8df", fontFamily: "'Georgia','Times New Roman',serif", position: "relative" },
+  nav: { position: "sticky", top: 0, zIndex: 50, background: "rgba(18,14,22,0.94)", backdropFilter: "blur(12px)", borderBottom: "1px solid #241c2a", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 },
   navBrand: { display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" },
   navLogo: { fontSize: 19, color: "#e85d04" },
   navTitle: { fontSize: 15, fontWeight: 700, letterSpacing: "-0.4px" },
   navLinks: { display: "flex", gap: 2, alignItems: "center" },
   navBtn: { background: "none", border: "none", color: "#666", fontSize: 12, fontFamily: "monospace", letterSpacing: "0.04em", padding: "5px 11px", borderRadius: 4, cursor: "pointer" },
   navActive: { color: "#e85d04" },
-  navAdd: { color: "#444", borderLeft: "1px solid #1e1e1e", marginLeft: 8, paddingLeft: 14 },
-  navAddActive: { color: "#e85d04", borderLeft: "1px solid #1e1e1e", marginLeft: 8, paddingLeft: 14 },
-  navLockBtn: { color: "#2ecc71", fontSize: 11, borderLeft: "1px solid #1e1e1e", marginLeft: 4, paddingLeft: 12 },
-  gateBox: { background: "#141414", border: "1px solid #2a2a2a", borderRadius: 12, padding: "36px 32px", maxWidth: 360, width: "100%", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" },
-  gateLock: { fontSize: 36, marginBottom: 12 },
-  gateTitle: { fontSize: 20, fontWeight: 700, margin: "0 0 6px", letterSpacing: "-0.4px" },
-  gateSub: { fontSize: 13, color: "#666", margin: "0 0 20px", lineHeight: 1.5 },
-  gateHint: { fontSize: 11, color: "#444", marginTop: 18, lineHeight: 1.6, fontFamily: "monospace" },
+  banner: { position: "relative", zIndex: 40, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "rgba(140,122,230,0.07)", borderBottom: "1px solid rgba(140,122,230,0.18)", color: "#e3d9fb", fontFamily: "monospace", fontSize: 11, letterSpacing: "0.02em", padding: "8px 16px", cursor: "pointer", textAlign: "center", flexWrap: "wrap" },
+  bannerDot: { display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: MH_ACCENT, flexShrink: 0 },
+  bannerText: { color: "#e3d9fb" },
+  bannerCta: { color: MH_ACCENT, fontWeight: 700, marginLeft: 4 },
   main: { position: "relative", zIndex: 1, padding: "40px 32px 80px", maxWidth: 1100, margin: "0 auto" },
   overviewWrap: { display: "flex", flexDirection: "column", gap: 50 },
   hero: { paddingTop: 18 },
@@ -745,17 +673,18 @@ const S = {
   heroBody: { maxWidth: 520, fontSize: 15, color: "#999", lineHeight: 1.85, margin: "0 0 26px" },
   heroCtas: { display: "flex", gap: 10, flexWrap: "wrap" },
   ctaPrimary: { background: "#e85d04", color: "#fff", border: "none", padding: "11px 24px", borderRadius: 4, fontSize: 12, fontFamily: "monospace", fontWeight: 700, cursor: "pointer", letterSpacing: "0.05em" },
-  ctaSecondary: { background: "none", color: "#ede8df", border: "1px solid #2a2a2a", padding: "11px 24px", borderRadius: 4, fontSize: 12, fontFamily: "monospace", cursor: "pointer", letterSpacing: "0.05em" },
-  statRow: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 1, border: "1px solid #181818", borderRadius: 6, overflow: "hidden" },
-  stat: { background: "#111", padding: "20px 16px", display: "flex", flexDirection: "column", gap: 4 },
+  ctaSecondary: { background: "none", color: "#ede8df", border: "1px solid #332a3a", padding: "11px 24px", borderRadius: 4, fontSize: 12, fontFamily: "monospace", cursor: "pointer", letterSpacing: "0.05em" },
+  ctaMission: { background: "none", color: MH_ACCENT, border: `1px solid ${MH_ACCENT}55`, padding: "11px 24px", borderRadius: 4, fontSize: 12, fontFamily: "monospace", cursor: "pointer", letterSpacing: "0.05em" },
+  statRow: { display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 1, border: "1px solid #1c151f", borderRadius: 6, overflow: "hidden" },
+  stat: { background: "#16121a", padding: "20px 16px", display: "flex", flexDirection: "column", gap: 4 },
   statNum: { fontSize: 32, fontWeight: 700, color: "#e85d04", letterSpacing: "-1px" },
   statLabel: { fontSize: 10, color: "#555", fontFamily: "monospace", letterSpacing: "0.05em" },
   catGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(155px,1fr))", gap: 10 },
-  catCard: { background: "#111", border: "1px solid transparent", borderRadius: 6, padding: "15px 13px", cursor: "pointer", display: "flex", flexDirection: "column", gap: 7, transition: "border-color 0.2s" },
+  catCard: { background: "#16121a", border: "1px solid transparent", borderRadius: 6, padding: "15px 13px", cursor: "pointer", display: "flex", flexDirection: "column", gap: 7, transition: "border-color 0.2s" },
   catDot: { display: "inline-block", width: 7, height: 7, borderRadius: "50%" },
   catName: { fontSize: 13, fontWeight: 700 },
   catCount: { fontSize: 10, color: "#555", fontFamily: "monospace" },
-  filterBar: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, padding: "15px 18px", marginBottom: 22, display: "flex", flexDirection: "column", gap: 11 },
+  filterBar: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 8, padding: "15px 18px", marginBottom: 22, display: "flex", flexDirection: "column", gap: 11 },
   filterGroup: { display: "flex", alignItems: "center", gap: 11, flexWrap: "wrap" },
   filterLabel: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.12em", color: "#555", textTransform: "uppercase", minWidth: 30 },
   pills: { display: "flex", gap: 5, flexWrap: "wrap" },
@@ -764,8 +693,8 @@ const S = {
   filterCount: { fontFamily: "monospace", fontSize: 11, color: "#444", marginLeft: "auto" },
   grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(265px,1fr))", gap: 16 },
   empty: { gridColumn: "1/-1", textAlign: "center", color: "#444", padding: 60, fontFamily: "monospace" },
-  card: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, overflow: "hidden", cursor: "pointer", transition: "transform 0.2s, border-color 0.2s" },
-  cardHov: { transform: "translateY(-5px)", borderColor: "#2a2a2a" },
+  card: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 8, overflow: "hidden", cursor: "pointer", transition: "transform 0.2s, border-color 0.2s" },
+  cardHov: { transform: "translateY(-5px)", borderColor: "#332a3a" },
   cardImgWrap: { position: "relative", height: 180, overflow: "hidden" },
   cardImg: { width: "100%", height: "100%", objectFit: "cover", filter: "grayscale(25%) contrast(1.1)", display: "block" },
   cardImgOverlay: { position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(17,17,17,.95) 0%,transparent 55%)" },
@@ -779,45 +708,49 @@ const S = {
   pageTitle: { fontSize: 32, fontWeight: 700, letterSpacing: "-1px", margin: "0 0 8px" },
   pageSubtitle: { color: "#666", fontSize: 14, lineHeight: 1.6, margin: 0 },
   conceptGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 13 },
-  conceptCard: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, padding: "20px" },
+  conceptCard: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 8, padding: "20px" },
   conceptIcon: { fontSize: 24, marginBottom: 9 },
   conceptTitle: { fontSize: 14, fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.2px" },
   conceptBody: { fontSize: 12, color: "#888", lineHeight: 1.7, margin: 0 },
-  aboutCard: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, padding: "26px 30px", maxWidth: 660 },
+  aboutCard: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 8, padding: "26px 30px", maxWidth: 660 },
+  merchTag: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#e85d04", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 },
+  merchGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))", gap: 14, marginBottom: 24 },
+  merchCard: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 8, padding: "18px 20px", display: "flex", flexDirection: "column", gap: 8 },
+  merchCardTop: { display: "flex", alignItems: "center", justifyContent: "space-between" },
+  merchIcon: { fontSize: 22 },
+  merchSoon: { fontSize: 9, fontFamily: "monospace", letterSpacing: "0.08em", textTransform: "uppercase", color: "#666", border: "1px solid #2e2530", borderRadius: 20, padding: "3px 9px" },
+  merchName: { fontSize: 16, fontWeight: 700, margin: "2px 0 0", letterSpacing: "-0.2px" },
+  merchSpec: { fontSize: 12, color: "#888", lineHeight: 1.6, margin: 0 },
+  merchSpecLbl: { fontFamily: "monospace", fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "#555", marginRight: 6 },
+  merchPriceRow: { display: "flex", alignItems: "baseline", justifyContent: "space-between", marginTop: 4, paddingTop: 10, borderTop: "1px solid #241c2a" },
+  merchPriceLbl: { fontFamily: "monospace", fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "#555" },
+  merchPrice: { fontSize: 15, fontWeight: 700, color: "#e85d04" },
+  merchNotifyCard: { display: "flex", alignItems: "center", gap: 10, background: "rgba(232,93,4,0.06)", border: "1px solid rgba(232,93,4,0.2)", borderRadius: 8, padding: "14px 18px", marginBottom: 36, fontSize: 13, color: "#ccc" },
+  merchNotifyText: { fontFamily: "monospace", fontSize: 12 },
+  mhDonateBox: { display: "flex", alignItems: "center", gap: 20, background: "rgba(140,122,230,0.06)", border: "1px solid rgba(140,122,230,0.25)", borderRadius: 8, padding: "22px 26px", maxWidth: 760 },
+  mhDonateNum: { fontSize: 44, fontWeight: 700, color: MH_ACCENT, letterSpacing: "-1px", flexShrink: 0 },
+  mhDonateTitle: { fontSize: 16, fontWeight: 700, margin: "0 0 6px", letterSpacing: "-0.2px" },
+  mhDonateBody: { fontSize: 13, color: "#aaa", lineHeight: 1.7, margin: 0 },
+  mhSupportNote: { marginTop: 36, fontSize: 11, color: "#555", fontFamily: "monospace", lineHeight: 1.7, maxWidth: 620 },
+  mhPlanNote: { display: "flex", alignItems: "flex-start", gap: 9, marginTop: 14, maxWidth: 640, background: "rgba(140,122,230,0.06)", border: "1px solid rgba(140,122,230,0.2)", borderRadius: 6, padding: "10px 14px", fontSize: 12, color: "#e3d9fb", fontFamily: "monospace", lineHeight: 1.6 },
+  invitationBox: { marginTop: 28, maxWidth: 660, borderLeft: `2px solid #e85d04`, paddingLeft: 22 },
+  invitationTag: { display: "block", fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#e85d04", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 },
+  invitationText: { fontSize: 17, color: "#ede8df", lineHeight: 1.7, margin: 0, fontStyle: "italic", letterSpacing: "-0.1px" },
   aboutBody: { fontSize: 14, color: "#999", lineHeight: 1.85, margin: "0 0 13px" },
   aboutSub: { fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", color: "#555", textTransform: "uppercase", margin: "0 0 13px", fontWeight: 400 },
   aboutCatRow: { display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13 },
-  modeTabs: { display: "flex", gap: 0, marginBottom: 18, border: "1px solid #1e1e1e", borderRadius: 6, overflow: "hidden", maxWidth: 360 },
-  modeTab: { flex: 1, background: "none", border: "none", borderRight: "1px solid #1e1e1e", color: "#555", fontSize: 12, fontFamily: "monospace", padding: "9px 0", cursor: "pointer", transition: "all 0.15s" },
-  modeTabActive: { background: "#161616", color: "#ede8df" },
-  addCard: { background: "#111", border: "1px solid #1a1a1a", borderRadius: 8, padding: "26px 28px", maxWidth: 780 },
-  addGrid2: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 },
-  addGrid3: { display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginTop: 10 },
-  addField: { display: "flex", flexDirection: "column", gap: 5 },
-  addLabel: { fontSize: 10, fontFamily: "monospace", letterSpacing: "0.08em", color: "#666", textTransform: "uppercase" },
-  addInput: { background: "#0d0d0d", border: "1px solid #252525", borderRadius: 5, color: "#ede8df", fontSize: 13, padding: "8px 10px", fontFamily: "Georgia,serif", outline: "none", width: "100%", boxSizing: "border-box" },
-  addDivider: { borderTop: "1px solid #1a1a1a", margin: "22px 0" },
-  errBox: { background: "rgba(214,48,49,0.09)", border: "1px solid #d63031", borderRadius: 5, color: "#d63031", fontSize: 11, fontFamily: "monospace", padding: "8px 11px", marginTop: 10 },
-  jsonArea: { width: "100%", boxSizing: "border-box", background: "#0d0d0d", border: "1px solid #252525", borderRadius: 6, color: "#a8d8a8", fontFamily: "monospace", fontSize: 12, padding: "13px", lineHeight: 1.65, height: 290, resize: "vertical", outline: "none", display: "block" },
-  code: { background: "#1a1a1a", color: "#4cc9f0", padding: "1px 5px", borderRadius: 3, fontSize: 11 },
-  successBox: { textAlign: "center", padding: "60px 20px" },
-  exportBox: { background: "#0d0d0d", border: "1px solid #252525", borderRadius: 8, padding: "16px 18px", marginTop: 22, maxWidth: 580, width: "100%", textAlign: "left" },
-  exportHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 },
-  exportPre: { color: "#a8d8a8", fontFamily: "monospace", fontSize: 11, lineHeight: 1.65, margin: 0, overflowX: "auto", whiteSpace: "pre" },
-  exportHint: { fontSize: 11, color: "#555", fontFamily: "monospace", marginTop: 12, marginBottom: 0, lineHeight: 1.6 },
-  exportCopyBtn: { background: "#1a1a1a", border: "1px solid #333", color: "#aaa", fontSize: 11, fontFamily: "monospace", padding: "4px 12px", borderRadius: 4, cursor: "pointer" },
-  exportCopiedBtn: { background: "rgba(46,204,113,0.15)", border: "1px solid #2ecc71", color: "#2ecc71", fontSize: 11, fontFamily: "monospace", padding: "4px 12px", borderRadius: 4, cursor: "pointer" },
+  addDivider: { borderTop: "1px solid #241c2a", margin: "22px 0" },
   overlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.88)", backdropFilter: "blur(6px)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 },
-  modal: { background: "#141414", border: "1px solid #222", borderRadius: 12, width: "100%", maxWidth: 540, maxHeight: "92vh", overflowY: "auto", position: "relative" },
+  modal: { background: "#17121b", border: "1px solid #222", borderRadius: 12, width: "100%", maxWidth: 540, maxHeight: "92vh", overflowY: "auto", position: "relative" },
   closeBtn: { position: "absolute", top: 12, right: 12, background: "rgba(0,0,0,0.5)", border: "1px solid #333", color: "#aaa", width: 28, height: 28, borderRadius: "50%", cursor: "pointer", zIndex: 2, fontSize: 12, display: "flex", alignItems: "center", justifyContent: "center" },
   modalImgWrap: { position: "relative", height: 220, borderRadius: "12px 12px 0 0", overflow: "hidden" },
   modalImg: { width: "100%", height: "100%", objectFit: "cover", filter: "grayscale(20%)" },
-  modalImgGrad: { position: "absolute", inset: 0, background: "linear-gradient(to top,#141414 0%,rgba(20,20,20,.3) 60%,transparent 100%)" },
+  modalImgGrad: { position: "absolute", inset: 0, background: "linear-gradient(to top,#17121b 0%,rgba(23,18,27,.3) 60%,transparent 100%)" },
   modalImgMeta: { position: "absolute", bottom: 18, left: 22, display: "flex", flexDirection: "column", gap: 5 },
   modalTitle: { fontSize: 24, fontWeight: 700, margin: 0, letterSpacing: "-0.6px", lineHeight: 1 },
   modalBody: { padding: "18px 22px 24px" },
   modalDesc: { fontSize: 13, color: "#bbb", lineHeight: 1.8, margin: "0 0 16px" },
-  kpBox: { background: "#1a1a1a", border: "1px solid #222", borderRadius: 7, padding: "11px 15px", marginBottom: 16 },
+  kpBox: { background: "#241c2a", border: "1px solid #222", borderRadius: 7, padding: "11px 15px", marginBottom: 16 },
   kpHead: { fontSize: 9, fontFamily: "monospace", letterSpacing: "0.15em", color: "#555", textTransform: "uppercase", marginBottom: 9 },
   kpRow: { display: "flex", alignItems: "center", gap: 9, fontSize: 12, color: "#ddd", marginBottom: 6 },
   ytBtn: { display: "inline-flex", alignItems: "center", gap: 7, background: "#e85d04", color: "#fff", padding: "10px 20px", borderRadius: 5, textDecoration: "none", fontSize: 12, fontWeight: 700, fontFamily: "monospace" },
