@@ -300,7 +300,7 @@ export default function SubmitologY() {
       <SynapticField />
       <nav style={S.nav}>
         <div style={S.navBrand} onClick={() => setPage("Overview")}>
-          <span style={S.navLogo}>⬡</span>
+          <img src="/logo192.png" alt="SubmitologY logo" style={S.navLogo} />
           <span style={S.navTitle}>SubmitologY</span>
         </div>
         <div style={S.navLinks}>
@@ -339,6 +339,7 @@ function Overview({ techniques, goTo, lang }) {
   return (
     <div style={S.overviewWrap}>
       <div style={S.hero}>
+        <img src="/logo192.png" alt="SubmitologY logo" style={S.heroLogo} />
         <div style={S.heroTag}>{t(T.overview.tag, lang)}</div>
         <h1 style={S.heroTitle}>{t(T.overview.titleLine1, lang)}<br /><span style={S.heroAccent}>{t(T.overview.titleLine2, lang)}</span></h1>
         <p style={S.heroBody}>{t(T.overview.body1, lang)}</p>
@@ -502,7 +503,8 @@ function Modal({ pos, onClose, lang }) {
 function About({ goTo, lang }) {
   return (
     <div>
-      <div style={S.pageHeader}>
+      <div style={{ ...S.pageHeader, display: "flex", alignItems: "center", gap: 16 }}>
+        <img src="/logo192.png" alt="SubmitologY logo" style={S.aboutLogo} />
         <h2 style={S.pageTitle}>{t(T.about.pageTitle, lang)}</h2>
       </div>
       <div style={S.aboutCard}>
@@ -655,7 +657,7 @@ const S = {
   root: { minHeight: "100vh", background: "#120e16", color: "#ede8df", fontFamily: "'Georgia','Times New Roman',serif", position: "relative" },
   nav: { position: "sticky", top: 0, zIndex: 50, background: "rgba(18,14,22,0.94)", backdropFilter: "blur(12px)", borderBottom: "1px solid #241c2a", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 },
   navBrand: { display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" },
-  navLogo: { fontSize: 19, color: "#e85d04" },
+  navLogo: { width: 26, height: 26, objectFit: "contain", display: "block" },
   navTitle: { fontSize: 15, fontWeight: 700, letterSpacing: "-0.4px" },
   navLinks: { display: "flex", gap: 2, alignItems: "center" },
   navBtn: { background: "none", border: "none", color: "#666", fontSize: 12, fontFamily: "monospace", letterSpacing: "0.04em", padding: "5px 11px", borderRadius: 4, cursor: "pointer" },
@@ -667,6 +669,7 @@ const S = {
   main: { position: "relative", zIndex: 1, padding: "40px 32px 80px", maxWidth: 1100, margin: "0 auto" },
   overviewWrap: { display: "flex", flexDirection: "column", gap: 50 },
   hero: { paddingTop: 18 },
+  heroLogo: { width: 72, height: 72, objectFit: "contain", marginBottom: 20, display: "block" },
   heroTag: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.22em", color: "#555", textTransform: "uppercase", marginBottom: 12 },
   heroTitle: { fontSize: "clamp(36px, 7vw, 70px)", fontWeight: 700, lineHeight: 1.06, margin: "0 0 20px", letterSpacing: "-2px" },
   heroAccent: { color: "#e85d04", fontStyle: "italic" },
@@ -705,6 +708,7 @@ const S = {
   cardDesc: { fontSize: 12, color: "#777", lineHeight: 1.6, margin: "0 0 9px" },
   cardCta: { fontSize: 11, color: "#e85d04", fontFamily: "monospace" },
   pageHeader: { marginBottom: 30 },
+  aboutLogo: { width: 56, height: 56, objectFit: "contain", flexShrink: 0, display: "block" },
   pageTitle: { fontSize: 32, fontWeight: 700, letterSpacing: "-1px", margin: "0 0 8px" },
   pageSubtitle: { color: "#666", fontSize: 14, lineHeight: 1.6, margin: 0 },
   conceptGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 13 },
