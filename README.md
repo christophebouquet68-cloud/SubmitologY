@@ -1,4 +1,4 @@
-# SubmitologY — Brand Refresh (Merchandising + Mental Health Mission)
+# SubmitologY — Brand Refresh (Merchandising + Mental Health Mission + S&C)
 
 This folder contains only the files that changed. Drop `src/App.js`, `src/i18n.js`,
 and `public/index.html` into your existing project (overwriting the current
@@ -8,87 +8,67 @@ or `node_modules` were touched. The build was verified locally with
 
 ## What changed, and why
 
-### 0. Full color and background overhaul
-- **Base background**: `#0a0d12` (navy-charcoal) → `#120e16` (aubergine-black).
-  A near-black with a faint violet undertone, chosen specifically so the new
-  mental-health accent (below) feels native to the palette instead of dropped
-  on top of it, while orange still pops at maximum contrast against a
-  purple-leaning dark.
-- **Mental-health accent**: `#4cc9f0` (a teal that was being reused from the
-  Guards technique category — a real collision, since a teal badge on a
-  technique card and a teal mission callout read as the same signal) →
-  `#8c7ae6`, a dedicated synaptic violet. It no longer shares a color with
-  any technique category. `MH_ACCENT` is a single constant in `App.js`, so
-  every mental-health-related UI element (banner, stat, donation box, Mission
-  button, Mental Health page accents) updated from one change.
-- **Surface and border tokens retinted to match**: card backgrounds
-  (`#111` → `#16121a`), primary borders (`#1a1a1a` → `#241c2a`), nav
-  background/border, the language-selector dropdown, and secondary borders
-  all picked up the same violet undertone as the new base, so the whole site
-  reads as one deliberate material rather than a neutral dark theme with a
-  color dropped in.
-- **Background graphic**: the old noise-grain texture (`Grain` component) is
-  replaced by `SynapticField` — a low-opacity (5%), inline-generated
-  node-and-line pattern (no image file, same technique as the grain it
-  replaces: a data-URI SVG). This is a direct implementation of the brand
-  deck's own "neural network and synaptic patterns as graphic elements"
-  design language, now present sitewide rather than only described in copy
-  on the Mental Health page. It's tuned faint enough to stay out of the way
-  of technique photography and long-form text.
-- Technique category colors (Guards, Submissions, Transitions, Takedowns,
-  Dark BJJ) and difficulty colors are untouched.
+### 0. Overview hero buttons updated
+The CTA row next to "Shop the Gear" now reads: **Shop the Gear → Concepts →
+Techniques → Strength & Conditioning → Our Mission** — Concepts before
+Techniques (matching the nav swap), and a new button linking straight to the
+Strength & Conditioning program builder. Translated in all 5 languages.
 
-### 1. "The Invitation" added to About
-The closing statement from Business Proposal §12 (Conclusion) is now the
-closing statement of the About page too — styled as a distinct, italicised
-pull-quote with an orange left rule: *"We are not just building a gear
-brand. We are building a community that trains hard, talks openly, and
-submits to nothing except growth. Welcome to SubmitologY."* Translated into
-all 5 languages.
+### 1. Nav reorder + new "Strength & Conditioning" section
+- **Concepts and Techniques swapped**: nav is now `Overview → Shop → Concepts
+  → Techniques → Strength & Conditioning → Mental Health → About`.
+- **New "Strength & Conditioning" page**, right after Techniques. It's a
+  small program-builder, not a static article:
+  - The visitor selects three inputs via pill buttons (same interaction
+    pattern as the existing Techniques filter bar): **age range** (Under 20,
+    20–30, 30–40, 40–50, 50–60, Over 60), **fitness level** (reuses the
+    existing Beginner/Intermediate/Advanced translations from the Techniques
+    page), and **equipment** (No Equipment / With Equipment).
+  - "Build My Program" is disabled until all three are chosen — the page
+    won't render a program from partial input.
+  - Once submitted, only the one matching program is shown: warm-up,
+    lower body, upper push, upper pull, core, conditioning, and cooldown
+    blocks, each with a specific exercise list and prescription (sets ×
+    reps, or rounds/work/rest), plus a suggested weekly frequency and an
+    age-specific coaching note.
+  - **How the programs are generated**: there are 6 × 3 × 2 = 36 possible
+    combinations. Rather than hand-writing 36 static articles, `App.js`
+    defines exercise pools (calisthenics vs. equipment), prescription
+    tables per fitness level, and a pure function `buildSCProgram(age,
+    level, type)` that deterministically assembles the right program from
+    those tables — this *is* the "pre-processed and stored" approach:
+    everything lives in the code as data, nothing is fetched or generated
+    live, and only the single relevant result is ever displayed.
+  - **Age-aware, not just relabelled**: the 50–60 and Over 60 brackets swap
+    out high-impact/explosive exercises (broad jumps, burpees, walking
+    lunges) for joint-friendlier alternatives (step-ups, wall sits, marching
+    in place), automatically drop suggested frequency to 2×/week, add 15
+    extra seconds of rest between sets, and extend the warm-up/cooldown by a
+    minute. Each result also carries a short, age-specific coaching note and
+    a general fitness disclaimer (this is guidance, not medical advice —
+    consult a physician before starting, especially with an existing
+    condition).
 
-### 2. Mental health initiatives marked as planned (not yet live)
-Since the company hasn't launched yet, every concrete mental-health claim on
-the site reads as a **planned commitment starting in 2027**, not an ongoing
-activity — a disclaimer banner on the Mental Health page, "Planned from
-2027" on the donation callout and all four Social Impact pillars, and
-future-tense copy in the sitewide banner and homepage stat. Translated
-across all 5 languages.
+### 2. Language coverage
+Every part of the Strength & Conditioning page — labels, all 6 age options,
+the 2 equipment options, section headers, the frequency/rest copy, the 6
+age-specific notes, the disclaimer, and all ~30 individual exercise names —
+is translated into all 5 site languages (EN/FR/JA/PT/RO), not just English.
+Fitness-level labels reuse the site's existing Beginner/Intermediate/Advanced
+translations rather than duplicating them.
 
-### 3. Admin section removed
-The password-gated "Add Techniques" admin flow — nav lock/unlock buttons, the
-password prompt, the form/JSON import screen, and the `ADMIN_PASSWORD`
-constant — has been removed entirely. The technique list (`SEED_TECHNIQUES`)
-is now static; to add or edit techniques going forward, edit that array
-directly in `src/App.js`.
-
-### 4. Merchandising is now front and centre
-- Nav reordered: `Overview → Shop → Techniques → Concepts → Mental Health → About`.
-- Merchandise page rebuilt from a placeholder into a real launch-collection
-  preview pulling from the Business Proposal's §5.1 product table (Gi,
-  Rashguards, Shorts, Spats, Belt — specs and SGD pricing, tagged "Coming
-  Q1 2027"), plus the four brand pillars from §2.1. No product photos used.
-- Overview hero's primary CTA is "Shop the Gear"; Techniques/Concepts are
-  secondary CTAs.
-- About page ends with a cross-link card to both the Shop and the Mission
-  page.
-
-### 5. Mental health made visible sitewide
-- New "Mental Health" nav page (Business Proposal §3): the BJJ/mental-health
-  thesis, the "1% for Mental Health" callout, the four Social Impact
-  pillars, and the design-language rationale. A supportive note with the
-  Samaritans of Singapore helpline (1-767) sits at the bottom.
-- Site-wide mission banner under the nav on every page, linking to the
-  Mental Health page.
-
-### 6. Everything else
-All 22 techniques, images, filtering, and the 5-language i18n system are
-untouched and fully reused.
+### 3. Everything from before is still in place
+- Aubergine-black background, synaptic-violet mental-health accent, and the
+  low-opacity synaptic-network background pattern.
+- "The Invitation" closing statement on the About page.
+- Mental health initiatives clearly marked as planned from 2027.
+- Admin section fully removed.
+- Merchandise launch-collection preview and sitewide mission banner.
+- All 22 techniques, images, and filtering untouched and fully reused.
 
 ## Suggested next steps
-- Swap the merch card icons for real product photography once samples arrive.
-- Wire the "Notify Me at Launch" banner to an actual email capture.
-- Once the company incorporates and the 1% donation programme goes live,
-  update the "planned" language back to present tense.
-- If you want the synaptic pattern even more pronounced on the Mental Health
-  page specifically (vs. the flat 5% everywhere), that's a one-line change —
-  just say the word.
+- If you'd like actual demonstration photos/video per exercise, that's a
+  separate content pass — the current version is text-only by design, to
+  keep the page lightweight and avoid large files.
+- Consider letting a logged-in user save their last selection (would need
+  basic persistence — currently the page re-asks each visit).

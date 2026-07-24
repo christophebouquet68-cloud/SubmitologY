@@ -225,7 +225,7 @@ const SEED_TECHNIQUES = [
 const CATS  = ["All", "Guards", "Submissions", "Transitions", "Takedowns", "Dark BJJ"];
 const DIFFS = ["All", "Beginner", "Intermediate", "Advanced"];
 // Merchandise and Mental Health are promoted higher in the nav per brand refresh.
-const NAV_KEYS = ["Overview", "Merchandise", "Techniques", "Concepts", "MentalHealth", "About"];
+const NAV_KEYS = ["Overview", "Merchandise", "Concepts", "Techniques", "StrengthConditioning", "MentalHealth", "About"];
 
 const CAT_COLORS  = { Guards: "#4cc9f0", Submissions: "#e85d04", Transitions: "#a29bfe", Takedowns: "#55efc4", "Dark BJJ": "#d63031" };
 const DIFF_COLORS = { Beginner: "#2ecc71", Intermediate: "#f39c12", Advanced: "#e74c3c" };
@@ -245,6 +245,62 @@ const MERCH_PRODUCTS = [
   { id: "spats", name: "Spats / Compression", spec: "Poly-spandex, full sublimation", price: "$60 – $75", icon: "⚡" },
   { id: "belt", name: "Belt", spec: "Cotton, custom woven label", price: "$25 – $35", icon: "🎗️" },
 ];
+
+// ─── STRENGTH & CONDITIONING — pre-processed program engine ─────────────────
+// Every (age × level × equipment) combination — 6 × 3 × 2 = 36 in total — is
+// derived deterministically from the tables below. Nothing is fetched or
+// generated at request time; only the one relevant program is ever rendered.
+const AGE_RANGES = ["<20", "20-30", "30-40", "40-50", "50-60", ">60"];
+const PROGRAM_TYPES = ["Calisthenics", "Equipment"];
+const OLDER_BRACKETS = ["50-60", ">60"];
+
+const CALISTHENICS_EX = {
+  lower: ["bodyweightSquat", "bulgarianSplitSquat", "broadJump"],
+  lowerOlder: ["bodyweightSquat", "stepUp", "wallSit"],
+  upperPush: ["pushUp", "pikePushUp", "benchDip"],
+  upperPull: ["towelRow", "supermanHold", "invertedRowChair"],
+  core: ["plank", "deadBug", "sidePlank"],
+  conditioning: ["burpee", "mountainClimber", "jumpingJack"],
+  conditioningOlder: ["marchInPlace", "sitToStand", "stepTouch"],
+};
+const EQUIPMENT_EX = {
+  lower: ["gobletSquat", "romanianDeadliftDB", "walkingLunge"],
+  lowerOlder: ["gobletSquat", "romanianDeadliftDB", "dbStepUp"],
+  upperPush: ["dbBenchPress", "dbOverheadPress", "tricepExtension"],
+  upperPull: ["bentOverRow", "latPulldownOrPullup", "facePullBand"],
+  core: ["weightedPlank", "palloffPress", "farmerCarry"],
+  conditioning: ["kettlebellSwing", "rowMachineInterval", "battleRopes"],
+  conditioningOlder: ["kettlebellSwingLight", "rowMachineSteady", "farmerCarryInterval"],
+};
+const WARMUP_EX = ["armLegSwings", "hipRotations", "neckShoulderRolls"];
+const COOLDOWN_EX = ["childsPose", "hamstringStretch", "hip9090Stretch", "boxBreathing"];
+
+const STRENGTH_RX = { Beginner: "2 × 10", Intermediate: "3 × 12", Advanced: "4 × 15" };
+const PULL_RX     = { Beginner: "2 × 8",  Intermediate: "3 × 10", Advanced: "4 × 12" };
+const CORE_RX     = { Beginner: "2 × 20s", Intermediate: "3 × 30s", Advanced: "4 × 45s" };
+const COND_RX        = { Beginner: "4 rounds · 20s on / 40s off", Intermediate: "5 rounds · 30s on / 30s off", Advanced: "6 rounds · 40s on / 20s off" };
+const COND_RX_OLDER  = { Beginner: "3 rounds · 20s on / 50s off", Intermediate: "4 rounds · 25s on / 45s off", Advanced: "5 rounds · 30s on / 40s off" };
+const REST_SEC     = { Beginner: 60, Intermediate: 45, Advanced: 30 };
+const WARMUP_MIN   = { Beginner: 5,  Intermediate: 6,  Advanced: 7 };
+const FREQ_BASE    = { Beginner: 2,  Intermediate: 3,  Advanced: 4 };
+
+function buildSCProgram(age, level, type) {
+  const older = OLDER_BRACKETS.includes(age);
+  const pool  = type === "Calisthenics" ? CALISTHENICS_EX : EQUIPMENT_EX;
+  return {
+    frequency: older ? 2 : FREQ_BASE[level],
+    restSec:   REST_SEC[level] + (older ? 15 : 0),
+    warmup:    { items: WARMUP_EX, minutes: WARMUP_MIN[level] + (older ? 1 : 0) },
+    blocks: [
+      { key: "lower",       items: older ? pool.lowerOlder : pool.lower, rx: STRENGTH_RX[level] },
+      { key: "upperPush",   items: pool.upperPush, rx: STRENGTH_RX[level] },
+      { key: "upperPull",   items: pool.upperPull, rx: PULL_RX[level] },
+      { key: "core",        items: pool.core, rx: CORE_RX[level] },
+      { key: "conditioning",items: older ? pool.conditioningOlder : pool.conditioning, rx: older ? COND_RX_OLDER[level] : COND_RX[level] },
+    ],
+    cooldown:  { items: COOLDOWN_EX, minutes: 5 + (older ? 1 : 0) },
+  };
+}
 
 // ─── LANGUAGE SELECTOR ────────────────────────────────────────────────────────
 function LangSelector({ lang, setLang }) {
@@ -293,6 +349,7 @@ export default function SubmitologY() {
     Overview: t(T.nav.overview, lang), Concepts: t(T.nav.concepts, lang),
     Techniques: t(T.nav.techniques, lang), About: t(T.nav.about, lang),
     Merchandise: t(T.nav.merchandise, lang), MentalHealth: t(T.nav.mentalHealth, lang),
+    StrengthConditioning: t(T.nav.strength, lang),
   }[key]);
 
   return (
@@ -300,7 +357,7 @@ export default function SubmitologY() {
       <SynapticField />
       <nav style={S.nav}>
         <div style={S.navBrand} onClick={() => setPage("Overview")}>
-          <img src="/logo192.png" alt="SubmitologY logo" style={S.navLogo} />
+          <span style={S.navLogo}>⬡</span>
           <span style={S.navTitle}>SubmitologY</span>
         </div>
         <div style={S.navLinks}>
@@ -324,6 +381,7 @@ export default function SubmitologY() {
         {page === "Overview"   && <Overview   techniques={techniques} goTo={setPage} lang={lang} />}
         {page === "Concepts"   && <Concepts   lang={lang} />}
         {page === "Techniques" && <Techniques filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} lang={lang} />}
+        {page === "StrengthConditioning" && <StrengthConditioning lang={lang} />}
         {page === "About"      && <About      goTo={setPage} lang={lang} />}
         {page === "Merchandise"&& <Merchandise lang={lang} />}
         {page === "MentalHealth" && <MentalHealth lang={lang} />}
@@ -339,15 +397,15 @@ function Overview({ techniques, goTo, lang }) {
   return (
     <div style={S.overviewWrap}>
       <div style={S.hero}>
-        <img src="/logo192.png" alt="SubmitologY logo" style={S.heroLogo} />
         <div style={S.heroTag}>{t(T.overview.tag, lang)}</div>
         <h1 style={S.heroTitle}>{t(T.overview.titleLine1, lang)}<br /><span style={S.heroAccent}>{t(T.overview.titleLine2, lang)}</span></h1>
         <p style={S.heroBody}>{t(T.overview.body1, lang)}</p>
         <p style={S.heroBody}>{t(T.overview.body2, lang)}</p>
         <div style={S.heroCtas}>
           <button style={S.ctaPrimary}   onClick={() => goTo("Merchandise")}>{t(T.overview.merchCta, lang)}</button>
-          <button style={S.ctaSecondary} onClick={() => goTo("Techniques")}>{t(T.overview.exploreCta, lang)}</button>
           <button style={S.ctaSecondary} onClick={() => goTo("Concepts")}>{t(T.overview.conceptsCta, lang)}</button>
+          <button style={S.ctaSecondary} onClick={() => goTo("Techniques")}>{t(T.overview.exploreCta, lang)}</button>
+          <button style={S.ctaSecondary} onClick={() => goTo("StrengthConditioning")}>{t(T.overview.scCta, lang)}</button>
           <button style={S.ctaMission}   onClick={() => goTo("MentalHealth")}>{t(T.overview.missionCta, lang)}</button>
         </div>
       </div>
@@ -503,8 +561,7 @@ function Modal({ pos, onClose, lang }) {
 function About({ goTo, lang }) {
   return (
     <div>
-      <div style={{ ...S.pageHeader, display: "flex", alignItems: "center", gap: 16 }}>
-        <img src="/logo192.png" alt="SubmitologY logo" style={S.aboutLogo} />
+      <div style={S.pageHeader}>
         <h2 style={S.pageTitle}>{t(T.about.pageTitle, lang)}</h2>
       </div>
       <div style={S.aboutCard}>
@@ -540,6 +597,133 @@ function About({ goTo, lang }) {
         <span style={S.invitationTag}>{t(T.about.invitationTitle, lang)}</span>
         <p style={S.invitationText}>{t(T.about.invitation, lang)}</p>
       </div>
+    </div>
+  );
+}
+
+// ─── STRENGTH & CONDITIONING ──────────────────────────────────────────────────
+function StrengthConditioning({ lang }) {
+  const [age, setAge]   = useState(null);
+  const [level, setLevel] = useState(null);
+  const [type, setType] = useState(null);
+  const [built, setBuilt] = useState(false);
+
+  const complete = age && level && type;
+  const program  = complete ? buildSCProgram(age, level, type) : null;
+
+  const blockTitleKey = { lower: T.sc.lowerTitle, upperPush: T.sc.upperPushTitle, upperPull: T.sc.upperPullTitle, core: T.sc.coreTitle, conditioning: T.sc.conditioningTitle };
+
+  const handleChange = (setter) => (v) => { setter(v); setBuilt(false); };
+
+  return (
+    <div>
+      <div style={S.pageHeader}>
+        <div style={S.merchTag}>{t(T.sc.pageTag, lang)}</div>
+        <h2 style={S.pageTitle}>{t(T.sc.pageTitle, lang)}</h2>
+        <p style={S.pageSubtitle}>{t(T.sc.pageSubtitle, lang)}</p>
+      </div>
+
+      {(!built || !complete) && (
+        <div style={S.filterBar}>
+          <div style={S.filterGroup}>
+            <span style={S.filterLabel}>{t(T.sc.ageLabel, lang)}</span>
+            <div style={S.pills}>
+              {AGE_RANGES.map(a => (
+                <button key={a} onClick={() => handleChange(setAge)(a)}
+                  style={{ ...S.pill, ...(age === a ? { ...S.pillActive, borderColor: "#e85d04", color: "#e85d04" } : {}) }}>
+                  {t(T.sc.ageOptions[a], lang)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={S.filterGroup}>
+            <span style={S.filterLabel}>{t(T.sc.levelLabel, lang)}</span>
+            <div style={S.pills}>
+              {DIFFS.slice(1).map(d => (
+                <button key={d} onClick={() => handleChange(setLevel)(d)}
+                  style={{ ...S.pill, ...(level === d ? { ...S.pillActive, borderColor: DIFF_COLORS[d], color: DIFF_COLORS[d] } : {}) }}>
+                  {t(T.diffs[d], lang)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={S.filterGroup}>
+            <span style={S.filterLabel}>{t(T.sc.typeLabel, lang)}</span>
+            <div style={S.pills}>
+              {PROGRAM_TYPES.map(ty => (
+                <button key={ty} onClick={() => handleChange(setType)(ty)}
+                  style={{ ...S.pill, ...(type === ty ? { ...S.pillActive, borderColor: MH_ACCENT, color: MH_ACCENT } : {}) }}>
+                  {t(T.sc.typeOptions[ty], lang)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <button
+            disabled={!complete}
+            onClick={() => setBuilt(true)}
+            style={{ ...S.ctaPrimary, ...(complete ? {} : { opacity: 0.35, cursor: "not-allowed" }), marginTop: 4 }}>
+            {t(T.sc.generateBtn, lang)}
+          </button>
+          {!complete && <p style={S.scIncomplete}>{t(T.sc.incomplete, lang)}</p>}
+        </div>
+      )}
+
+      {built && complete && program && (
+        <div>
+          <div style={S.scResultHeader}>
+            <div>
+              <div style={S.merchTag}>{t(T.sc.resultTag, lang)}</div>
+              <div style={S.scRecap}>
+                {t(T.sc.ageOptions[age], lang)} · {t(T.diffs[level], lang)} · {t(T.sc.typeOptions[type], lang)}
+              </div>
+            </div>
+            <button style={S.ctaSecondary} onClick={() => setBuilt(false)}>{t(T.sc.editBtn, lang)}</button>
+          </div>
+
+          <div style={S.scFreqBox}>
+            <span style={S.scFreqNum}>{program.frequency}</span>
+            <div>
+              <div style={S.scFreqLbl}>{t(T.sc.frequencyLbl, lang)}</div>
+              <div style={S.scFreqSub}>{program.frequency} {t(T.sc.perWeek, lang)} · {t(T.sc.restLbl, lang)} {program.restSec}s</div>
+            </div>
+          </div>
+
+          <SCBlock title={t(T.sc.warmupTitle, lang)} rx={`${program.warmup.minutes} min`} items={program.warmup.items} lang={lang} />
+          {program.blocks.map(b => (
+            <SCBlock key={b.key} title={t(blockTitleKey[b.key], lang)} rx={b.rx} items={b.items} lang={lang} />
+          ))}
+          <SCBlock title={t(T.sc.cooldownTitle, lang)} rx={`${program.cooldown.minutes} min`} items={program.cooldown.items} lang={lang} />
+
+          <div style={{ ...S.mhPlanNote, marginTop: 22 }}>
+            <span style={{ ...S.bannerDot, marginTop: 5 }} />
+            <div>
+              <strong style={{ display: "block", marginBottom: 4, color: "#e3d9fb" }}>{t(T.sc.notesTitle, lang)}</strong>
+              {t(T.sc.ageNotes[age], lang)}
+            </div>
+          </div>
+
+          <p style={S.scDisclaimer}>{t(T.sc.disclaimer, lang)}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SCBlock({ title, rx, items, lang }) {
+  return (
+    <div style={S.scBlock}>
+      <div style={S.scBlockHead}>
+        <h3 style={S.scBlockTitle}>{title}</h3>
+        <span style={S.scBlockRx}>{rx}</span>
+      </div>
+      <ul style={S.scList}>
+        {items.map(id => (
+          <li key={id} style={S.scListItem}>
+            <span style={S.scListDot} />
+            {t(T.sc.ex[id], lang)}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -657,7 +841,7 @@ const S = {
   root: { minHeight: "100vh", background: "#120e16", color: "#ede8df", fontFamily: "'Georgia','Times New Roman',serif", position: "relative" },
   nav: { position: "sticky", top: 0, zIndex: 50, background: "rgba(18,14,22,0.94)", backdropFilter: "blur(12px)", borderBottom: "1px solid #241c2a", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 },
   navBrand: { display: "flex", alignItems: "center", gap: 9, cursor: "pointer", userSelect: "none" },
-  navLogo: { width: 26, height: 26, objectFit: "contain", display: "block" },
+  navLogo: { fontSize: 19, color: "#e85d04" },
   navTitle: { fontSize: 15, fontWeight: 700, letterSpacing: "-0.4px" },
   navLinks: { display: "flex", gap: 2, alignItems: "center" },
   navBtn: { background: "none", border: "none", color: "#666", fontSize: 12, fontFamily: "monospace", letterSpacing: "0.04em", padding: "5px 11px", borderRadius: 4, cursor: "pointer" },
@@ -669,7 +853,6 @@ const S = {
   main: { position: "relative", zIndex: 1, padding: "40px 32px 80px", maxWidth: 1100, margin: "0 auto" },
   overviewWrap: { display: "flex", flexDirection: "column", gap: 50 },
   hero: { paddingTop: 18 },
-  heroLogo: { width: 72, height: 72, objectFit: "contain", marginBottom: 20, display: "block" },
   heroTag: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.22em", color: "#555", textTransform: "uppercase", marginBottom: 12 },
   heroTitle: { fontSize: "clamp(36px, 7vw, 70px)", fontWeight: 700, lineHeight: 1.06, margin: "0 0 20px", letterSpacing: "-2px" },
   heroAccent: { color: "#e85d04", fontStyle: "italic" },
@@ -708,7 +891,6 @@ const S = {
   cardDesc: { fontSize: 12, color: "#777", lineHeight: 1.6, margin: "0 0 9px" },
   cardCta: { fontSize: 11, color: "#e85d04", fontFamily: "monospace" },
   pageHeader: { marginBottom: 30 },
-  aboutLogo: { width: 56, height: 56, objectFit: "contain", flexShrink: 0, display: "block" },
   pageTitle: { fontSize: 32, fontWeight: 700, letterSpacing: "-1px", margin: "0 0 8px" },
   pageSubtitle: { color: "#666", fontSize: 14, lineHeight: 1.6, margin: 0 },
   conceptGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 13 },
@@ -740,6 +922,21 @@ const S = {
   invitationBox: { marginTop: 28, maxWidth: 660, borderLeft: `2px solid #e85d04`, paddingLeft: 22 },
   invitationTag: { display: "block", fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#e85d04", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 },
   invitationText: { fontSize: 17, color: "#ede8df", lineHeight: 1.7, margin: 0, fontStyle: "italic", letterSpacing: "-0.1px" },
+  scIncomplete: { fontSize: 12, color: "#666", fontFamily: "monospace", marginTop: 10, marginBottom: 0 },
+  scResultHeader: { display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 18 },
+  scRecap: { fontSize: 15, color: "#ede8df", fontWeight: 600 },
+  scFreqBox: { display: "flex", alignItems: "center", gap: 18, background: "rgba(232,93,4,0.06)", border: "1px solid rgba(232,93,4,0.2)", borderRadius: 8, padding: "16px 20px", marginBottom: 22, maxWidth: 760 },
+  scFreqNum: { fontSize: 34, fontWeight: 700, color: "#e85d04", letterSpacing: "-1px", flexShrink: 0 },
+  scFreqLbl: { fontSize: 14, fontWeight: 700, marginBottom: 3 },
+  scFreqSub: { fontSize: 12, color: "#888", fontFamily: "monospace" },
+  scBlock: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 8, padding: "16px 20px", marginBottom: 12, maxWidth: 760 },
+  scBlockHead: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10, flexWrap: "wrap", gap: 6 },
+  scBlockTitle: { fontSize: 14, fontWeight: 700, margin: 0, letterSpacing: "-0.1px" },
+  scBlockRx: { fontFamily: "monospace", fontSize: 11, color: MH_ACCENT, background: "rgba(140,122,230,0.08)", border: "1px solid rgba(140,122,230,0.25)", borderRadius: 20, padding: "3px 10px" },
+  scList: { margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 7 },
+  scListItem: { fontSize: 13, color: "#ccc", display: "flex", alignItems: "center", gap: 8 },
+  scListDot: { width: 4, height: 4, borderRadius: "50%", background: "#e85d04", flexShrink: 0 },
+  scDisclaimer: { marginTop: 20, fontSize: 11, color: "#555", fontFamily: "monospace", lineHeight: 1.7, maxWidth: 640 },
   aboutBody: { fontSize: 14, color: "#999", lineHeight: 1.85, margin: "0 0 13px" },
   aboutSub: { fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", color: "#555", textTransform: "uppercase", margin: "0 0 13px", fontWeight: 400 },
   aboutCatRow: { display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13 },
