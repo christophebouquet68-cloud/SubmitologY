@@ -537,7 +537,13 @@ function Overview({ goTo, lang }) {
       </div>
 
       <div style={S.heroThesis}>
-        <p style={S.heroThesisText}>{t(T.overview.body2, lang)}</p>
+        <div style={S.heroThesisTextCol}>
+          <p style={S.heroThesisText}>{t(T.overview.body2, lang)}</p>
+        </div>
+        <div style={S.heroThesisLogoCol}>
+          <img src="/logo512.png" alt="SubmitologY logo" style={S.heroThesisLogo} />
+          <p style={S.heroThesisLogoCaption}>{t(T.overview.logoCaption, lang)}</p>
+        </div>
       </div>
 
       <div style={S.mapHighlight} onClick={() => goTo("Techniques")}>
@@ -701,17 +707,15 @@ function About({ goTo, lang }) {
         <p style={S.aboutBody}>{t(T.about.body2, lang)}</p>
         <div style={S.addDivider} />
         <h3 style={S.aboutSub}>{t(T.about.catsTitle, lang)}</h3>
-        {CATS.slice(1).map(c => (
-          <div key={c} style={S.aboutCatRow}>
-            <span style={{ ...S.catDot, background: CAT_COLORS[c], flexShrink: 0, marginTop: 3 }} />
+        {["position", "transition", "submission"].map(ty => (
+          <div key={ty} style={S.aboutCatRow}>
+            <span style={{ ...S.catDot, background: TECH_TYPE_COLOR[ty], flexShrink: 0, marginTop: 3 }} />
             <div>
-              <strong style={{ color: CAT_COLORS[c] }}>{t(T.cats[c], lang)}</strong>
-              <span style={{ color: "#777", marginLeft: 10, fontSize: 13 }}>{t(T.about.catDescs[c], lang)}</span>
+              <strong style={{ color: TECH_TYPE_COLOR[ty] }}>{t(T.techmap[`type${ty[0].toUpperCase()}${ty.slice(1)}`], lang)}</strong>
+              <span style={{ color: "#777", marginLeft: 10, fontSize: 13 }}>{t(T.about.typeDescs[ty], lang)}</span>
             </div>
           </div>
         ))}
-        <div style={S.addDivider} />
-        <p style={{ ...S.aboutBody, color: "#444", fontSize: 12 }}>{t(T.about.footer, lang)}</p>
       </div>
 
       <div style={{ ...S.aboutCard, marginTop: 18, background: "rgba(140,122,230,0.05)", borderColor: "rgba(140,122,230,0.2)" }}>
@@ -1208,8 +1212,12 @@ const S = {
   mhSupportNote: { marginTop: 36, fontSize: 11, color: "#555", fontFamily: "monospace", lineHeight: 1.7, maxWidth: 620 },
   mhPlanNote: { display: "flex", alignItems: "flex-start", gap: 9, marginTop: 14, maxWidth: 640, background: "rgba(140,122,230,0.06)", border: "1px solid rgba(140,122,230,0.2)", borderRadius: 6, padding: "10px 14px", fontSize: 12, color: "#e3d9fb", fontFamily: "monospace", lineHeight: 1.6 },
   invitationBox: { marginTop: 28, maxWidth: 660, borderLeft: `2px solid #e85d04`, paddingLeft: 22 },
-  heroThesis: { margin: "24px 0 4px", maxWidth: 640, borderLeft: `2px solid ${MH_ACCENT}`, paddingLeft: 22 },
+  heroThesis: { display: "flex", alignItems: "flex-start", gap: 28, margin: "24px 0 4px", maxWidth: 820, flexWrap: "wrap" },
+  heroThesisTextCol: { flex: "1 1 420px", borderLeft: `2px solid ${MH_ACCENT}`, paddingLeft: 22 },
   heroThesisText: { fontSize: 16, color: "#ccc", lineHeight: 1.75, margin: 0, fontStyle: "italic", letterSpacing: "-0.1px" },
+  heroThesisLogoCol: { flex: "0 0 260px", display: "flex", flexDirection: "row", alignItems: "center", gap: 14 },
+  heroThesisLogo: { width: 88, height: 88, borderRadius: "50%", objectFit: "cover", border: "1px solid #332a3a", flexShrink: 0 },
+  heroThesisLogoCaption: { fontSize: 11, color: "#777", fontStyle: "italic", lineHeight: 1.6, margin: 0, textAlign: "left", maxWidth: 150 },
   invitationTag: { display: "block", fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#e85d04", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 },
   invitationText: { fontSize: 17, color: "#ede8df", lineHeight: 1.7, margin: 0, fontStyle: "italic", letterSpacing: "-0.1px" },
   scIncomplete: { fontSize: 12, color: "#666", fontFamily: "monospace", marginTop: 10, marginBottom: 0 },

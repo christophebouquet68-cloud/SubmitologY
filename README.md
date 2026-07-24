@@ -1,52 +1,53 @@
 # SubmitologY — Brand Refresh (Merchandising + Mental Health + S&C + Technique Map)
 
-This folder contains only the files that changed. Drop `src/App.js`, `src/i18n.js`,
-and `public/index.html` into your existing project (overwriting the current
-versions) and `npm start` / `npm run build` as usual — no other files, images,
-or `node_modules` were touched. The build was verified locally with
-`react-scripts build` (compiles cleanly, zero warnings).
+This folder contains only the files that changed *and* any new asset the code
+now depends on. Drop `src/App.js`, `src/i18n.js`, and `public/index.html` into
+your existing project (overwriting the current versions), and also add
+`public/logo512.png` if it isn't already there — the Overview page references
+it directly. Then `npm start` / `npm run build` as usual. Verified locally
+with `react-scripts build` (compiles cleanly, zero warnings).
 
 ## What changed, and why
 
-### 0. Stat row removed, brand thesis moved up
-The "3 Categories · 7 Sub-categories · 34 Techniques Mapped · 1%" stat row
-is gone. In its place, right under the CTA buttons, is the second hero
-paragraph — the "SubmitologY... double meaning" brand-thesis statement —
-now styled as a distinct pull-quote (violet left rule, italic) instead of
-sitting as plain body text above the buttons. The first hero paragraph
-(business description) stays in the hero as before. The highlight banner
-and the sub-category grid below are unchanged.
+### 0. Removed outdated "takedowns" mention on About
+The intro paragraph now reads: *"SubmitologY is a structured BJJ knowledge
+base built to help practitioners of all levels explore positions,
+submissions and transitions, in an organised, visual way."* — dropping
+"takedowns," which isn't a category in the Technique Map. Updated in all 5
+languages.
 
-### 1. Overview page reflects the Technique Map, not the old grid
-The clickable category rectangles are computed directly from the Technique
-Map data itself — nothing hardcoded:
+### 1. "Built with React..." footer line removed
+The small "Built with React · Images via Unsplash · Video links via YouTube"
+line under the Categories section on the About page is gone.
 
-```js
-TECHMAP_SUBCATS        // 7 distinct sub-categories (guard, dominant, guardPass, …)
-TECHMAP_SUBCAT_COUNT   // per-subcategory technique counts, e.g. guard: 6, choke: 6
-TECHMAP_SUBCAT_TYPE    // which top-level type (position/transition/submission) each belongs to
-```
+### 2. About page second paragraph updated
+Now reads: *"Explore techniques in a unique way using our interactive BJJ
+map, guiding you through various inter-related techniques in an intuitive
+way."* Translated across all 5 languages.
 
-If you add or remove techniques from `TECHMAP_NODES` later, the grid updates
-automatically — there's nothing to keep in sync by hand.
+### 3. About page "Categories Explained" matches the Technique Map
+Lists exactly the map's three top-level types — **Positions**,
+**Transitions**, **Submissions** — colored with the same scheme used in the
+Technique Map's "Show" filter chips (`TECH_TYPE_COLOR`).
 
-- **Highlight banner**, between the hero and the category grid: an
-  orange-accented, clickable card tagged "New — Interactive" that reads
-  "Explore the Technique Map" with a one-line pitch and an "Open the Map →"
-  CTA.
-- **Category grid** lists the map's 7 actual sub-categories — Guards,
-  Dominant Control, Guard Passes, Sweeps, Escapes, Chokes & Strangles, Joint
-  Locks — each showing its real technique count and colored by its parent
-  type (teal for Positions, orange for Transitions, red for Submissions),
-  instead of the old Guards/Submissions/Transitions/Takedowns/Dark BJJ
-  taxonomy. All still link to the Techniques page.
-- All new copy translated across all 5 languages.
+### 4. Logo caption beside the logo, not below it
+The small italic kintsugi caption sits to the right of the circular logo.
 
-### 2. Technique Map replaces the Techniques section
-- 34 techniques across Positions (Guards, Dominant Control), Transitions
-  (Guard Passes, Sweeps, Escapes), and Submissions (Chokes & Strangles, Joint
-  Locks), laid out by a force-directed simulation computed once at module
-  load. Click a technique to see its description and connections.
+### 5. "New — Interactive" → "Interactive !"
+The highlight banner tag on the Technique Map callout, in all 5 languages.
+
+### 6. Logo + kintsugi caption next to the brand thesis
+The "SubmitologY... double meaning" pull-quote sits in a two-column row with
+the circular logo (`public/logo512.png`) and its caption on the right.
+
+### 7. Overview page reflects the Technique Map, not the old grid
+The clickable category rectangles and highlight banner are computed
+directly from the Technique Map data (`TECHMAP_SUBCATS`,
+`TECHMAP_SUBCAT_COUNT`, `TECHMAP_SUBCAT_TYPE`) — nothing hardcoded.
+
+### 8. Technique Map replaces the Techniques section
+- 34 techniques across Positions, Transitions, and Submissions, laid out by
+  a force-directed simulation computed once at module load.
 - **The old Techniques page is fully preserved, just hidden.** Renamed
   `TechniquesLegacy`, nothing deleted. Flip the flag near the top of
   `App.js` to restore it:
@@ -54,12 +55,11 @@ automatically — there's nothing to keep in sync by hand.
   const SHOW_LEGACY_TECHNIQUES = false; // set to true to restore the old grid view
   ```
 
-### 3. "What's New?" nav item, top-right
-Sits next to the language selector, separated from the main section links.
-Currently shows "You're up to date!" — real content goes in `T.whatsNew` in
-`i18n.js` whenever you're ready.
+### 9. "What's New?" nav item, top-right
+Sits next to the language selector. Currently shows "You're up to date!" —
+real content goes in `T.whatsNew` in `i18n.js` whenever you're ready.
 
-### 4. Everything else from before is still in place
+### 10. Everything else from before is still in place
 Aubergine-black background, synaptic-violet mental-health accent, synaptic
 background pattern, nav order (Overview → Shop → Concepts → Techniques →
 Strength & Conditioning → Mental Health → About), Strength & Conditioning
