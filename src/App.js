@@ -411,6 +411,16 @@ function computeTechMapLayout() {
 }
 const TECHMAP_LAYOUT = computeTechMapLayout();
 
+// Derived stats — computed from the technique map data itself, not hardcoded,
+// so the category grid always matches whatever is actually in the map.
+const TECHMAP_SUBCATS = [...new Set(Object.values(TECHMAP_NODES).map(n => n.sub))];
+const TECHMAP_SUBCAT_TYPE = {};
+const TECHMAP_SUBCAT_COUNT = {};
+Object.values(TECHMAP_NODES).forEach(n => {
+  TECHMAP_SUBCAT_TYPE[n.sub] = n.type;
+  TECHMAP_SUBCAT_COUNT[n.sub] = (TECHMAP_SUBCAT_COUNT[n.sub] || 0) + 1;
+});
+
 // ─── LANGUAGE SELECTOR ────────────────────────────────────────────────────────
 function LangSelector({ lang, setLang }) {
   const [open, setOpen] = useState(false);
@@ -492,7 +502,7 @@ export default function SubmitologY() {
       </button>
 
       <main style={S.main}>
-        {page === "Overview"   && <Overview   techniques={techniques} goTo={setPage} lang={lang} />}
+        {page === "Overview"   && <Overview   goTo={setPage} lang={lang} />}
         {page === "Concepts"   && <Concepts   lang={lang} />}
         {page === "Techniques" && (SHOW_LEGACY_TECHNIQUES
           ? <TechniquesLegacy filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} lang={lang} />
@@ -510,14 +520,13 @@ export default function SubmitologY() {
 }
 
 // ─── OVERVIEW ─────────────────────────────────────────────────────────────────
-function Overview({ techniques, goTo, lang }) {
+function Overview({ goTo, lang }) {
   return (
     <div style={S.overviewWrap}>
       <div style={S.hero}>
         <div style={S.heroTag}>{t(T.overview.tag, lang)}</div>
         <h1 style={S.heroTitle}>{t(T.overview.titleLine1, lang)}<br /><span style={S.heroAccent}>{t(T.overview.titleLine2, lang)}</span></h1>
         <p style={S.heroBody}>{t(T.overview.body1, lang)}</p>
-        <p style={S.heroBody}>{t(T.overview.body2, lang)}</p>
         <div style={S.heroCtas}>
           <button style={S.ctaPrimary}   onClick={() => goTo("Merchandise")}>{t(T.overview.merchCta, lang)}</button>
           <button style={S.ctaSecondary} onClick={() => goTo("Concepts")}>{t(T.overview.conceptsCta, lang)}</button>
@@ -526,31 +535,34 @@ function Overview({ techniques, goTo, lang }) {
           <button style={S.ctaMission}   onClick={() => goTo("MentalHealth")}>{t(T.overview.missionCta, lang)}</button>
         </div>
       </div>
-      <div style={S.statRow}>
-        {[
-          [String(techniques.length), t(T.overview.statTech, lang)],
-          [String(CATS.length - 1),   t(T.overview.statCats, lang)],
-          ["3",                        t(T.overview.statDiffs, lang)],
-          ["∞",                        t(T.overview.statCombo, lang)],
-          ["1%",                       t(T.overview.statGive, lang), true],
-        ].map(([n, l, give]) => (
-          <div key={l} style={S.stat}>
-            <span style={{ ...S.statNum, ...(give ? { color: MH_ACCENT } : {}) }}>{n}</span>
-            <span style={S.statLabel}>{l}</span>
-          </div>
-        ))}
+
+      <div style={S.heroThesis}>
+        <p style={S.heroThesisText}>{t(T.overview.body2, lang)}</p>
       </div>
+
+      <div style={S.mapHighlight} onClick={() => goTo("Techniques")}>
+        <div style={S.mapHighlightLeft}>
+          <div style={S.mapHighlightTag}>{t(T.overview.mapTag, lang)}</div>
+          <h3 style={S.mapHighlightTitle}>{t(T.overview.mapTitle, lang)}</h3>
+          <p style={S.mapHighlightBody}>{t(T.overview.mapBody, lang)}</p>
+        </div>
+        <span style={S.mapHighlightCta}>{t(T.overview.mapCta, lang)}</span>
+      </div>
+
       <div style={S.catGrid}>
-        {CATS.slice(1).map(c => (
-          <div key={c} style={{ ...S.catCard, borderColor: CAT_COLORS[c] + "33" }}
-            onClick={() => goTo("Techniques")}
-            onMouseEnter={e => e.currentTarget.style.borderColor = CAT_COLORS[c]}
-            onMouseLeave={e => e.currentTarget.style.borderColor = CAT_COLORS[c] + "33"}>
-            <span style={{ ...S.catDot, background: CAT_COLORS[c] }} />
-            <span style={S.catName}>{t(T.cats[c], lang)}</span>
-            <span style={S.catCount}>{techniques.filter(p => p.category === c).length} {t(T.overview.techCount, lang)}</span>
-          </div>
-        ))}
+        {TECHMAP_SUBCATS.map(sub => {
+          const color = TECH_TYPE_COLOR[TECHMAP_SUBCAT_TYPE[sub]];
+          return (
+            <div key={sub} style={{ ...S.catCard, borderColor: color + "33" }}
+              onClick={() => goTo("Techniques")}
+              onMouseEnter={e => e.currentTarget.style.borderColor = color}
+              onMouseLeave={e => e.currentTarget.style.borderColor = color + "33"}>
+              <span style={{ ...S.catDot, background: color }} />
+              <span style={S.catName}>{t(T.techmap.subcats[sub], lang)}</span>
+              <span style={S.catCount}>{TECHMAP_SUBCAT_COUNT[sub]} {t(T.overview.techCount, lang)}</span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -1131,11 +1143,17 @@ const S = {
   ctaPrimary: { background: "#e85d04", color: "#fff", border: "none", padding: "11px 24px", borderRadius: 4, fontSize: 12, fontFamily: "monospace", fontWeight: 700, cursor: "pointer", letterSpacing: "0.05em" },
   ctaSecondary: { background: "none", color: "#ede8df", border: "1px solid #332a3a", padding: "11px 24px", borderRadius: 4, fontSize: 12, fontFamily: "monospace", cursor: "pointer", letterSpacing: "0.05em" },
   ctaMission: { background: "none", color: MH_ACCENT, border: `1px solid ${MH_ACCENT}55`, padding: "11px 24px", borderRadius: 4, fontSize: 12, fontFamily: "monospace", cursor: "pointer", letterSpacing: "0.05em" },
-  statRow: { display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 1, border: "1px solid #1c151f", borderRadius: 6, overflow: "hidden" },
+  statRow: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 1, border: "1px solid #1c151f", borderRadius: 6, overflow: "hidden" },
   stat: { background: "#16121a", padding: "20px 16px", display: "flex", flexDirection: "column", gap: 4 },
   statNum: { fontSize: 32, fontWeight: 700, color: "#e85d04", letterSpacing: "-1px" },
   statLabel: { fontSize: 10, color: "#555", fontFamily: "monospace", letterSpacing: "0.05em" },
   catGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(155px,1fr))", gap: 10 },
+  mapHighlight: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap", background: "rgba(232,93,4,0.06)", border: "1px solid rgba(232,93,4,0.25)", borderRadius: 10, padding: "20px 24px", margin: "22px 0", cursor: "pointer" },
+  mapHighlightLeft: { flex: "1 1 380px" },
+  mapHighlightTag: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "#e85d04", fontWeight: 700, marginBottom: 8 },
+  mapHighlightTitle: { fontSize: 19, fontWeight: 700, margin: "0 0 6px", letterSpacing: "-0.3px" },
+  mapHighlightBody: { fontSize: 13, color: "#bbb", lineHeight: 1.6, margin: 0, maxWidth: 520 },
+  mapHighlightCta: { fontFamily: "monospace", fontSize: 13, color: "#e85d04", fontWeight: 700, whiteSpace: "nowrap" },
   catCard: { background: "#16121a", border: "1px solid transparent", borderRadius: 6, padding: "15px 13px", cursor: "pointer", display: "flex", flexDirection: "column", gap: 7, transition: "border-color 0.2s" },
   catDot: { display: "inline-block", width: 7, height: 7, borderRadius: "50%" },
   catName: { fontSize: 13, fontWeight: 700 },
@@ -1190,6 +1208,8 @@ const S = {
   mhSupportNote: { marginTop: 36, fontSize: 11, color: "#555", fontFamily: "monospace", lineHeight: 1.7, maxWidth: 620 },
   mhPlanNote: { display: "flex", alignItems: "flex-start", gap: 9, marginTop: 14, maxWidth: 640, background: "rgba(140,122,230,0.06)", border: "1px solid rgba(140,122,230,0.2)", borderRadius: 6, padding: "10px 14px", fontSize: 12, color: "#e3d9fb", fontFamily: "monospace", lineHeight: 1.6 },
   invitationBox: { marginTop: 28, maxWidth: 660, borderLeft: `2px solid #e85d04`, paddingLeft: 22 },
+  heroThesis: { margin: "24px 0 4px", maxWidth: 640, borderLeft: `2px solid ${MH_ACCENT}`, paddingLeft: 22 },
+  heroThesisText: { fontSize: 16, color: "#ccc", lineHeight: 1.75, margin: 0, fontStyle: "italic", letterSpacing: "-0.1px" },
   invitationTag: { display: "block", fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#e85d04", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 },
   invitationText: { fontSize: 17, color: "#ede8df", lineHeight: 1.7, margin: 0, fontStyle: "italic", letterSpacing: "-0.1px" },
   scIncomplete: { fontSize: 12, color: "#666", fontFamily: "monospace", marginTop: 10, marginBottom: 0 },
