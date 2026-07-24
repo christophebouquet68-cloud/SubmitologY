@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { LANGUAGES, T, t } from "./i18n";
 
 // ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -226,6 +226,10 @@ const CATS  = ["All", "Guards", "Submissions", "Transitions", "Takedowns", "Dark
 const DIFFS = ["All", "Beginner", "Intermediate", "Advanced"];
 // Merchandise and Mental Health are promoted higher in the nav per brand refresh.
 const NAV_KEYS = ["Overview", "Merchandise", "Concepts", "Techniques", "StrengthConditioning", "MentalHealth", "About"];
+// The "Techniques" nav item now shows the interactive Technique Map by default.
+// The original grid+filter+photo view is fully preserved as TechniquesLegacy —
+// flip this to true (and see the routing in the root component) to restore it.
+const SHOW_LEGACY_TECHNIQUES = false;
 
 const CAT_COLORS  = { Guards: "#4cc9f0", Submissions: "#e85d04", Transitions: "#a29bfe", Takedowns: "#55efc4", "Dark BJJ": "#d63031" };
 const DIFF_COLORS = { Beginner: "#2ecc71", Intermediate: "#f39c12", Advanced: "#e74c3c" };
@@ -302,6 +306,111 @@ function buildSCProgram(age, level, type) {
   };
 }
 
+// ─── TECHNIQUE MAP — data + force-directed layout ────────────────────────────
+// Names/descriptions are English-only for now, consistent with SEED_TECHNIQUES.
+const TECH_TYPE_COLOR = { position: "#4cc9f0", transition: "#e85d04", submission: "#d63031" };
+
+const TECHMAP_NODES = {
+  closedGuard:{name:"Closed Guard",type:"position",sub:"guard",hx:170,hy:190,desc:"Legs locked around the opponent's waist, controlling distance and setting up attacks from the bottom."},
+  openGuard:{name:"Open Guard",type:"position",sub:"guard",hx:250,hy:140,desc:"A family of guards played with the legs unlocked, using feet, hooks or frames to control distance and off-balance the opponent."},
+  halfGuard:{name:"Half Guard",type:"position",sub:"guard",hx:140,hy:270,desc:"One of the opponent's legs is trapped between yours, used to prevent a full pass while hunting sweeps and underhooks."},
+  butterflyGuard:{name:"Butterfly Guard",type:"position",sub:"guard",hx:250,hy:250,desc:"Seated guard with both feet hooked inside the thighs of the opponent, generating lift for sweeps."},
+  deLaRivaGuard:{name:"De La Riva Guard",type:"position",sub:"guard",hx:320,hy:180,desc:"One leg hooks around the outside of the opponent's lead leg, controlling their base from a distance."},
+  xGuard:{name:"X-Guard",type:"position",sub:"guard",hx:320,hy:270,desc:"Positioned underneath the opponent with the legs crossed around one of their legs, a powerful sweeping platform."},
+  mount:{name:"Mount",type:"position",sub:"dominant",hx:170,hy:470,desc:"Sitting astride the opponent's torso, one of the most dominant and highest-scoring control positions."},
+  sideControl:{name:"Side Control",type:"position",sub:"dominant",hx:250,hy:510,desc:"Pinning the opponent perpendicular to their body from the side, controlling their hips and shoulders."},
+  kneeOnBelly:{name:"Knee-on-Belly",type:"position",sub:"dominant",hx:140,hy:550,desc:"A mobile pin with one knee driven into the opponent's stomach, trading stability for freedom to attack."},
+  backControl:{name:"Back Control",type:"position",sub:"dominant",hx:240,hy:590,desc:"Attached to the opponent's back with hooks or a body triangle — considered the most dominant position in BJJ."},
+  northSouth:{name:"North-South",type:"position",sub:"dominant",hx:320,hy:540,desc:"Controlling from the opponent's head, facing the opposite direction, chest to chest."},
+  toreandoPass:{name:"Toreando Pass",type:"transition",sub:"guardPass",hx:520,hy:110,desc:"A standing pass that sweeps the opponent's legs to one side like a bullfighter's cape, circling around them."},
+  kneeCutPass:{name:"Knee Cut Pass",type:"transition",sub:"guardPass",hx:600,hy:80,desc:"Driving a knee across the opponent's leg to slice through to side control while controlling their far arm."},
+  doubleUnderPass:{name:"Double Under Pass",type:"transition",sub:"guardPass",hx:600,hy:160,desc:"Both arms hook under the legs of the opponent to stack them and drive through to a dominant position."},
+  legDrag:{name:"Leg Drag",type:"transition",sub:"guardPass",hx:680,hy:110,desc:"Pulling the opponent's leg across your body to take their hip out of the equation en route to the back."},
+  scissorSweep:{name:"Scissor Sweep",type:"transition",sub:"sweep",hx:520,hy:250,desc:"A classic closed guard sweep using a scissoring leg motion to off-balance and roll the opponent over."},
+  hipBumpSweep:{name:"Hip Bump Sweep",type:"transition",sub:"sweep",hx:600,hy:220,desc:"Sitting up from closed guard and driving the hips into the opponent to knock them backward."},
+  butterflySweep:{name:"Butterfly Sweep",type:"transition",sub:"sweep",hx:680,hy:250,desc:"Using the butterfly hooks to elevate and off-balance the opponent to one side."},
+  berimbolo:{name:"Berimbolo",type:"transition",sub:"sweep",hx:600,hy:300,desc:"An inverted rolling sweep from De La Riva guard that ends with taking the opponent's back."},
+  xGuardSweep:{name:"X-Guard Sweep",type:"transition",sub:"sweep",hx:520,hy:320,desc:"Using the leg control of X-guard to off-balance and elevate the opponent onto their back."},
+  mountEscape:{name:"Mount Escape (Upa)",type:"transition",sub:"escape",hx:780,hy:210,desc:"Bridging and rolling the opponent off from underneath mount to recover guard."},
+  sideControlEscape:{name:"Side Control Escape",type:"transition",sub:"escape",hx:850,hy:170,desc:"Framing and shrimping to create space and recover guard from underneath side control."},
+  backEscape:{name:"Back Escape",type:"transition",sub:"escape",hx:850,hy:250,desc:"Removing the opponent's hooks and turning into them to neutralise back control."},
+  rearNakedChoke:{name:"Rear Naked Choke",type:"submission",sub:"choke",hx:520,hy:490,desc:"A blood choke applied from back control — the most common finish from that position."},
+  guillotine:{name:"Guillotine",type:"submission",sub:"choke",hx:600,hy:460,desc:"A front headlock choke applied when the opponent's head is trapped under an arm, from guard or standing."},
+  triangleChoke:{name:"Triangle Choke",type:"submission",sub:"choke",hx:680,hy:490,desc:"Locking the legs around the opponent's neck and one arm to cut off blood flow, usually from guard."},
+  armTriangle:{name:"Arm Triangle",type:"submission",sub:"choke",hx:600,hy:540,desc:"Trapping one of the opponent's arms against their own neck using shoulder pressure, typically from side control."},
+  crossCollarChoke:{name:"Cross Collar Choke",type:"submission",sub:"choke",hx:520,hy:570,desc:"Using crossed grips on the opponent's own collar to choke them, common from mount or guard."},
+  bowAndArrowChoke:{name:"Bow and Arrow Choke",type:"submission",sub:"choke",hx:680,hy:570,desc:"A powerful collar choke from back control using the legs to pull the opponent into the choke."},
+  armbar:{name:"Armbar",type:"submission",sub:"jointLock",hx:780,hy:440,desc:"Hyperextending the elbow by controlling the arm across the hips — from guard, mount, or side control."},
+  kimura:{name:"Kimura",type:"submission",sub:"jointLock",hx:850,hy:480,desc:"A shoulder lock using a figure-four grip on the wrist and arm, attacking internal shoulder rotation."},
+  americana:{name:"Americana",type:"submission",sub:"jointLock",hx:850,hy:550,desc:"A shoulder lock attacking external rotation, typically applied from side control or mount."},
+  omoplata:{name:"Omoplata",type:"submission",sub:"jointLock",hx:780,hy:590,desc:"A shoulder lock using the legs to trap the arm, applied from guard without using the hands."},
+  straightAnkleLock:{name:"Straight Ankle Lock",type:"submission",sub:"jointLock",hx:850,hy:620,desc:"Hyperextending the ankle by trapping the foot and applying pressure with the hips or arm."},
+};
+
+const TECHMAP_EDGES = [
+  ["closedGuard","scissorSweep"],["closedGuard","hipBumpSweep"],["closedGuard","triangleChoke"],
+  ["closedGuard","armbar"],["closedGuard","omoplata"],["closedGuard","crossCollarChoke"],["closedGuard","guillotine"],
+  ["openGuard","deLaRivaGuard"],["openGuard","butterflyGuard"],["openGuard","xGuard"],
+  ["openGuard","toreandoPass"],["openGuard","legDrag"],
+  ["halfGuard","kimura"],["halfGuard","backControl"],["halfGuard","kneeCutPass"],["halfGuard","backEscape"],
+  ["butterflyGuard","butterflySweep"],["butterflyGuard","xGuard"],
+  ["deLaRivaGuard","berimbolo"],["xGuard","xGuardSweep"],
+  ["scissorSweep","mount"],["hipBumpSweep","mount"],["butterflySweep","mount"],["butterflySweep","backControl"],
+  ["berimbolo","backControl"],["xGuardSweep","mount"],["xGuardSweep","backControl"],
+  ["toreandoPass","sideControl"],["toreandoPass","kneeOnBelly"],["kneeCutPass","sideControl"],["kneeCutPass","mount"],
+  ["doubleUnderPass","mount"],["doubleUnderPass","sideControl"],["legDrag","backControl"],["legDrag","sideControl"],
+  ["mount","armbar"],["mount","americana"],["mount","crossCollarChoke"],["mount","backControl"],["mount","kneeOnBelly"],["mount","mountEscape"],
+  ["sideControl","kimura"],["sideControl","americana"],["sideControl","armTriangle"],["sideControl","kneeOnBelly"],
+  ["sideControl","sideControlEscape"],
+  ["kneeOnBelly","armbar"],["kneeOnBelly","crossCollarChoke"],
+  ["backControl","rearNakedChoke"],["backControl","bowAndArrowChoke"],["backControl","armbar"],["backControl","backEscape"],
+  ["northSouth","kimura"],["northSouth","armTriangle"],["northSouth","sideControl"],
+  ["mountEscape","closedGuard"],["mountEscape","openGuard"],
+  ["sideControlEscape","closedGuard"],["sideControlEscape","openGuard"],
+  ["backEscape","openGuard"],
+];
+
+const TECHMAP_NEIGHBORS = {};
+Object.keys(TECHMAP_NODES).forEach(id => { TECHMAP_NEIGHBORS[id] = []; });
+TECHMAP_EDGES.forEach(([a, b]) => { TECHMAP_NEIGHBORS[a].push(b); TECHMAP_NEIGHBORS[b].push(a); });
+
+// Layout is computed once at module load (pure function of static data above),
+// not on every render — this is the "pre-processed" approach used elsewhere on
+// the site (e.g. the S&C program builder).
+function computeTechMapLayout() {
+  const ids = Object.keys(TECHMAP_NODES);
+  const pos = {};
+  ids.forEach(id => {
+    const n = TECHMAP_NODES[id];
+    pos[id] = { x: n.hx + (Math.random() - 0.5) * 20, y: n.hy + (Math.random() - 0.5) * 20, vx: 0, vy: 0 };
+  });
+  const REPULSE_K = 6000, SPRING_K = 0.03, REST_LEN = 85, HOME_K = 0.015, DAMPING = 0.85, ITER = 300;
+  for (let iter = 0; iter < ITER; iter++) {
+    for (let i = 0; i < ids.length; i++) {
+      for (let j = i + 1; j < ids.length; j++) {
+        const a = pos[ids[i]], b = pos[ids[j]];
+        const dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy + 0.01, d = Math.sqrt(d2);
+        const f = REPULSE_K / d2, fx = (f * dx) / d, fy = (f * dy) / d;
+        a.vx -= fx; a.vy -= fy; b.vx += fx; b.vy += fy;
+      }
+    }
+    TECHMAP_EDGES.forEach(([a, b]) => {
+      const na = pos[a], nb = pos[b];
+      const dx = nb.x - na.x, dy = nb.y - na.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+      const diff = d - REST_LEN, fx = SPRING_K * diff * (dx / d), fy = SPRING_K * diff * (dy / d);
+      na.vx += fx; na.vy += fy; nb.vx -= fx; nb.vy -= fy;
+    });
+    ids.forEach(id => {
+      const n = TECHMAP_NODES[id], p = pos[id];
+      p.vx += (n.hx - p.x) * HOME_K; p.vy += (n.hy - p.y) * HOME_K;
+      p.vx *= DAMPING; p.vy *= DAMPING;
+      p.x += p.vx; p.y += p.vy;
+    });
+  }
+  return pos;
+}
+const TECHMAP_LAYOUT = computeTechMapLayout();
+
 // ─── LANGUAGE SELECTOR ────────────────────────────────────────────────────────
 function LangSelector({ lang, setLang }) {
   const [open, setOpen] = useState(false);
@@ -368,6 +477,11 @@ export default function SubmitologY() {
             </button>
           ))}
           <LangSelector lang={lang} setLang={setLang} />
+          <button onClick={() => setPage("WhatsNew")}
+            style={{ ...S.navBtn, ...S.navWhatsNew, ...(page === "WhatsNew" ? S.navWhatsNewActive : {}) }}>
+            <span style={S.navWhatsNewDot} />
+            {t(T.nav.whatsNew, lang)}
+          </button>
         </div>
       </nav>
 
@@ -380,11 +494,14 @@ export default function SubmitologY() {
       <main style={S.main}>
         {page === "Overview"   && <Overview   techniques={techniques} goTo={setPage} lang={lang} />}
         {page === "Concepts"   && <Concepts   lang={lang} />}
-        {page === "Techniques" && <Techniques filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} lang={lang} />}
+        {page === "Techniques" && (SHOW_LEGACY_TECHNIQUES
+          ? <TechniquesLegacy filtered={filtered} cat={cat} setCat={setCat} diff={diff} setDiff={setDiff} onSelect={setSelected} lang={lang} />
+          : <TechniqueMap lang={lang} />)}
         {page === "StrengthConditioning" && <StrengthConditioning lang={lang} />}
         {page === "About"      && <About      goTo={setPage} lang={lang} />}
         {page === "Merchandise"&& <Merchandise lang={lang} />}
         {page === "MentalHealth" && <MentalHealth lang={lang} />}
+        {page === "WhatsNew" && <WhatsNew lang={lang} />}
       </main>
 
       {selected  && <Modal       pos={selected} onClose={() => setSelected(null)} lang={lang} />}
@@ -461,7 +578,8 @@ function Concepts({ lang }) {
 }
 
 // ─── TECHNIQUES ───────────────────────────────────────────────────────────────
-function Techniques({ filtered, cat, setCat, diff, setDiff, onSelect, lang }) {
+// ─── TECHNIQUES (legacy grid+filter view — currently hidden, see SHOW_LEGACY_TECHNIQUES) ──
+function TechniquesLegacy({ filtered, cat, setCat, diff, setDiff, onSelect, lang }) {
   const count = filtered.length;
   return (
     <div>
@@ -728,6 +846,155 @@ function SCBlock({ title, rx, items, lang }) {
   );
 }
 
+// ─── TECHNIQUE MAP ────────────────────────────────────────────────────────────
+function TechniqueMap({ lang }) {
+  const [selected, setSelected] = useState(null);
+  const [activeTypes, setActiveTypes] = useState({ position: true, transition: true, submission: true });
+
+  const ids = Object.keys(TECHMAP_NODES);
+
+  const viewBox = useMemo(() => {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    ids.forEach(id => {
+      const p = TECHMAP_LAYOUT[id];
+      minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+      minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+    });
+    const PAD = 60;
+    return `${minX - PAD} ${minY - PAD} ${(maxX - minX) + PAD * 2} ${(maxY - minY) + PAD * 2}`;
+  }, [ids]);
+
+  const zones = useMemo(() => {
+    const z = {};
+    ids.forEach(id => {
+      const n = TECHMAP_NODES[id];
+      if (!z[n.sub]) z[n.sub] = { sx: 0, sy: 0, c: 0 };
+      z[n.sub].sx += n.hx; z[n.sub].sy += n.hy; z[n.sub].c += 1;
+    });
+    Object.keys(z).forEach(k => { z[k].x = z[k].sx / z[k].c; z[k].y = z[k].sy / z[k].c - 30; });
+    return z;
+  }, [ids]);
+
+  const toggleType = (ty) => setActiveTypes(prev => ({ ...prev, [ty]: !prev[ty] }));
+
+  const selNode = selected ? TECHMAP_NODES[selected] : null;
+  const selNeighbors = selected ? TECHMAP_NEIGHBORS[selected] : [];
+
+  return (
+    <div>
+      <div style={S.pageHeader}>
+        <div style={S.merchTag}>{t(T.techmap.pageTag, lang)}</div>
+        <h2 style={S.pageTitle}>{t(T.techmap.pageTitle, lang)}</h2>
+        <p style={S.pageSubtitle}>{t(T.techmap.pageSubtitle, lang)}</p>
+      </div>
+
+      <div style={S.filterBar}>
+        <div style={S.filterGroup}>
+          <span style={S.filterLabel}>{t(T.techmap.filterLbl, lang)}</span>
+          <div style={S.pills}>
+            {["position", "transition", "submission"].map(ty => (
+              <button key={ty} onClick={() => toggleType(ty)}
+                style={{ ...S.pill, ...(activeTypes[ty] ? { ...S.pillActive, borderColor: TECH_TYPE_COLOR[ty], color: TECH_TYPE_COLOR[ty] } : {}) }}>
+                {t(T.techmap[`type${ty[0].toUpperCase()}${ty.slice(1)}`], lang)}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={S.techmapStage}>
+        <div style={S.techmapGraphCard}>
+          <svg viewBox={viewBox} style={S.techmapSvg}>
+            {Object.keys(zones).map(sub => (
+              <text key={sub} x={zones[sub].x} y={zones[sub].y} textAnchor="middle" style={S.techmapZoneLabel}>
+                {t(T.techmap.subcats[sub], lang)}
+              </text>
+            ))}
+            {TECHMAP_EDGES.map(([a, b], i) => {
+              const na = TECHMAP_LAYOUT[a], nb = TECHMAP_LAYOUT[b];
+              const dim = !activeTypes[TECHMAP_NODES[a].type] || !activeTypes[TECHMAP_NODES[b].type];
+              const involved = selected && (a === selected || b === selected);
+              return (
+                <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+                  style={{
+                    stroke: involved ? TECH_TYPE_COLOR[TECHMAP_NODES[selected].type] : "#3a3242",
+                    strokeWidth: involved ? 2 : 1,
+                    opacity: dim ? 0 : (selected ? (involved ? 1 : 0.3) : 1),
+                    transition: "opacity 0.15s, stroke 0.15s",
+                  }} />
+              );
+            })}
+            {ids.map(id => {
+              const n = TECHMAP_NODES[id];
+              const p = TECHMAP_LAYOUT[id];
+              const cx = p.x - n.hx, cy = p.y - n.hy;
+              const mag = Math.hypot(cx, cy) || 1;
+              const lx = p.x + (cx / mag) * 15, ly = p.y + (cy / mag) * 15;
+              const anchor = cx >= 0 ? "start" : "end";
+              const dim = !activeTypes[n.type] || (selected && id !== selected && !selNeighbors.includes(id));
+              return (
+                <g key={id} onClick={() => setSelected(id)} style={{ cursor: "pointer", opacity: dim ? 0.25 : 1, transition: "opacity 0.15s", display: activeTypes[n.type] ? "" : "none" }}>
+                  <circle cx={p.x} cy={p.y} r={9} fill={TECH_TYPE_COLOR[n.type]} stroke="#0d0a0f" strokeWidth={2} />
+                  <text x={lx} y={ly} textAnchor={anchor} style={S.techmapNodeLabel}>{n.name}</text>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+
+        <div style={S.techmapPanel}>
+          {!selNode ? (
+            <div style={S.techmapEmpty}>{t(T.techmap.emptyPanel, lang)}</div>
+          ) : (
+            <div>
+              <div style={{ ...S.merchTag, color: TECH_TYPE_COLOR[selNode.type] }}>
+                {t(T.techmap[`type${selNode.type[0].toUpperCase()}${selNode.type.slice(1)}`], lang)}
+              </div>
+              <h3 style={S.techmapPanelName}>{selNode.name}</h3>
+              <div style={S.techmapBreadcrumb}>{t(T.techmap.subcats[selNode.sub], lang)}</div>
+              <p style={S.techmapPanelDesc}>{selNode.desc}</p>
+              <div style={S.filterLabel}>{t(T.techmap.connectsTo, lang)} ({selNeighbors.length})</div>
+              <div style={{ marginTop: 8 }}>
+                {selNeighbors.map(nid => (
+                  <button key={nid} onClick={() => setSelected(nid)} style={S.techmapConnChip}>
+                    <span style={{ ...S.techmapConnDot, background: TECH_TYPE_COLOR[TECHMAP_NODES[nid].type] }} />
+                    {TECHMAP_NODES[nid].name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div style={S.techmapLegend}>
+        {["position", "transition", "submission"].map(ty => (
+          <div key={ty} style={S.techmapLegendItem}>
+            <span style={{ ...S.techmapLegendDot, background: TECH_TYPE_COLOR[ty] }} />
+            {t(T.techmap[`legend${ty[0].toUpperCase()}${ty.slice(1)}`], lang)}
+          </div>
+        ))}
+      </div>
+      <p style={S.mhSupportNote}>{t(T.techmap.footNote, lang)}</p>
+    </div>
+  );
+}
+
+// ─── WHAT'S NEW ───────────────────────────────────────────────────────────────
+function WhatsNew({ lang }) {
+  return (
+    <div>
+      <div style={S.pageHeader}>
+        <div style={S.merchTag}>{t(T.whatsNew.pageTag, lang)}</div>
+        <h2 style={S.pageTitle}>{t(T.whatsNew.pageTitle, lang)}</h2>
+      </div>
+      <div style={S.aboutCard}>
+        <p style={{ ...S.aboutBody, color: "#ede8df", fontWeight: 600 }}>{t(T.whatsNew.message, lang)}</p>
+      </div>
+    </div>
+  );
+}
+
 // ─── MERCHANDISE ──────────────────────────────────────────────────────────────
 function Merchandise({ lang }) {
   return (
@@ -846,6 +1113,9 @@ const S = {
   navLinks: { display: "flex", gap: 2, alignItems: "center" },
   navBtn: { background: "none", border: "none", color: "#666", fontSize: 12, fontFamily: "monospace", letterSpacing: "0.04em", padding: "5px 11px", borderRadius: 4, cursor: "pointer" },
   navActive: { color: "#e85d04" },
+  navWhatsNew: { display: "flex", alignItems: "center", gap: 6, border: "1px solid #241c2a", borderRadius: 20, padding: "5px 12px", marginLeft: 6, color: "#888" },
+  navWhatsNewActive: { color: "#ede8df", borderColor: "#332a3a" },
+  navWhatsNewDot: { width: 6, height: 6, borderRadius: "50%", background: "#2ecc71", flexShrink: 0 },
   banner: { position: "relative", zIndex: 40, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "rgba(140,122,230,0.07)", borderBottom: "1px solid rgba(140,122,230,0.18)", color: "#e3d9fb", fontFamily: "monospace", fontSize: 11, letterSpacing: "0.02em", padding: "8px 16px", cursor: "pointer", textAlign: "center", flexWrap: "wrap" },
   bannerDot: { display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: MH_ACCENT, flexShrink: 0 },
   bannerText: { color: "#e3d9fb" },
@@ -937,6 +1207,21 @@ const S = {
   scListItem: { fontSize: 13, color: "#ccc", display: "flex", alignItems: "center", gap: 8 },
   scListDot: { width: 4, height: 4, borderRadius: "50%", background: "#e85d04", flexShrink: 0 },
   scDisclaimer: { marginTop: 20, fontSize: 11, color: "#555", fontFamily: "monospace", lineHeight: 1.7, maxWidth: 640 },
+  techmapStage: { display: "grid", gridTemplateColumns: "1fr 300px", gap: 16, alignItems: "start", marginTop: 4 },
+  techmapGraphCard: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 10, overflow: "auto", padding: 6 },
+  techmapSvg: { display: "block", width: "100%", height: "auto", minWidth: 640 },
+  techmapZoneLabel: { fontFamily: "monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", fill: "#3a3242" },
+  techmapNodeLabel: { fontFamily: "monospace", fontSize: 10, fill: "#ccc" },
+  techmapPanel: { background: "#16121a", border: "1px solid #241c2a", borderRadius: 10, padding: "18px 18px", position: "sticky", top: 20, minHeight: 320 },
+  techmapEmpty: { color: "#444", fontFamily: "monospace", fontSize: 12, lineHeight: 1.7 },
+  techmapPanelName: { fontSize: 18, fontWeight: 700, margin: "0 0 4px", letterSpacing: "-0.3px" },
+  techmapBreadcrumb: { fontFamily: "monospace", fontSize: 11, color: "#777", marginBottom: 12 },
+  techmapPanelDesc: { fontSize: 13, color: "#ccc", lineHeight: 1.65, marginBottom: 16 },
+  techmapConnChip: { display: "flex", alignItems: "center", width: "100%", textAlign: "left", fontFamily: "Georgia, serif", fontSize: 13, background: "#0d0a0f", border: "1px solid #241c2a", color: "#ddd", borderRadius: 6, padding: "8px 10px", marginBottom: 6, cursor: "pointer" },
+  techmapConnDot: { display: "inline-block", width: 6, height: 6, borderRadius: "50%", marginRight: 8, flexShrink: 0 },
+  techmapLegend: { display: "flex", gap: 20, flexWrap: "wrap", fontFamily: "monospace", fontSize: 11, color: "#777", marginTop: 18 },
+  techmapLegendItem: { display: "flex", alignItems: "center", gap: 7 },
+  techmapLegendDot: { width: 9, height: 9, borderRadius: "50%" },
   aboutBody: { fontSize: 14, color: "#999", lineHeight: 1.85, margin: "0 0 13px" },
   aboutSub: { fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", color: "#555", textTransform: "uppercase", margin: "0 0 13px", fontWeight: 400 },
   aboutCatRow: { display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, fontSize: 13 },
