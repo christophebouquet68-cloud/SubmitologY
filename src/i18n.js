@@ -1,27 +1,20 @@
-// ─── i18n.js — All UI translations for SubmitologY ───────────────────────────
+// ─── i18n.js — UI translations for SubmitologY ───────────────────────────────
 // Languages: en (English), fr (French), ja (Japanese), pt (Brazilian Portuguese), ro (Romanian)
+//
+// Note: technique names and descriptions live in data/techmap.js and are
+// English-only for now. Everything translated here is UI chrome.
+
+import { UI } from "./i18n-additions";
 
 export const LANGUAGES = [
-  { code: "en", label: "English",    flag: "🇬🇧" },
-  { code: "fr", label: "Français",   flag: "🇫🇷" },
-  { code: "ja", label: "日本語",      flag: "🇯🇵" },
-  { code: "pt", label: "Português",  flag: "🇧🇷" },
-  { code: "ro", label: "Română",     flag: "🇷🇴" },
+  { code: "en", short: "EN", label: "English",   htmlLang: "en" },
+  { code: "fr", short: "FR", label: "Français",  htmlLang: "fr" },
+  { code: "ja", short: "JA", label: "日本語",     htmlLang: "ja" },
+  { code: "pt", short: "PT", label: "Português", htmlLang: "pt-BR" },
+  { code: "ro", short: "RO", label: "Română",    htmlLang: "ro" },
 ];
 
 export const T = {
-
-  // ── NAV ──────────────────────────────────────────────────────────────────
-  nav: {
-    overview:   { en: "Overview",   fr: "Accueil",   ja: "概要",     pt: "Visão Geral", ro: "Prezentare" },
-    concepts:   { en: "Concepts",   fr: "Concepts",  ja: "概念",     pt: "Conceitos",   ro: "Concepte"   },
-    techniques: { en: "Techniques", fr: "Techniques",ja: "技術",     pt: "Técnicas",    ro: "Tehnici"    },
-    about:      { en: "About",      fr: "À propos",  ja: "について", pt: "Sobre",       ro: "Despre"     },
-    merchandise:{ en: "Shop",       fr: "Boutique",  ja: "グッズ",   pt: "Loja",        ro: "Produse"    },
-    mentalHealth:{ en: "Mental Health", fr: "Santé Mentale", ja: "メンタルヘルス", pt: "Saúde Mental", ro: "Sănătate Mintală" },
-    strength:   { en: "Strength & Conditioning", fr: "Force & Préparation Physique", ja: "筋力・コンディショニング", pt: "Força & Condicionamento", ro: "Forță & Pregătire Fizică" },
-    whatsNew:   { en: "What's New?", fr: "Nouveautés", ja: "更新情報", pt: "Novidades", ro: "Noutăți" },
-  },
 
   // ── SITE-WIDE MISSION BANNER ────────────────────────────────────────────
   banner: {
@@ -38,21 +31,11 @@ export const T = {
     body2:       { en: "The name SubmitologY — \"the study of submission\" — carries a deliberate double meaning: the technical art of the submission in grappling, and the psychological act of submitting to one's struggles in order to grow through them. This dual identity forms the intellectual and emotional core of the brand.", fr: "Le nom SubmitologY — « l'étude de la soumission » — porte une double signification délibérée : l'art technique de la soumission en grappling, et l'acte psychologique de se soumettre à ses luttes afin d'en grandir. Cette double identité forme le cœur intellectuel et émotionnel de la marque.", ja: "SubmitologYという名前 —「サブミッションの探求」— には意図的な二重の意味が込められています：組技における技術的なサブミッション（極め技）の芸術と、困難を乗り越えて成長するために自らの苦闘に向き合い服従するという心理的な行為です。この二重のアイデンティティが、ブランドの知的・感情的な核を形成しています。", pt: "O nome SubmitologY — \"o estudo da submissão\" — carrega um duplo significado deliberado: a arte técnica da finalização (submissão) no grappling, e o ato psicológico de se submeter às próprias lutas para crescer através delas. Essa identidade dupla forma o núcleo intelectual e emocional da marca.", ro: "Numele SubmitologY — „studiul submisiei” — poartă un dublu sens deliberat: arta tehnică a submisiei în grappling și actul psihologic de a te supune propriilor lupte pentru a crește prin ele. Această identitate dublă formează nucleul intelectual și emoțional al brandului." },
     logoCaption: { en: "Our logo represents our core belief and mission, through the symbolism of kintsugi — the art of \"golden repair\" — applied to the mind and body.", fr: "Notre logo représente notre conviction fondamentale et notre mission, à travers le symbolisme du kintsugi — l'art de la « réparation dorée » — appliqué à l'esprit et au corps.", ja: "私たちのロゴは、「金継ぎ」— 金による修復の技法 — を心と身体に応用した象徴を通じて、私たちの核となる信念と使命を表しています。", pt: "Nosso logotipo representa nossa crença e missão fundamentais, através do simbolismo do kintsugi — a arte do \"reparo dourado\" — aplicado à mente e ao corpo.", ro: "Logo-ul nostru reprezintă convingerea și misiunea noastră fundamentală, prin simbolismul kintsugi — arta „reparației aurii” — aplicată minții și corpului." },
     exploreCta:  { en: "Explore Techniques →", fr: "Explorer les Techniques →", ja: "技術を探索する →", pt: "Explorar Técnicas →", ro: "Explorează Tehnicile →" },
-    conceptsCta: { en: "Basic Concepts",       fr: "Concepts de base",          ja: "基本概念",         pt: "Conceitos Básicos",   ro: "Concepte de bază" },
     merchCta:    { en: "Shop the Gear →",      fr: "Voir la Boutique →",        ja: "グッズを見る →",   pt: "Ver a Loja →",        ro: "Vezi Produsele →" },
-    missionCta:  { en: "Our Mission",          fr: "Notre Mission",             ja: "私たちの使命",     pt: "Nossa Missão",        ro: "Misiunea noastră" },
-    scCta:       { en: "Strength & Conditioning", fr: "Force & Préparation Physique", ja: "筋力・コンディショニング", pt: "Força & Condicionamento", ro: "Forță & Pregătire Fizică" },
     mapTag:      { en: "Interactive !",  fr: "Interactif !",   ja: "インタラクティブ！", pt: "Interativo !",  ro: "Interactiv !" },
     mapTitle:    { en: "Explore the Technique Map",  fr: "Explorez la Carte des Techniques", ja: "テクニックマップを見る", pt: "Explore o Mapa de Técnicas", ro: "Explorează Harta Tehnicilor" },
     mapBody:     { en: "See how positions, transitions and submissions actually connect to one another — click through the map instead of scrolling a list.", fr: "Découvrez comment les positions, transitions et soumissions se connectent réellement entre elles — naviguez dans la carte plutôt que dans une liste.", ja: "ポジション、トランジション、サブミッションが実際にどのように繋がっているかを見ることができます — リストをスクロールする代わりにマップをクリックして探索しましょう。", pt: "Veja como posições, transições e finalizações realmente se conectam entre si — navegue pelo mapa em vez de rolar uma lista.", ro: "Vezi cum se conectează cu adevărat pozițiile, tranzițiile și submisiile — navighează pe hartă în loc să derulezi o listă." },
     mapCta:      { en: "Open the Map →", fr: "Ouvrir la Carte →", ja: "マップを開く →", pt: "Abrir o Mapa →", ro: "Deschide Harta →" },
-    statTech:    { en: "Techniques Mapped",     fr: "Techniques Cartographiées", ja: "マップ収録技術数",   pt: "Técnicas Mapeadas",   ro: "Tehnici Cartografiate" },
-    statCats:    { en: "Categories",           fr: "Catégories",                ja: "カテゴリー",       pt: "Categorias",          ro: "Categorii" },
-    statSubcats: { en: "Sub-categories",       fr: "Sous-catégories",           ja: "サブカテゴリー",   pt: "Subcategorias",       ro: "Subcategorii" },
-    statDiffs:   { en: "Difficulty Levels",    fr: "Niveaux de difficulté",     ja: "難易度レベル",     pt: "Níveis de Dificuldade",ro: "Niveluri de dificultate" },
-    statCombo:   { en: "Combinations",         fr: "Combinaisons",              ja: "組み合わせ",       pt: "Combinações",         ro: "Combinații" },
-    statGive:    { en: "Profits to Mental Health (from 2027)", fr: "Des profits pour la santé mentale (dès 2027)", ja: "利益をメンタルヘルスへ（2027年より）", pt: "Do Lucro para Saúde Mental (a partir de 2027)", ro: "Din profit pentru sănătate mintală (din 2027)" },
-    techCount:   { en: "Techniques",           fr: "Techniques",                ja: "技術",             pt: "Técnicas",            ro: "Tehnici" },
   },
 
   // ── CONCEPTS ─────────────────────────────────────────────────────────────
@@ -95,38 +78,12 @@ export const T = {
     },
   ],
 
-  // ── TECHNIQUES PAGE ───────────────────────────────────────────────────────
-  techniques: {
-    typeLabel:    { en: "Type",    fr: "Type",       ja: "タイプ",    pt: "Tipo",     ro: "Tip"     },
-    levelLabel:   { en: "Level",   fr: "Niveau",     ja: "レベル",    pt: "Nível",    ro: "Nivel"   },
-    results:      { en: "results", fr: "résultats",  ja: "件",        pt: "resultados",ro: "rezultate" },
-    result:       { en: "result",  fr: "résultat",   ja: "件",        pt: "resultado", ro: "rezultat"  },
-    noResults:    { en: "No techniques match these filters.", fr: "Aucune technique ne correspond à ces filtres.", ja: "フィルターに一致する技術がありません。", pt: "Nenhuma técnica corresponde a esses filtros.", ro: "Nicio tehnică nu corespunde acestor filtre." },
-    openCta:      { en: "Open →",  fr: "Ouvrir →",  ja: "開く →",   pt: "Abrir →",  ro: "Deschide →" },
-  },
-
-  // ── CATEGORY NAMES (used in filters + pills) ──────────────────────────────
-  cats: {
-    All:         { en: "All",        fr: "Tous",       ja: "すべて",   pt: "Todos",     ro: "Toate"     },
-    Guards:      { en: "Guards",     fr: "Gardes",     ja: "ガード",   pt: "Guardas",   ro: "Gărzi"     },
-    Submissions: { en: "Submissions",fr: "Soumissions",ja: "サブミッション", pt: "Finalizações", ro: "Submisii" },
-    Transitions: { en: "Transitions",fr: "Transitions",ja: "トランジション", pt: "Transições",  ro: "Tranziții" },
-    Takedowns:   { en: "Takedowns",  fr: "Projections",ja: "テイクダウン",   pt: "Quedas",      ro: "Proiectări" },
-    "Dark BJJ":  { en: "Dark BJJ",   fr: "BJJ Sombre", ja: "ダークBJJ",     pt: "BJJ Negro",   ro: "BJJ Întunecat" },
-  },
-
   // ── DIFFICULTY NAMES ──────────────────────────────────────────────────────
   diffs: {
     All:          { en: "All",          fr: "Tous",          ja: "すべて",  pt: "Todos",       ro: "Toate"       },
     Beginner:     { en: "Beginner",     fr: "Débutant",      ja: "初心者",  pt: "Iniciante",   ro: "Începător"   },
     Intermediate: { en: "Intermediate", fr: "Intermédiaire", ja: "中級者",  pt: "Intermediário",ro: "Intermediar" },
     Advanced:     { en: "Advanced",     fr: "Avancé",        ja: "上級者",  pt: "Avançado",    ro: "Avansat"     },
-  },
-
-  // ── MODAL ─────────────────────────────────────────────────────────────────
-  modal: {
-    keyPoints:  { en: "Key Points",           fr: "Points clés",          ja: "重要ポイント",   pt: "Pontos-chave",        ro: "Puncte cheie"         },
-    watchYT:    { en: "▶ Watch on YouTube",   fr: "▶ Voir sur YouTube",   ja: "▶ YouTubeで見る", pt: "▶ Ver no YouTube",   ro: "▶ Urmărește pe YouTube"},
   },
 
   // ── ABOUT PAGE ────────────────────────────────────────────────────────────
@@ -136,14 +93,6 @@ export const T = {
     body1:       { en: "SubmitologY is a structured BJJ knowledge base built to help practitioners of all levels explore positions, submissions and transitions, in an organised, visual way.", fr: "SubmitologY est une base de connaissances BJJ structurée pour aider les pratiquants de tous niveaux à explorer les positions, soumissions et transitions, de manière organisée et visuelle.", ja: "SubmitologYは、あらゆるレベルの練習者がポジション、サブミッション、トランジションを整理された視覚的な方法で探索できるように作られた構造化されたBJJナレッジベースです。", pt: "O SubmitologY é uma base de conhecimento de BJJ estruturada para ajudar praticantes de todos os níveis a explorar posições, finalizações e transições, de forma organizada e visual.", ro: "SubmitologY este o bază de cunoștințe BJJ structurată, concepută pentru a ajuta practicanții de toate nivelurile să exploreze pozițiile, submisiile și tranzițiile, într-un mod organizat și vizual." },
     body2:       { en: "Explore techniques in a unique way using our interactive BJJ map, guiding you through various inter-related techniques in an intuitive way.", fr: "Découvrez les techniques d'une manière unique grâce à notre carte BJJ interactive, qui vous guide à travers diverses techniques interconnectées de façon intuitive.", ja: "インタラクティブなBJJマップを使って、これまでにない方法でテクニックを探索できます。相互に関連するさまざまなテクニックを直感的にガイドします。", pt: "Explore as técnicas de uma forma única com nosso mapa interativo de BJJ, guiando você por diversas técnicas inter-relacionadas de forma intuitiva.", ro: "Explorează tehnicile într-un mod unic folosind harta noastră interactivă de BJJ, care te ghidează printr-o varietate de tehnici interconectate, într-un mod intuitiv." },
     catsTitle:   { en: "Categories Explained", fr: "Catégories expliquées", ja: "カテゴリーの説明", pt: "Categorias Explicadas", ro: "Categorii explicate" },
-    catDescs: {
-      Guards:      { en: "Bottom positions to control, sweep, or submit.", fr: "Positions au sol pour contrôler, sweeper ou soumettre.", ja: "コントロール、スイープ、またはサブミットするための底部ポジション。", pt: "Posições de baixo para controlar, sweepear ou finalizar.", ro: "Poziții inferioare pentru a controla, mătura sau supune." },
-      Submissions: { en: "Force a tap via joint locks or chokes.", fr: "Forcer un tapotement via des clés articulaires ou des étranglements.", ja: "関節技や絞め技でタップを強要する。", pt: "Forçar um toque via travamentos de articulação ou estrangulamentos.", ro: "Forțați taparea prin blocaje articulare sau sugrumări." },
-      Transitions: { en: "Movement between positions — where grappling really lives.", fr: "Mouvement entre les positions — c'est là que vit vraiment le grappling.", ja: "ポジション間の移動 — グラップリングが本当に生きる場所。", pt: "Movimentação entre posições — onde o grappling realmente vive.", ro: "Mișcarea între poziții — unde trăiește cu adevărat grappling-ul." },
-      Takedowns:   { en: "Getting the fight to the ground on your terms.", fr: "Amener le combat au sol selon vos conditions.", ja: "自分のペースで試合を地上に持ち込む。", pt: "Levar a luta ao chão nos seus termos.", ro: "Ducerea luptei la sol în condițiile tale." },
-      "Dark BJJ":  { en: "High-risk techniques — study carefully, apply with control.", fr: "Techniques à haut risque — étudiez attentivement, appliquez avec contrôle.", ja: "高リスクな技術 — 注意深く研究し、コントロールして適用する。", pt: "Técnicas de alto risco — estude com cuidado, aplique com controle.", ro: "Tehnici cu risc ridicat — studiați cu atenție, aplicați cu control." },
-    },
-    footer:      { en: "Built with React · Images via Unsplash · Video links via YouTube", fr: "Construit avec React · Images via Unsplash · Liens vidéo via YouTube", ja: "Reactで構築 · 画像はUnsplash · 動画リンクはYouTube", pt: "Construído com React · Imagens via Unsplash · Links de vídeo via YouTube", ro: "Construit cu React · Imagini via Unsplash · Linkuri video via YouTube" },
     typeDescs: {
       position:   { en: "Guards, dominant control.",           fr: "Gardes, contrôle dominant.",             ja: "ガード、支配的コントロール。",   pt: "Guardas, controle dominante.",        ro: "Gărzi, control dominant." },
       transition: { en: "Guard passes, sweeps, escapes.",      fr: "Passages de garde, renversements, échappées.", ja: "ガードパス、スイープ、エスケープ。", pt: "Passagens de guarda, raspagens, fugas.", ro: "Treceri de gardă, răsturnări, evadări." },
@@ -328,8 +277,10 @@ export const T = {
   whatsNew: {
     pageTag:   { en: "Updates", fr: "Mises à jour", ja: "更新情報", pt: "Atualizações", ro: "Actualizări" },
     pageTitle: { en: "What's New?", fr: "Nouveautés", ja: "更新情報", pt: "Novidades", ro: "Noutăți" },
-    message:   { en: "You're up to date!", fr: "Vous êtes à jour !", ja: "最新の状態です！", pt: "Você está atualizado!", ro: "Ești la zi!" },
   },
+
+  // Strings added by the 2026-07 revamp — see i18n-additions.js
+  ui: UI,
 
 };
 

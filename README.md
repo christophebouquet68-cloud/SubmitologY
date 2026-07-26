@@ -1,74 +1,148 @@
-# SubmitologY — Brand Refresh (Merchandising + Mental Health + S&C + Technique Map)
+# SubmitologY — revamped front end
 
-This folder contains only the files that changed *and* any new asset the code
-now depends on. Drop `src/App.js`, `src/i18n.js`, and `public/index.html` into
-your existing project (overwriting the current versions), and also add
-`public/logo512.png` if it isn't already there — the Overview page references
-it directly. Then `npm start` / `npm run build` as usual. Verified locally
-with `react-scripts build` (compiles cleanly, zero warnings).
+Rebuild of the single-file `App.js` site, focused on navigation, cross-platform
+usability and accessibility. The old photo-grid techniques view is gone
+entirely — the interactive map is the only techniques view.
 
-## What changed, and why
+### Removed
 
-### 0. Removed outdated "takedowns" mention on About
-The intro paragraph now reads: *"SubmitologY is a structured BJJ knowledge
-base built to help practitioners of all levels explore positions,
-submissions and transitions, in an organised, visual way."* — dropping
-"takedowns," which isn't a category in the Technique Map. Updated in all 5
-languages.
+The `SHOW_LEGACY_TECHNIQUES` flag and everything it gated no longer exist:
 
-### 1. "Built with React..." footer line removed
-The small "Built with React · Images via Unsplash · Video links via YouTube"
-line under the Categories section on the About page is gone.
+| Removed | Was in |
+|---|---|
+| `SHOW_LEGACY_TECHNIQUES` flag and its branch in the root component | `App.js` |
+| `SEED_TECHNIQUES` (30 entries with `image` / `keyPoints` / `youtube`) | `App.js` |
+| `TechniquesLegacy`, `Card`, `Modal` components | `App.js` |
+| `CATS`, `DIFF_COLORS`, `CAT_COLORS`, `DEFAULT_IMAGE`, `NAV_KEYS` | `App.js` |
+| Card/modal/badge/image styles (~25 entries in the `S` object) | `App.js` |
+| `T.techniques`, `T.cats`, `T.modal`, `T.nav` blocks | `i18n.js` |
+| `T.overview.stat*`, `conceptsCta`, `missionCta`, `scCta`; `T.about.catDescs`, `T.about.footer`; `T.whatsNew.message` | `i18n.js` |
+| `public/images/` (all 24 photos, ~11 MB) | `public/` |
+| "Browse the map by category" grid on the home page, plus `SUBCATS` / `SUBCAT_META` and the `.cat` styles it used | `Home.jsx`, `techmap.js`, `app.css` |
+| CRA boilerplate: `App.css`, `index.css`, `App.test.js`, `setupTests.js`, `reportWebVitals.js` | `src/` |
 
-### 2. About page second paragraph updated
-Now reads: *"Explore techniques in a unique way using our interactive BJJ
-map, guiding you through various inter-related techniques in an intuitive
-way."* Translated across all 5 languages.
+`T.diffs` is kept — it still labels the Beginner/Intermediate/Advanced levels
+in the Strength & Conditioning builder.
 
-### 3. About page "Categories Explained" matches the Technique Map
-Lists exactly the map's three top-level types — **Positions**,
-**Transitions**, **Submissions** — colored with the same scheme used in the
-Technique Map's "Show" filter chips (`TECH_TYPE_COLOR`).
+## Running it
 
-### 4. Logo caption beside the logo, not below it
-The small italic kintsugi caption sits to the right of the circular logo.
+```bash
+npm install
+npm start        # dev server
+npm run build    # production bundle in build/
+```
 
-### 5. "New — Interactive" → "Interactive !"
-The highlight banner tag on the Technique Map callout, in all 5 languages.
+No new dependencies were added.
 
-### 6. Logo + kintsugi caption next to the brand thesis
-The "SubmitologY... double meaning" pull-quote sits in a two-column row with
-the circular logo (`public/logo512.png`) and its caption on the right.
+## What changed
 
-### 7. Overview page reflects the Technique Map, not the old grid
-The clickable category rectangles and highlight banner are computed
-directly from the Technique Map data (`TECHMAP_SUBCATS`,
-`TECHMAP_SUBCAT_COUNT`, `TECHMAP_SUBCAT_TYPE`) — nothing hardcoded.
+### Navigation
+- **Real URLs.** A small hash router (`src/router.js`) gives every section its
+  own address — `#/map`, `#/strength`, `#/map/armbar`. Browser Back works,
+  links are shareable and bookmarkable, and refreshing keeps your place.
+  Hash-based rather than path-based so it deploys to any static host with no
+  rewrite rules.
+- **Four top-level categories**: Train · Shop · Mission · Brand.
+  `Train` and `Brand` open a menu; `Shop` and `Mission` are single
+  destinations, so they're direct links rather than one-item dropdowns.
+- **Nothing is only reachable one way.** Every section appears in four places:
+  the header, the mobile drawer (all seven listed flat, each with a one-line
+  description), the "Everything on the site" block on the home page, and the
+  footer sitemap. Search reaches all of them plus every individual technique.
+- **Search** (`⌘K` / `Ctrl-K` / `/`) over sections and all 34 techniques, with
+  arrow-key navigation. On a phone it's the fastest route to anything.
+- Scroll position resets on section change; deep links into the map don't.
 
-### 8. Technique Map replaces the Techniques section
-- 34 techniques across Positions, Transitions, and Submissions, laid out by
-  a force-directed simulation computed once at module load.
-- **The old Techniques page is fully preserved, just hidden.** Renamed
-  `TechniquesLegacy`, nothing deleted. Flip the flag near the top of
-  `App.js` to restore it:
-  ```js
-  const SHOW_LEGACY_TECHNIQUES = false; // set to true to restore the old grid view
-  ```
+### Technique map
+- **Pan, zoom and pinch**, with zoom/reset controls.
+- **Route finder** — pick two techniques and it runs a breadth-first search
+  over the existing adjacency data and highlights the shortest chain
+  ("Closed Guard → Hip Bump Sweep → Mount → Back Control → Rear Naked Choke").
+- **Deterministic layout.** The force-directed positions were seeded with
+  `Math.random()`, so the graph shifted on every reload. Now seeded with a
+  fixed-seed PRNG: identical every time, so spatial memory works.
+- **44px touch targets** — an invisible hit circle behind each 9px node.
+- **Progress tracking**: mark techniques as drilled, persisted in
+  `localStorage`, shown as a green pip on the node.
+- **Text fallback list** — a force-directed graph is not navigable by screen
+  reader, so the same data is available as an alphabetical list.
+- Detail is a sidebar on desktop and a bottom sheet on phones.
 
-### 9. "What's New?" nav item, top-right
-Sits next to the language selector. Currently shows "You're up to date!" —
-real content goes in `T.whatsNew` in `i18n.js` whenever you're ready.
+### Layout and design
+- All styling moved from the inline `S` object into `src/styles/app.css`.
+  That's what makes media queries, `:hover`, `:focus-visible` and
+  `prefers-reduced-motion` possible at all — inline styles support none of them.
+- Breakpoints at 900px (map goes single column) and 760px (nav → drawer).
+- Body copy raised to a 16px floor; secondary text lightened from `#555`/`#666`
+  (2.6:1, fails WCAG AA) to tokens that pass. Submission red raised from
+  `#d63031` to `#ff5c5c` for the same reason.
+- Design tokens in `:root` — one place for colour, type scale and spacing.
+- `100dvh` and `env(safe-area-inset-bottom)` so mobile browser chrome and
+  notches don't clip anything.
+- **Print stylesheet** — the generated S&C program prints as a clean handout.
 
-### 10. Everything else from before is still in place
-Aubergine-black background, synaptic-violet mental-health accent, synaptic
-background pattern, nav order (Overview → Shop → Concepts → Techniques →
-Strength & Conditioning → Mental Health → About), Strength & Conditioning
-program builder, "The Invitation" on About, mental health initiatives marked
-as planned from 2027, admin section removed, Merchandise launch-collection
-preview, sitewide mission banner. All 22 original technique photos/videos
-are untouched in `TechniquesLegacy` and `Modal`.
+### Accessibility
+- Visible focus rings everywhere; skip-to-content link.
+- `aria-current` on navigation, `aria-pressed` on filter pills.
+- Search dialog and mobile drawer are proper dialogs: `role="dialog"`,
+  `aria-modal`, focus trap, Escape to close, focus returned on close.
+- `prefers-reduced-motion` respected.
 
-## Suggested next steps
-- Expand the Technique Map beyond the 34-technique first pass.
-- Consider small line-art pictograms in the technique detail panel.
-- Wire real content into "What's New?" when you have updates to publish.
+### Other
+- Language choice persists, sets `<html lang>`, and is picked from the browser
+  on a first visit. Flags replaced with text codes (a flag is a country, not a
+  language).
+- Per-page `<title>`; Open Graph and Twitter card meta so shared links produce
+  a real preview. **You'll need to add `public/og-card.png` at 1200×630.**
+- Mission banner is dismissible and stays dismissed.
+- Footer with full sitemap and a launch email capture (stored locally — wire it
+  to a real list before launch; see `components/Footer.jsx`).
+- Error boundary so one broken page can't blank the site; a 404 route.
+- S&C selections persist, so you don't re-answer three questions every visit.
+
+## Layout
+
+```
+src/
+  App.jsx                 root: routing, language, titles, search shortcut
+  router.js               hash router + the single list of destinations
+  i18n.js                 original translations (unchanged content)
+  i18n-additions.js       new strings for this revamp, all five languages
+  styles/app.css          tokens + every component style + media queries
+  data/
+    techmap.js            nodes, edges, seeded layout, BFS path finding
+    program.js            S&C program engine
+    merch.js              launch collection
+  hooks/                  useMediaQuery, usePersistentState, useFocusTrap
+  components/             Header, Footer, SearchDialog, MissionBanner,
+                          LangSelector, ErrorBoundary
+  pages/                  Home, TechniqueMap, Concepts, Strength, Mission,
+                          Shop, Story, WhatsNew, NotFound
+```
+
+`DESTINATIONS` in `router.js` is the single source of truth for what sections
+exist. Add an entry there and it appears in the header, the drawer, the footer,
+the home index and search automatically.
+
+## Notes on the map's pointer handling
+
+Node selection is resolved from the pointer gesture, not from an `onClick` on
+each node, and the SVG does **not** use `setPointerCapture`. Capture retargets
+the `pointerup` to the capturing element, so the browser computes the click
+target as the `<svg>` and never fires the handler on the `<g>` — Safari applies
+this strictly, which is why nodes appeared dead there.
+
+Hit testing picks the *nearest* node within roughly a 52px radius rather than
+enlarging each node's hit shape. On a graph this dense, 44px hit circles
+overlap and the topmost one silently wins; nearest-wins gives large effective
+targets and correct behaviour in clusters.
+
+## Known follow-ups
+
+- Technique names and descriptions are still English-only; the UI chrome is
+  translated into all five languages. Worth either translating the content or
+  saying so explicitly in the UI.
+- `react-scripts` 5.0.1 is unmaintained. Migrating to Vite is roughly a
+  half-day and cuts dev-server start to under a second.
+- The email signup needs a real backend.
+- Add `public/og-card.png` (1200×630) for link previews.
