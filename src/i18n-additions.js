@@ -111,12 +111,51 @@ export const UI = {
     explore:   { en: "Explore", fr: "Explorer", ja: "探索", pt: "Explorar", ro: "Explorează" },
     brandCol:  { en: "Brand", fr: "La Marque", ja: "ブランド", pt: "A Marca", ro: "Brandul" },
     signupTitle: { en: "Hear when the first collection drops", fr: "Soyez averti de la première collection", ja: "最初のコレクション発売のお知らせ", pt: "Saiba quando a primeira coleção sair", ro: "Află când apare prima colecție" },
-    signupBody:  { en: "One email at launch. Nothing else.", fr: "Un seul e-mail au lancement. Rien d'autre.", ja: "発売時にメール1通のみ。それ以外は送りません。", pt: "Um e-mail no lançamento. Nada mais.", ro: "Un singur e-mail la lansare. Nimic altceva." },
+    signupBody:  { en: "A short welcome now, then one email at launch. Nothing else.", fr: "Un petit mot de bienvenue, puis un seul e-mail au lancement. Rien d'autre.", ja: "登録時にご挨拶を1通、発売時にもう1通。それ以外は送りません。", pt: "Uma breve mensagem de boas-vindas agora e um e-mail no lançamento. Nada mais.", ro: "Un scurt mesaj de bun venit acum, apoi un singur e-mail la lansare. Nimic altceva." },
     emailPlaceholder: { en: "you@example.com", fr: "vous@exemple.com", ja: "you@example.com", pt: "voce@exemplo.com", ro: "tu@exemplu.com" },
     signupBtn: { en: "Notify me", fr: "Me prévenir", ja: "通知を受け取る", pt: "Avise-me", ro: "Anunță-mă" },
-    signupDone:{ en: "Saved on this device. We'll wire this to a real list before launch.", fr: "Enregistré sur cet appareil. Nous le connecterons à une vraie liste avant le lancement.", ja: "この端末に保存しました。発売前に実際のリストへ接続します。", pt: "Salvo neste dispositivo. Vamos conectar a uma lista real antes do lançamento.", ro: "Salvat pe acest dispozitiv. Îl vom conecta la o listă reală înainte de lansare." },
+    signupSending: { en: "Sending…", fr: "Envoi…", ja: "送信中…", pt: "Enviando…", ro: "Se trimite…" },
+    signupDone:{ en: "You're on the list. We'll email you once — when the first collection drops.", fr: "Vous êtes inscrit. Nous vous écrirons une seule fois, à la sortie de la première collection.", ja: "登録が完了しました。最初のコレクション発売時に一度だけメールをお送りします。", pt: "Você está na lista. Enviaremos um e-mail — quando a primeira coleção sair.", ro: "Ești pe listă. Îți scriem o singură dată, când apare prima colecție." },
+    // Distinct failure messages, because "something went wrong" tells the
+    // reader nothing about whether trying again is worth their time.
+    signupErrNetwork: { en: "That didn't send. Check your connection and try again.", fr: "L'envoi a échoué. Vérifiez votre connexion et réessayez.", ja: "送信できませんでした。接続を確認して、もう一度お試しください。", pt: "Não foi enviado. Verifique sua conexão e tente novamente.", ro: "Nu s-a trimis. Verifică conexiunea și încearcă din nou." },
+    signupErrRejected: { en: "We couldn't add that address. Try another, or email us directly.", fr: "Nous n'avons pas pu ajouter cette adresse. Essayez-en une autre ou écrivez-nous.", ja: "このアドレスを登録できませんでした。別のアドレスをお試しいただくか、直接ご連絡ください。", pt: "Não conseguimos adicionar esse endereço. Tente outro ou escreva para nós.", ro: "Nu am putut adăuga această adresă. Încearcă alta sau scrie-ne direct." },
+    signupErrOffline: { en: "The signup list isn't connected yet. Please email us instead.", fr: "La liste d'inscription n'est pas encore connectée. Écrivez-nous plutôt.", ja: "登録リストはまだ接続されていません。メールでご連絡ください。", pt: "A lista de inscrição ainda não está conectada. Escreva para nós.", ro: "Lista de înscriere nu este încă conectată. Scrie-ne pe e-mail." },
     rights:    { en: "SubmitologY · Singapore", fr: "SubmitologY · Singapour", ja: "SubmitologY · シンガポール", pt: "SubmitologY · Singapura", ro: "SubmitologY · Singapore" },
     preLaunch: { en: "Pre-launch site — nothing is for sale yet.", fr: "Site de pré-lancement — rien n'est encore en vente.", ja: "プレローンチサイト — 現在販売はしていません。", pt: "Site de pré-lançamento — nada está à venda ainda.", ro: "Site pre-lansare — nimic nu este încă de vânzare." },
+  },
+
+  // ── Technique map ──────────────────────────────────────────────────────
+  techmapLang: {
+    // Shown once under the map heading, in every language including English.
+    // The descriptions are translated but the names are not, and a reader who
+    // isn't told that will assume the translation is simply unfinished.
+    namesInEnglish: {
+      en: "Technique names are kept in English — the language they're called by on the mat almost everywhere.",
+      fr: "Les noms des techniques restent en anglais — c'est ainsi qu'on les appelle sur le tatami presque partout. Les descriptions sont traduites.",
+      ja: "技の名称は英語のままにしています。世界中の道場で実際にそう呼ばれているためです。説明文は日本語に翻訳されています。",
+      pt: "Os nomes das técnicas ficam em inglês — é como são chamadas no tatame em quase todo lugar. As descrições estão traduzidas.",
+      ro: "Numele tehnicilor rămân în engleză — așa li se spune pe saltea aproape peste tot. Descrierile sunt traduse.",
+    },
+  },
+
+  // ── Contact & legal ────────────────────────────────────────────────────
+  // Only the labels and the chrome are translated. The documents themselves
+  // are English-only, and `englishOnly` says so on the page rather than
+  // letting a French reader hit a wall of English without warning.
+  legal: {
+    contact:     { en: "Contact", fr: "Contact", ja: "お問い合わせ", pt: "Contato", ro: "Contact" },
+    privacy:     { en: "Privacy", fr: "Confidentialité", ja: "プライバシー", pt: "Privacidade", ro: "Confidențialitate" },
+    terms:       { en: "Terms", fr: "Conditions", ja: "利用規約", pt: "Termos", ro: "Termeni" },
+    emailHandling: { en: "How we use your email", fr: "Utilisation de votre e-mail", ja: "メールアドレスの取り扱い", pt: "Como usamos seu e-mail", ro: "Cum folosim adresa ta de e-mail" },
+    lastUpdated: { en: "Last updated", fr: "Dernière mise à jour", ja: "最終更新", pt: "Última atualização", ro: "Ultima actualizare" },
+    englishOnly: {
+      en: "This page is available in English only.",
+      fr: "Cette page n'est disponible qu'en anglais.",
+      ja: "このページは英語のみでご覧いただけます。",
+      pt: "Esta página está disponível apenas em inglês.",
+      ro: "Această pagină este disponibilă doar în limba engleză.",
+    },
   },
 
   // ── Error / empty states ───────────────────────────────────────────────

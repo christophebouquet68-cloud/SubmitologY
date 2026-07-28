@@ -5,6 +5,26 @@
    prefers-reduced-motion possible at all.
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ── Display face ──────────────────────────────────────────────────────────
+   Archivo (SIL Open Font License 1.1 — see fonts/Archivo-OFL.txt), a variable
+   grotesque, self-hosted rather than loaded from Google Fonts: no third-party
+   request, no extra DNS lookup, and nothing to disclose in the privacy policy.
+
+   Subset to Latin + Latin Extended (40 KB) — enough for EN/FR/PT/RO. Japanese
+   headings have no Archivo glyphs and fall through to the system CJK faces
+   listed in --font-display, which is the correct behaviour, not a bug.
+
+   The width axis is pinned at 108 (slightly extended) to echo the tracked-out
+   wordmark in the logo; the weight axis stays live, which is what lets the
+   hero set heavy and light lines against each other. */
+@font-face {
+  font-family: "Archivo Display";
+  src: url("../fonts/Archivo-Display.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* ── Surfaces ───────────────────────────────────────────────────────── */
   --bg:            #120e16;
@@ -35,7 +55,8 @@
   --t-submission:  #ff5c5c;  /* was #d63031 — 3.4:1, below AA */
 
   /* ── Type ───────────────────────────────────────────────────────────── */
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-display: "Archivo Display", "Hiragino Sans", "Yu Gothic",
+                  "Noto Sans JP", system-ui, sans-serif;
   --font-body:    Georgia, "Times New Roman", serif;
   --font-util:    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
@@ -72,7 +93,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4 { line-height: 1.15; margin: 0; letter-spacing: -0.02em; font-weight: 700; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15; margin: 0; letter-spacing: -0.02em; font-weight: 700;
+}
 p { margin: 0 0 1rem; }
 p:last-child { margin-bottom: 0; }
 
@@ -219,6 +243,11 @@ a { color: var(--accent-soft); }
 .page-title { font-size: var(--fs-h2); margin-bottom: 0.5rem; }
 .page-sub { color: var(--text-muted); font-size: var(--fs-small); max-width: var(--measure); margin: 0; }
 
+.page-sub--note {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text-dim); margin-top: 0.625rem;
+}
+
 .section-title { font-size: var(--fs-h3); margin: 2.5rem 0 1rem; }
 
 /* ═══ Header / navigation ═════════════════════════════════════════════ */
@@ -242,7 +271,10 @@ a { color: var(--accent-soft); }
 .brand__mark { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .brand__name {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  font-size: 0.9375rem; font-weight: 700; letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  /* Positive tracking, not the -0.02em used on headings: the logo sets the
+     wordmark letterspaced, and the header should read as the same wordmark. */
+  font-size: 0.9375rem; font-weight: 600; letter-spacing: 0.04em;
 }
 
 .nav { display: flex; align-items: center; gap: 0.125rem; }
@@ -411,8 +443,15 @@ a { color: var(--accent-soft); }
 /* ═══ Home ════════════════════════════════════════════════════════════ */
 .home { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 3.75rem); }
 
-.hero__title { font-size: var(--fs-hero); letter-spacing: -0.035em; margin-bottom: 1.25rem; }
-.hero__accent { color: var(--accent); font-style: italic; }
+.hero__title {
+  font-size: var(--fs-hero); letter-spacing: -0.035em;
+  font-weight: 800; margin-bottom: 1.25rem;
+}
+/* Was `font-style: italic`. Archivo ships no italic, so that asked the browser
+   to synthesise an oblique by shearing the glyphs — visibly crude at hero size.
+   The variable weight axis gives a truer contrast: line one heavy, line two
+   light and in the accent. */
+.hero__accent { color: var(--accent-soft); font-weight: 300; }
 .hero__body { max-width: 34rem; color: var(--text-muted); margin-bottom: 1.75rem; }
 .hero__ctas { display: flex; gap: 0.625rem; flex-wrap: wrap; }
 
@@ -447,7 +486,12 @@ a { color: var(--accent-soft); }
   color: inherit; text-decoration: none;
 }
 .feature:hover { border-color: var(--accent); background: rgba(232, 93, 4, 0.11); }
-.feature .section-title { color: var(--text); }
+.feature .page-sub--note {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text-dim); margin-top: 0.625rem;
+}
+
+.section-title { color: var(--text); }
 .feature__body { color: var(--text-muted); font-size: var(--fs-small); max-width: 34rem; margin: 0; }
 .feature__cta { font-family: var(--font-util); font-size: var(--fs-small); color: var(--accent-soft); font-weight: 700; white-space: nowrap; }
 
@@ -750,7 +794,9 @@ a { color: var(--accent-soft); }
 }
 .footer__brand-name {
   display: flex; align-items: center; gap: 0.5rem;
-  font-size: 1.0625rem; font-weight: 700; margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.0625rem; font-weight: 600; letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
 }
 .footer__logo { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .footer__tagline { font-size: 0.875rem; color: var(--text-muted); max-width: 26rem; }
@@ -776,11 +822,92 @@ a { color: var(--accent-soft); }
 }
 .signup input::placeholder { color: var(--text-dim); }
 .signup__note { font-family: var(--font-util); font-size: 0.6875rem; color: var(--text-dim); margin-top: 0.5rem; }
+.signup__note:empty { margin: 0; }
+.signup__note--error { color: var(--t-submission); }
+
+/* Honeypot: off-canvas rather than display:none, because some bots skip
+   fields they can tell are hidden. */
+.signup__trap {
+  position: absolute; left: -9999px; width: 1px; height: 1px;
+  opacity: 0; pointer-events: none;
+}
+
+.signup__legal {
+  display: inline-block; margin-top: 0.5rem;
+  font-family: var(--font-util); font-size: 0.6875rem;
+  color: var(--text-dim); text-decoration: underline;
+  text-underline-offset: 3px; min-height: 24px;
+}
+.signup__legal:hover { color: var(--text-muted); }
 
 .footer__bottom {
-  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 0.75rem 1rem; flex-wrap: wrap;
   border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1.25rem;
   font-family: var(--font-util); font-size: 0.6875rem; color: var(--text-dim);
+}
+.footer__legal { display: flex; gap: 1.125rem; flex-wrap: wrap; }
+.footer__legal-link {
+  color: var(--text-dim); text-decoration: none;
+  /* 32px rather than the 44px used for primary targets: these are secondary
+     links in a dense row, and full-size targets would break the line. */
+  display: inline-flex; align-items: center; min-height: 32px;
+}
+.footer__legal-link:hover { color: var(--text); }
+
+/* ═══ Contact / privacy / terms ═══════════════════════════════════════ */
+
+.legal { max-width: var(--measure); color: var(--text-muted); }
+.legal__lang {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text-dim); margin-bottom: 1.5rem;
+}
+.legal__updated {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text-dim); padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line); margin-bottom: 1.75rem;
+}
+.legal__h {
+  font-size: var(--fs-h3); color: var(--text);
+  margin: 2.25rem 0 0.75rem;
+}
+.legal__list { margin: 0 0 1rem; padding-left: 1.25rem; }
+.legal__list li { margin-bottom: 0.375rem; }
+
+.legal__dl {
+  display: grid; grid-template-columns: minmax(9rem, auto) 1fr;
+  gap: 0.5rem 1.25rem; margin: 0 0 1.25rem;
+}
+.legal__dl dt {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-dim); padding-top: 0.2rem;
+}
+.legal__dl dd { margin: 0; color: var(--text); }
+
+/* Callout for the things a reader must not skim past — the training risk
+   warning and the crisis numbers. */
+.legal__note {
+  display: flex; gap: 0.625rem; align-items: flex-start;
+  background: var(--mission-wash); border: 1px solid var(--mission-edge);
+  border-radius: var(--radius); padding: 0.875rem 1rem;
+  color: var(--text); margin-bottom: 1rem;
+}
+.legal__note .dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  background: var(--mission); margin-top: 0.55rem;
+}
+
+/* Unfilled {{placeholder}} — loud on purpose. */
+.blank {
+  background: var(--accent-wash); color: var(--accent-soft);
+  border-bottom: 1px dashed var(--accent-edge);
+  padding: 0 0.2em; border-radius: 2px;
+}
+
+@media (max-width: 560px) {
+  .legal__dl { grid-template-columns: minmax(0, 1fr); gap: 0.125rem 0; }
+  .legal__dl dd { margin-bottom: 0.75rem; }
 }
 
 /* ═══ Misc ════════════════════════════════════════════════════════════ */

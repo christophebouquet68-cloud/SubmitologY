@@ -17,6 +17,9 @@ export const ROUTES = {
   shop:     "/shop",
   story:    "/story",
   whatsNew: "/whats-new",
+  contact:  "/contact",
+  privacy:  "/privacy",
+  terms:    "/terms",
 };
 
 /** Every routable destination, in one place. Nav, search, footer and the
@@ -30,6 +33,16 @@ export const DESTINATIONS = [
   { key: "mission",  path: ROUTES.mission,  group: "mission", titleKey: "mission" },
   { key: "story",    path: ROUTES.story,    group: "about",   titleKey: "story" },
   { key: "whatsNew", path: ROUTES.whatsNew, group: "about",   titleKey: "whatsNew" },
+];
+
+/** Contact and the legal pages, deliberately kept out of DESTINATIONS.
+ *  Everything in DESTINATIONS appears in the header, the drawer, search and
+ *  the home-page index — which is right for the seven sections and wrong for
+ *  these three. Convention puts them in the footer, and people look there. */
+export const LEGAL_LINKS = [
+  { key: "contact", path: ROUTES.contact, doc: "contact" },
+  { key: "privacy", path: ROUTES.privacy, doc: "privacy" },
+  { key: "terms",   path: ROUTES.terms,   doc: "terms" },
 ];
 
 function readHash() {

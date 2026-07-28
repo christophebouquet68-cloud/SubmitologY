@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { T, t } from "../i18n";
 import { DESTINATIONS, ROUTES } from "../router";
 import { NODE_IDS, TECHMAP_NODES, TECH_TYPE_COLOR } from "../data/techmap";
+import { techDesc } from "../data/techmap-i18n";
 import useFocusTrap from "../hooks/useFocusTrap";
 
 /** Search is the fastest route to anything once a site passes about a dozen
@@ -33,7 +34,9 @@ export default function SearchDialog({ lang, onClose, navigate }) {
         meta: t(T.techmap.subcats[n.sub], lang),
         color: TECH_TYPE_COLOR[n.type],
         path: `${ROUTES.map}/${n.slug}`,
-        haystack: `${n.name} ${n.desc}`.toLowerCase(),
+        // Both languages in the haystack: someone reading in French should
+        // still find a technique by typing the English word they hear in class.
+        haystack: `${n.name} ${techDesc(id, lang)} ${techDesc(id, "en")}`.toLowerCase(),
       };
     });
 

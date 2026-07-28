@@ -17,6 +17,7 @@ import Mission from "./pages/Mission";
 import Shop from "./pages/Shop";
 import Story from "./pages/Story";
 import WhatsNew, { RELEASES } from "./pages/WhatsNew";
+import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
 
 import "./styles/app.css";
@@ -61,6 +62,9 @@ export default function App() {
       [ROUTES.shop]:     t(T.ui.sections.shop.name, lang),
       [ROUTES.story]:    t(T.ui.sections.story.name, lang),
       [ROUTES.whatsNew]: t(T.ui.sections.whatsNew.name, lang),
+      [ROUTES.contact]:  t(T.ui.legal.contact, lang),
+      [ROUTES.privacy]:  t(T.ui.legal.privacy, lang),
+      [ROUTES.terms]:    t(T.ui.legal.terms, lang),
     };
     const base = "SubmitologY";
     const key = Object.keys(titles).find((r) => isActive(path, r));
@@ -108,6 +112,9 @@ export default function App() {
       case ROUTES.shop:     return <Shop lang={lang} />;
       case ROUTES.story:    return <Story lang={lang} navigate={navigate} />;
       case ROUTES.whatsNew: return <WhatsNew lang={lang} />;
+      case ROUTES.contact:  return <Legal lang={lang} doc="contact" />;
+      case ROUTES.privacy:  return <Legal lang={lang} doc="privacy" />;
+      case ROUTES.terms:    return <Legal lang={lang} doc="terms" />;
       default:              return <NotFound lang={lang} navigate={navigate} />;
     }
   }, [segments, lang, navigate]);

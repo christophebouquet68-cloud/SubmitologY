@@ -8,6 +8,7 @@ import {
   TECHMAP_BOUNDS, ZONE_CENTROIDS, TECH_TYPE_COLOR, SLUG_TO_ID,
   findPath, pathEdgeSet, edgeKey,
 } from "../data/techmap";
+import { techDesc } from "../data/techmap-i18n";
 
 const TYPES = ["position", "transition", "submission"];
 const MIN_SPAN = 220;   // furthest zoom in
@@ -252,6 +253,9 @@ export default function TechniqueMap({ lang, slug, navigate }) {
         <div className="eyebrow eyebrow--accent">{t(T.techmap.pageTag, lang)}</div>
         <h1 className="page-title">{t(T.techmap.pageTitle, lang)}</h1>
         <p className="page-sub">{t(T.techmap.pageSubtitle, lang)}</p>
+        <p className="page-sub page-sub--note">
+          {t(T.ui.techmapLang.namesInEnglish, lang)}
+        </p>
       </div>
 
       {/* Filters + route finder */}
@@ -436,7 +440,7 @@ export default function TechniqueMap({ lang, slug, navigate }) {
               </div>
               <h2 className="map-panel__name">{selNode.name}</h2>
               <div className="map-panel__crumb">{t(T.techmap.subcats[selNode.sub], lang)}</div>
-              <p className="map-panel__desc">{selNode.desc}</p>
+              <p className="map-panel__desc">{techDesc(selected, lang)}</p>
 
               <div className="field-label" style={{ minWidth: 0 }}>
                 {t(T.techmap.connectsTo, lang)} ({selNeighbors.length})
