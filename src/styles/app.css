@@ -693,6 +693,15 @@ a { color: var(--accent-soft); }
 }
 .note .dot { background: var(--mission); margin-top: 0.5rem; }
 
+/* The purple `.note` is the mission thread — it means "this is about the
+   pledge". A plain roadmap statement borrows the shape but not the colour,
+   otherwise everything the brand hasn't done yet reads as mental-health copy. */
+.note--plain {
+  background: var(--surface); border-color: var(--line);
+  color: var(--text-muted);
+}
+.note--plain .dot { background: var(--text-dim); }
+
 .disclaimer {
   margin-top: 1.25rem; font-size: 0.8125rem; color: var(--text-dim);
   font-family: var(--font-util); line-height: 1.7; max-width: 44rem;
@@ -704,8 +713,116 @@ a { color: var(--accent-soft); }
 }
 .result-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
-/* ═══ Shop ════════════════════════════════════════════════════════════ */
-.merch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.875rem; margin-bottom: 1.5rem; }
+/* ═══ Shop — the first drop (t-shirts) ════════════════════════════════ */
+
+.tee-toolbar {
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+  margin-bottom: 1.125rem;
+}
+
+/* Colour pills carry a dot of the garment colour. The label alone is not
+   enough — "Dark Blue" and "Jet Black" are close enough in words that people
+   check by eye, and the dot answers the question before the image loads. */
+.tee-pill { display: inline-flex; align-items: center; gap: 0.5rem; }
+.tee-pill__dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  flex-shrink: 0;
+}
+.tee-toolbar .pill[aria-pressed="true"] {
+  border-color: var(--accent-edge); color: var(--text);
+}
+
+/* Two up on a desktop, one on anything narrower. The renders are wide (front
+   and back in one frame), so at three columns the back print — the only reason
+   to show the shirts at all — lands around 190px tall and stops being legible.
+   The `min(…, 100%)` guard is what stops the last track from forcing a 440px
+   minimum and overflowing a 390px phone. */
+.tee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(440px, 100%), 1fr));
+  gap: 0.875rem; margin-bottom: 1.5rem;
+}
+
+.tee { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+
+/* The artwork ships on a cream plate; the container matches it exactly so the
+   image reads as one printed card rather than a photo pasted onto a panel.
+   aspect-ratio reserves the box before the file arrives, so the grid doesn't
+   jump as the four images land. */
+.tee__media {
+  position: relative;
+  background: #efece3;
+  aspect-ratio: 1412 / 740;
+  border-bottom: 1px solid var(--line);
+}
+.tee__img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Dark ink on the cream plate, not the site's own chrome colours: this badge
+   sits on the artwork, so it has to pass contrast against cream. */
+.tee__badge {
+  position: absolute; top: 0.625rem; right: 0.625rem;
+  font-family: var(--font-util); font-size: 0.625rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #2b2620; background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(43, 38, 32, 0.28); border-radius: 999px;
+  padding: 0.1875rem 0.5625rem;
+}
+
+.tee__body {
+  display: flex; flex-direction: column; gap: 0.4375rem; flex: 1;
+  padding: clamp(1rem, 3vw, 1.375rem);
+}
+.tee__name { font-size: 1.0625rem; }
+.tee__blurb { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
+.tee__caption {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text-dim); margin: 0;
+}
+.tee__foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem; flex-wrap: wrap;
+  margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--line);
+}
+.tee__price { font-size: 0.9375rem; font-weight: 700; color: var(--accent-soft); }
+
+/* Swatches: a 22px dot inside a 44px hit area. Shrinking the target to the
+   size of the dot would put these below the touch minimum the rest of the
+   site holds to, and colour pickers are exactly where mis-taps happen. */
+.swatches { display: flex; }
+.swatch {
+  width: var(--tap); height: var(--tap);
+  display: grid; place-items: center;
+  background: none; border: 0; padding: 0; cursor: pointer;
+}
+.swatch__dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  transition: box-shadow 0.15s;
+}
+.swatch[aria-pressed="true"] .swatch__dot {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--accent-soft);
+}
+.swatch:hover .swatch__dot { border-color: var(--text-dim); }
+
+/* Spec strip — the four facts someone actually asks about a shirt. A <dl>
+   rather than cards: these are label/value pairs, and the markup should say so. */
+.spec-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.875rem; margin: 0 0 0.875rem;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: clamp(1rem, 3vw, 1.375rem);
+}
+.spec-strip__cell { display: flex; flex-direction: column; gap: 0.25rem; }
+.spec-strip__cell .merch__spec-lbl { margin-right: 0; }
+.spec-strip__val { margin: 0; font-size: 0.9375rem; color: var(--text); }
+.spec-strip__val--accent { font-weight: 700; color: var(--accent-soft); }
+
+/* ═══ Shop — the rest of the range ════════════════════════════════════ */
+/* Deliberately tighter than the tee grid. These have no artwork and no date,
+   and sizing them the same as the shirts would claim a readiness they don't
+   have. */
+.merch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.875rem; margin-bottom: 0.5rem; }
 .merch { display: flex; flex-direction: column; gap: 0.5rem; }
 .merch__top { display: flex; align-items: center; justify-content: space-between; }
 .merch__icon { font-size: 1.375rem; }
@@ -991,6 +1108,9 @@ a { color: var(--accent-soft); }
 @media (max-width: 380px) {
   .hero__ctas .btn { width: 100%; }
   .pledge__num { font-size: 2.25rem; }
+
+  /* The label sits above the pills rather than stealing a third of the row. */
+  .tee-toolbar { align-items: flex-start; flex-direction: column; gap: 0.5rem; }
 }
 
 /* ═══ Print — makes the generated S&C program a usable handout ═══════ */

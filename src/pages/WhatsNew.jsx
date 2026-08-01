@@ -4,6 +4,16 @@ import { T, t } from "../i18n";
  *  predictably. The header dot lights up while the newest entry is unread. */
 export const RELEASES = [
   {
+    date: "2026-08-01",
+    title: { en: "The first t-shirts are on the site", fr: "Les premiers t-shirts sont en ligne", ja: "最初のTシャツを公開しました", pt: "As primeiras camisetas estão no site", ro: "Primele tricouri sunt pe site" },
+    items: [
+      { en: "Four t-shirt designs, shown front and back, in white, dark blue and jet black", fr: "Quatre designs de t-shirts, vus de face et de dos, en blanc, bleu foncé et noir intense", ja: "4つのTシャツデザインを、前面と背面の両方で、ホワイト・ダークブルー・ジェットブラックの3色で掲載", pt: "Quatro designs de camiseta, mostrados de frente e de costas, em branco, azul-escuro e preto", ro: "Patru modele de tricou, arătate față și spate, în alb, albastru închis și negru intens" },
+      { en: "Pick a colour and the whole collection switches, or change one design on its own", fr: "Choisissez un coloris et toute la collection change, ou modifiez un seul design", ja: "色を選ぶとコレクション全体が切り替わります。デザインごとの個別変更も可能です", pt: "Escolha uma cor e toda a coleção muda, ou altere um design individualmente", ro: "Alege o culoare și toată colecția se schimbă, sau schimbă un singur model" },
+      { en: "Fabric, price range and expected date stated plainly — the shirts are not for sale yet", fr: "Matière, fourchette de prix et date prévue indiquées clairement — les t-shirts ne sont pas encore en vente", ja: "素材・価格帯・発売予定時期を明記。Tシャツはまだ販売しておりません", pt: "Tecido, faixa de preço e data prevista informados claramente — as camisetas ainda não estão à venda", ro: "Material, interval de preț și dată estimată, spuse clar — tricourile nu sunt încă de vânzare" },
+      { en: "The wider gear range moved below the shirts and is marked to be announced", fr: "Le reste de la gamme passe sous les t-shirts et est marqué « à annoncer »", ja: "その他のギアはTシャツの下に移動し、「近日発表」と表示されます", pt: "O restante da linha foi movido para baixo das camisetas e está marcado como a ser anunciado", ro: "Restul gamei a fost mutat sub tricouri și este marcat ca urmând să fie anunțat" },
+    ],
+  },
+  {
     date: "2026-07-26",
     title: { en: "Rebuilt for phones, tablets and desktops", fr: "Reconstruit pour mobiles, tablettes et ordinateurs", ja: "スマートフォン・タブレット・PC向けに再構築", pt: "Reconstruído para celulares, tablets e desktops", ro: "Reconstruit pentru telefoane, tablete și desktop" },
     items: [

@@ -88,6 +88,43 @@ No new dependencies were added.
 - Body copy stays Georgia. Buttons, pills and eyebrows stay on the mono
   utility face — they were already right.
 
+### Shop
+
+The page is now two tiers rather than one flat grid.
+
+**The first drop — t-shirts.** Four designs, each in white, dark blue and jet
+black, defined in `data/tshirts.js`. Artwork lives in `public/shop/tshirts/` as
+`<design>-<colour>.png`, so the ids in that file *are* the filename parts:
+adding a colourway means dropping twelve more files in and adding one line.
+Nothing in `Shop.jsx` changes.
+
+A colour row at the top switches the whole collection at once — the point of
+three colourways is to see them as a set — and the swatches on each card
+override a single shirt, for comparing two designs in different colours.
+Choosing from the top row clears the overrides. The colourways not on screen
+are preloaded 1.5s after mount, so the first switch doesn't show an empty
+plate on a slow connection.
+
+Each render is one wide frame with the front and back side by side
+(1412 × 740). `.tee__media` reserves that aspect ratio up front, so the grid
+does not reflow as the images land, and its background matches the cream the
+artwork ships on (`#efece3`) so the plate reads as one printed card. The grid
+is capped at **two columns**: at three the back print falls to around 190px
+tall and stops being legible, which is the only reason to show the shirts at
+all.
+
+Swatches are a 22px dot inside a 44px hit area. Shrinking the target to the
+dot would put them under the touch minimum the rest of the site holds to, and
+colour pickers are exactly where mis-taps happen.
+
+**The rest of the range.** `data/merch.js`, below the shirts, in a tighter
+grid, badged "to be announced" rather than with a quarter. The shirts have a
+date and a price; the gi does not, and sizing the two identically claimed a
+readiness that does not exist.
+
+Prices dropped the `$` prefix — the page appends `SGD`, and the old data
+rendered as "$120 – $160 SGD".
+
 ### Contact and legal
 
 `/contact`, `/privacy` and `/terms`, sharing one renderer (`pages/Legal.jsx`)
@@ -215,7 +252,8 @@ src/
   data/
     techmap.js            nodes, edges, seeded layout, BFS path finding
     program.js            S&C program engine
-    merch.js              launch collection
+    tshirts.js            the first drop: 4 designs × 3 colourways
+    merch.js              the rest of the range, undated
     legal.js              contact / privacy / terms copy
   fonts/                  Archivo-Display.woff2 + its OFL licence
   hooks/                  useMediaQuery, usePersistentState, useFocusTrap
@@ -253,6 +291,10 @@ targets and correct behaviour in clusters.
 - Point `REACT_APP_SIGNUP_ENDPOINT` at a real list and send a test address
   through it. Until then the form correctly reports that it isn't connected.
 - Fill in every `{{placeholder}}` in `src/data/legal.js`.
-- The shop still has no product imagery and quotes price *ranges*. For an
-  apparel brand that is the largest remaining gap between this site and a
-  professional one — larger than anything else on this list.
+- The t-shirt renders are flat vector artwork, not photographs of a made
+  garment. They are honest about what exists today, but the page will want
+  real photography — on a body, in daylight — before the shirts go on sale.
+- The gear below the shirts still has no imagery and quotes price *ranges*.
+  That is now the largest remaining gap on the page.
+- No size chart yet. It needs the actual garment measurements, so it is
+  blocked on the first sample rather than on the site.

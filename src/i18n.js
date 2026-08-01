@@ -107,18 +107,48 @@ export const T = {
   },
 
   // ── MERCHANDISE / SHOP ────────────────────────────────────────────────────
+  // The shop leads with the t-shirts (the first drop, with a date and a price
+  // attached) and lists the wider range underneath as an intention. Strings
+  // are grouped in that order so the copy reads top-to-bottom in this file the
+  // same way it does on the page.
   merch: {
-    pageTag:      { en: "Launch Collection · Q1 2027", fr: "Collection de Lancement · T1 2027", ja: "ローンチコレクション · 2027年第1四半期", pt: "Coleção de Lançamento · T1 2027", ro: "Colecția de Lansare · T1 2027" },
-    pageTitle:    { en: "Gear Built for the Mats",   fr: "Équipement Conçu pour le Tatami",       ja: "マットのために作られたギア",  pt: "Equipamento Feito para o Tatame",  ro: "Echipament Creat pentru Saltea" },
-    pageSubtitle: { en: "Mid-range quality apparel — IBJJF-legal, durably built, and designed around the idea that every roll is also a rep for your mind. 1% of every sale goes to mental health causes.", fr: "Vêtements de qualité moyenne-supérieure — conformes IBJJF, durables, et pensés autour de l'idée que chaque combat est aussi un exercice pour l'esprit. 1% de chaque vente est reversé à des causes de santé mentale.", ja: "ミッドレンジ品質のアパレル — IBJJF準拠、耐久性のある作り、そして「すべてのロールは心のトレーニングでもある」という考えのもとにデザインされています。売上の1%はメンタルヘルス関連の活動に寄付されます。", pt: "Vestuário de qualidade intermediária — em conformidade com o IBJJF, construção durável, e pensado a partir da ideia de que cada round também treina a mente. 1% de cada venda é doado a causas de saúde mental.", ro: "Îmbrăcăminte de calitate medie — conformă IBJJF, construită durabil, gândită pornind de la ideea că fiecare rundă antrenează și mintea. 1% din fiecare vânzare este donat unor cauze de sănătate mintală." },
-    notify:       { en: "Notify Me at Launch", fr: "Prévenez-moi au lancement", ja: "ローンチ時に通知を受け取る", pt: "Avise-me no Lançamento", ro: "Anunță-mă la lansare" },
+    pageTag:      { en: "T-Shirts · First Drop · Q1 2027", fr: "T-Shirts · Première Collection · T1 2027", ja: "Tシャツ · ファーストドロップ · 2027年第1四半期", pt: "Camisetas · Primeira Coleção · T1 2027", ro: "Tricouri · Prima Colecție · T1 2027" },
+    pageTitle:    { en: "Four Tees, Three Colourways", fr: "Quatre T-Shirts, Trois Coloris", ja: "4つのデザイン、3つのカラー", pt: "Quatro Camisetas, Três Cores", ro: "Patru Tricouri, Trei Culori" },
+    pageSubtitle: { en: "The first SubmitologY drop is a t-shirt collection: four designs, each on premium quality 200GSM cotton, 100% natural, in white, dark blue and jet black. Nothing is for sale yet — the first run is expected in the first quarter of 2027.", fr: "La première collection SubmitologY est une série de t-shirts : quatre designs, chacun en coton 200 g/m² de qualité premium, 100 % naturel, en blanc, bleu foncé et noir intense. Rien n'est encore en vente — la première production est prévue pour le premier trimestre 2027.", ja: "SubmitologYの最初のリリースはTシャツコレクションです。4つのデザインを、プレミアム品質の200g/m²コットン（100%天然）で、ホワイト・ダークブルー・ジェットブラックの3色展開。まだ販売は開始しておらず、初回生産は2027年第1四半期を予定しています。", pt: "A primeira coleção da SubmitologY é de camisetas: quatro designs, cada um em algodão 200 g/m² de qualidade premium, 100% natural, nas cores branco, azul-escuro e preto. Nada está à venda ainda — a primeira produção está prevista para o primeiro trimestre de 2027.", ro: "Prima colecție SubmitologY este una de tricouri: patru modele, fiecare din bumbac de 200 g/m² de calitate premium, 100% natural, în alb, albastru închis și negru intens. Nimic nu este încă de vânzare — prima producție este așteptată în primul trimestru din 2027." },
+
+    // ── T-shirt collection ──────────────────────────────────────────────
+    colourLbl:    { en: "Colour", fr: "Couleur", ja: "カラー", pt: "Cor", ro: "Culoare" },
+    colourAll:    { en: "Show the whole collection in this colour", fr: "Afficher toute la collection dans ce coloris", ja: "コレクション全体をこの色で表示", pt: "Ver toda a coleção nesta cor", ro: "Vezi toată colecția în această culoare" },
+    colours: {
+      white: { en: "White",     fr: "Blanc",         ja: "ホワイト",         pt: "Branco",      ro: "Alb" },
+      navy:  { en: "Dark Blue", fr: "Bleu foncé",    ja: "ダークブルー",     pt: "Azul-escuro", ro: "Albastru închis" },
+      black: { en: "Jet Black", fr: "Noir intense",  ja: "ジェットブラック", pt: "Preto",       ro: "Negru intens" },
+    },
+    frontBack:    { en: "Shown front and back.", fr: "Vue avant et arrière.", ja: "前面と背面。", pt: "Frente e costas.", ro: "Față și spate." },
+    specsTitle:   { en: "The Shirt", fr: "Le T-Shirt", ja: "シャツについて", pt: "A Camiseta", ro: "Tricoul" },
+    fabricLbl:    { en: "Fabric", fr: "Matière", ja: "素材", pt: "Tecido", ro: "Material" },
+    fabricVal:    { en: "Premium quality 200GSM cotton, 100% natural", fr: "Coton 200 g/m² de qualité premium, 100 % naturel", ja: "プレミアム品質 200g/m² コットン（100%天然）", pt: "Algodão 200 g/m² de qualidade premium, 100% natural", ro: "Bumbac de 200 g/m² de calitate premium, 100% natural" },
+    rangeLbl:     { en: "Collection", fr: "Collection", ja: "コレクション", pt: "Coleção", ro: "Colecție" },
+    rangeVal:     { en: "Four designs · three colourways", fr: "Quatre designs · trois coloris", ja: "4デザイン · 3カラー", pt: "Quatro designs · três cores", ro: "Patru modele · trei culori" },
+    teePrice:     { en: "30 – 50 SGD", fr: "30 – 50 SGD", ja: "30 – 50 SGD", pt: "30 – 50 SGD", ro: "30 – 50 SGD" },
+    availLbl:     { en: "Availability", fr: "Disponibilité", ja: "発売時期", pt: "Disponibilidade", ro: "Disponibilitate" },
+    availVal:     { en: "Expected Q1 2027", fr: "Prévu T1 2027", ja: "2027年第1四半期予定", pt: "Previsto para o T1 2027", ro: "Estimat T1 2027" },
+    notForSale:   { en: "These t-shirts are not for sale yet. The first run is expected in the first quarter of 2027 — leave your email at the bottom of this page and we will write to you once, on the day it drops.", fr: "Ces t-shirts ne sont pas encore en vente. La première production est prévue pour le premier trimestre 2027 — laissez votre e-mail en bas de page et nous vous écrirons une seule fois, le jour de la sortie.", ja: "これらのTシャツはまだ販売しておりません。初回生産は2027年第1四半期を予定しています。ページ下部でメールアドレスをご登録いただければ、発売当日に一度だけご連絡いたします。", pt: "Estas camisetas ainda não estão à venda. A primeira produção está prevista para o primeiro trimestre de 2027 — deixe seu e-mail no rodapé desta página e escreveremos uma única vez, no dia do lançamento.", ro: "Aceste tricouri nu sunt încă de vânzare. Prima producție este așteptată în primul trimestru din 2027 — lasă-ți adresa de e-mail la finalul paginii și îți scriem o singură dată, în ziua lansării." },
+
+    // ── The rest of the range ───────────────────────────────────────────
+    gearTitle:    { en: "The Rest of the Range", fr: "Le Reste de la Gamme", ja: "その他のラインナップ", pt: "O Resto da Linha", ro: "Restul Gamei" },
+    gearIntro:    { en: "Beyond the t-shirts, this is the gear we are working towards. Specifications and prices are indicative, and none of it is on sale.", fr: "Au-delà des t-shirts, voici l'équipement sur lequel nous travaillons. Les caractéristiques et les prix sont indicatifs, et rien n'est en vente.", ja: "Tシャツに続いて、私たちが準備を進めているギアです。仕様と価格は目安であり、いずれもまだ販売しておりません。", pt: "Além das camisetas, este é o equipamento em que estamos trabalhando. Especificações e preços são indicativos, e nada está à venda.", ro: "Dincolo de tricouri, acesta este echipamentul la care lucrăm. Specificațiile și prețurile sunt orientative, iar nimic nu este de vânzare." },
+    gearNote:     { en: "Our products range is planned to expand further, to be announced.", fr: "Notre gamme de produits est appelée à s'élargir davantage ; les détails seront annoncés ultérieurement.", ja: "製品ラインナップは今後さらに拡大する予定です。詳細は追って発表いたします。", pt: "Nossa linha de produtos está planejada para se expandir ainda mais; detalhes a serem anunciados.", ro: "Gama noastră de produse este planificată să se extindă în continuare; detaliile urmează să fie anunțate." },
+    tba:          { en: "To be announced", fr: "À annoncer", ja: "近日発表", pt: "A ser anunciado", ro: "Urmează" },
+
+    // ── Shared labels ───────────────────────────────────────────────────
     priceLbl:     { en: "Target Price",  fr: "Prix cible",        ja: "目標価格",        pt: "Preço-alvo",       ro: "Preț țintă"     },
     specLbl:      { en: "Spec",          fr: "Caractéristiques",  ja: "スペック",        pt: "Especificação",    ro: "Specificații"   },
     comingSoon:   { en: "Coming Q1 2027",fr: "Disponible T1 2027",ja: "2027年第1四半期発売", pt: "Chegando no T1 2027", ro: "Disponibil T1 2027" },
     pillarsTitle: { en: "Why SubmitologY Gear",  fr: "Pourquoi le matériel SubmitologY", ja: "SubmitologYギアの理由", pt: "Por que o Equipamento SubmitologY", ro: "De ce echipamentul SubmitologY" },
     pillars: [
       { title: { en: "Quality Without Compromise", fr: "Qualité sans compromis", ja: "妥協なき品質", pt: "Qualidade sem Compromisso", ro: "Calitate fără compromis" },
-        body:  { en: "IBJJF-compliant, mid-range gear built to last through years of training.", fr: "Équipement conforme IBJJF, milieu de gamme, conçu pour durer des années d'entraînement.", ja: "IBJJF準拠、何年ものトレーニングに耐えるミッドレンジギア。", pt: "Equipamento em conformidade com o IBJJF, de qualidade intermediária, feito para durar anos de treino.", ro: "Echipament conform IBJJF, de calitate medie, creat să reziste ani de antrenament." } },
+        body:  { en: "Natural fibres and honest construction, built to last through years of training.", fr: "Fibres naturelles et fabrication honnête, conçues pour durer des années d'entraînement.", ja: "天然素材と誠実な作り。何年ものトレーニングに耐える一枚です。", pt: "Fibras naturais e construção honesta, feitas para durar anos de treino.", ro: "Fibre naturale și o construcție onestă, făcute să reziste ani de antrenament." } },
       { title: { en: "Purpose-Driven Design", fr: "Design porteur de sens", ja: "目的を持ったデザイン", pt: "Design com Propósito", ro: "Design cu un scop" },
         body:  { en: "Every collection is tied to a mental health theme or story — not decoration for its own sake.", fr: "Chaque collection est liée à un thème ou une histoire de santé mentale — pas de la décoration gratuite.", ja: "すべてのコレクションはメンタルヘルスのテーマやストーリーと結びついています — 単なる装飾ではありません。", pt: "Cada coleção está ligada a um tema ou história de saúde mental — não é decoração pela decoração.", ro: "Fiecare colecție este legată de o temă sau o poveste despre sănătatea mintală — nu e decor gratuit." } },
       { title: { en: "Community Over Commerce", fr: "La communauté avant le commerce", ja: "商業よりコミュニティ", pt: "Comunidade Acima do Comércio", ro: "Comunitatea înaintea comerțului" },
