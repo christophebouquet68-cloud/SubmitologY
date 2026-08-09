@@ -12,7 +12,7 @@ export default function Story({ lang, navigate }) {
       </div>
 
       <div className="card" style={{ maxWidth: "44rem" }}>
-        <p className="prose" style={{ color: "var(--text)", fontWeight: 600, fontStyle: "italic" }}>
+        <p className="prose" style={{ color: "var(--text)", fontWeight: 600 }}>
           {t(T.about.mission, lang)}
         </p>
         <hr className="divider" />

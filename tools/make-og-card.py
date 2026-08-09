@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parent.parent
 S = 2                      # supersample factor
 W, H = 1200 * S, 630 * S
 
-BG      = (18, 14, 22)     # --bg           #120e16
+BG      = (20, 17, 26)     # --bg           #14111a
 TEXT    = (237, 232, 223)  # --text         #ede8df
 MUTED   = (179, 170, 184)  # --text-muted   #b3aab8
 ACCENT  = (255, 133, 52)   # --accent-soft  #ff8534

@@ -11,11 +11,14 @@
 //    the page in orange with a dashed underline precisely so an unfilled one
 //    is impossible to miss. `grep -n "{{" src/data/legal.js` lists them all.
 //
-// 3. The privacy policy states that you use **double opt-in** and that
-//    subscribers get a confirmation, a welcome note and one launch email.
-//    Turn double opt-in on in your provider's settings, or change the wording.
-//    A policy that describes a process you don't follow is worse than no
-//    policy, because it is a written claim you are failing to meet.
+// 3. The privacy policy describes the signup as it currently works: a
+//    form-to-inbox service forwards the address to our mailbox, nothing is
+//    sent back to the visitor, and one email goes out at launch. If you switch
+//    to a mailing list — confirmations, unsubscribe links, a single send to
+//    everyone — the wording here has to change with it, and so does the copy
+//    under the form in i18n-additions.js. A policy that describes a process
+//    you don't follow is worse than no policy, because it is a written claim
+//    you are failing to meet.
 //
 // 4. If the site starts doing something new — analytics, a payment processor,
 //    shipping, accounts, a cookie banner — the privacy policy has to change
@@ -96,23 +99,25 @@ export const DOCS = {
       { p: "Clearing your browser data for this site erases all of it. We use no cookies." },
 
       { h: "Why we collect your email, and your consent" },
-      { p: "To tell you when the first collection is available. You will receive a confirmation request, a short welcome note, and one launch email. That is the entire purpose." },
-      { p: "We use double opt-in: submitting the form asks us to email you, and clicking the link in that email is your consent under the PDPA. An address that is never confirmed is never added to the list. We will ask for fresh consent before using your address for anything beyond the above." },
+      { p: "To tell you when the first collection is available. You will receive one email, at launch. That is the entire purpose, and it is the only thing we will use your address for." },
+      { p: "Submitting the form is your consent under the PDPA, which is why the form says plainly what you are agreeing to and links to this page beside it. Nothing is sent to you when you sign up — no confirmation, no welcome note — so the message you receive at launch may well be the first you hear from us. We will ask for fresh consent before using your address for anything beyond that one email." },
+      { p: "You can withdraw at any time by writing to the address below, and the launch email will carry a way to opt out." },
       { p: "We won't sell, rent or trade your address." },
 
       { h: "Who else sees it" },
-      { p: "Our email service provider, {{name your provider once you pick one — e.g. Mailchimp, Buttondown}}, stores the list and sends the mail on our behalf. They may process it outside Singapore; we require protection comparable to the PDPA. We disclose data to no one else unless the law requires it." },
+      { p: "The form is handled by {{Formspree — name whichever service you actually connect}}, which passes your address to our mailbox and does not send you anything itself. From there it sits in our email, read by whoever is running SubmitologY. Our form provider may process the submission outside Singapore; we require protection comparable to the PDPA. We disclose data to no one else unless the law requires it." },
+      { p: "If we later move to a mailing-list provider, so that you receive a confirmation and can unsubscribe from a link in every message, we will update this page before making the change." },
 
       { h: "How long we keep it" },
-      { p: "Until you unsubscribe or ask us to delete it, or until {{24}} months after the launch email goes out, whichever comes first." },
+      { p: "Until you ask us to delete it, or until {{24}} months after the launch email goes out, whichever comes first. Because there is no list to unsubscribe from yet, deletion means writing to us — we do it on request and we don't ask why." },
 
       { h: "Your rights" },
-      { p: "You can ask us to tell you what we hold about you, correct it, delete it, or withdraw your consent entirely. Every marketing email carries an unsubscribe link, and you can write to us directly at any time:" },
+      { p: "You can ask us to tell you what we hold about you, correct it, delete it, or withdraw your consent entirely. The launch email will carry a way to opt out, and until then — or at any time after — you can write to us directly:" },
       { dl: [["Data Protection Officer", BUSINESS.privacy]] },
       { p: "We'll respond within 30 days. Withdrawing consent means we stop emailing you; it doesn't undo mail already sent." },
 
       { h: "Security" },
-      { p: "The site is served over HTTPS and the list lives with a provider that offers encryption in transit and at rest. No system is perfect, and we won't pretend otherwise — if a breach ever affects you, we'll notify you and the PDPC as the PDPA requires." },
+      { p: "The site is served over HTTPS, the form provider encrypts submissions in transit, and the mailbox that receives them is protected by a strong password and two-factor authentication. No system is perfect, and we won't pretend otherwise — if a breach ever affects you, we'll notify you and the PDPC as the PDPA requires." },
 
       { h: "Children" },
       { p: "This site isn't aimed at children under 13, and we don't knowingly collect their data. If you believe a child has given us an email address, write to us and we'll remove it." },

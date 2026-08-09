@@ -49,7 +49,7 @@ export default function Header({ lang, setLang, path, navigate, onOpenSearch, ha
         <a className="brand" href={"#" + ROUTES.home}
            onClick={(e) => { e.preventDefault(); go(ROUTES.home); }}>
           <img className="brand__mark" src={LOGO} alt="" width="24" height="24" />
-          <span className="brand__name">SubmitologY</span>
+          <span className="brand__name">Submitolog<span className="brand__y">Y</span></span>
         </a>
 
         <nav className="nav" ref={navRef} aria-label={t(T.ui.chrome.menuTitle, lang)}>
@@ -166,7 +166,7 @@ function Drawer({ lang, path, onNavigate, onClose, hasUnread }) {
         <div className="drawer__top">
           <span className="brand__name">
             <img className="brand__mark" src={LOGO} alt="" width="24" height="24" />
-            SubmitologY
+            Submitolog<span className="brand__y">Y</span>
           </span>
           <button className="drawer__close" onClick={onClose} aria-label={t(T.ui.chrome.closeMenu, lang)}>✕</button>
         </div>

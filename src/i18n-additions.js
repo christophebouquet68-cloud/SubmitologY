@@ -111,16 +111,22 @@ export const UI = {
     explore:   { en: "Explore", fr: "Explorer", ja: "探索", pt: "Explorar", ro: "Explorează" },
     brandCol:  { en: "Brand", fr: "La Marque", ja: "ブランド", pt: "A Marca", ro: "Brandul" },
     signupTitle: { en: "Hear when the first collection drops", fr: "Soyez averti de la première collection", ja: "最初のコレクション発売のお知らせ", pt: "Saiba quando a primeira coleção sair", ro: "Află când apare prima colecție" },
-    signupBody:  { en: "A short welcome now, then one email at launch. Nothing else.", fr: "Un petit mot de bienvenue, puis un seul e-mail au lancement. Rien d'autre.", ja: "登録時にご挨拶を1通、発売時にもう1通。それ以外は送りません。", pt: "Uma breve mensagem de boas-vindas agora e um e-mail no lançamento. Nada mais.", ro: "Un scurt mesaj de bun venit acum, apoi un singur e-mail la lansare. Nimic altceva." },
+    // Nothing is sent back to the visitor at signup — the address simply
+    // reaches our inbox (see lib/subscribe.js). Promising a welcome email
+    // here would be promising something that never arrives.
+    signupBody:  { en: "One email, when the first collection drops. Nothing else, and nothing now.", fr: "Un seul e-mail, à la sortie de la première collection. Rien d'autre, et rien tout de suite.", ja: "最初のコレクション発売時に、メールを一通だけお送りします。それ以外は送らず、今すぐ届くものもありません。", pt: "Um único e-mail, quando a primeira coleção sair. Nada mais, e nada agora.", ro: "Un singur e-mail, când apare prima colecție. Nimic altceva și nimic acum." },
     emailPlaceholder: { en: "you@example.com", fr: "vous@exemple.com", ja: "you@example.com", pt: "voce@exemplo.com", ro: "tu@exemplu.com" },
     signupBtn: { en: "Notify me", fr: "Me prévenir", ja: "通知を受け取る", pt: "Avise-me", ro: "Anunță-mă" },
     signupSending: { en: "Sending…", fr: "Envoi…", ja: "送信中…", pt: "Enviando…", ro: "Se trimite…" },
-    signupDone:{ en: "You're on the list. We'll email you once — when the first collection drops.", fr: "Vous êtes inscrit. Nous vous écrirons une seule fois, à la sortie de la première collection.", ja: "登録が完了しました。最初のコレクション発売時に一度だけメールをお送りします。", pt: "Você está na lista. Enviaremos um e-mail — quando a primeira coleção sair.", ro: "Ești pe listă. Îți scriem o singură dată, când apare prima colecție." },
+    // No confirmation email follows, so this message is the only receipt the
+    // visitor gets. It has to be plain about that rather than implying one is
+    // on its way to their inbox.
+    signupDone:{ en: "Thanks — we have your address. Nothing will arrive until the first collection drops, and then just once.", fr: "Merci — nous avons votre adresse. Vous ne recevrez rien avant la sortie de la première collection, et une seule fois.", ja: "ありがとうございます。アドレスをお預かりしました。最初のコレクション発売までは何も届かず、その時に一度だけお送りします。", pt: "Obrigado — temos seu endereço. Nada chegará até a primeira coleção sair, e então apenas uma vez.", ro: "Mulțumim — avem adresa ta. Nu vei primi nimic până când apare prima colecție, iar atunci o singură dată." },
     // Distinct failure messages, because "something went wrong" tells the
     // reader nothing about whether trying again is worth their time.
     signupErrNetwork: { en: "That didn't send. Check your connection and try again.", fr: "L'envoi a échoué. Vérifiez votre connexion et réessayez.", ja: "送信できませんでした。接続を確認して、もう一度お試しください。", pt: "Não foi enviado. Verifique sua conexão e tente novamente.", ro: "Nu s-a trimis. Verifică conexiunea și încearcă din nou." },
     signupErrRejected: { en: "We couldn't add that address. Try another, or email us directly.", fr: "Nous n'avons pas pu ajouter cette adresse. Essayez-en une autre ou écrivez-nous.", ja: "このアドレスを登録できませんでした。別のアドレスをお試しいただくか、直接ご連絡ください。", pt: "Não conseguimos adicionar esse endereço. Tente outro ou escreva para nós.", ro: "Nu am putut adăuga această adresă. Încearcă alta sau scrie-ne direct." },
-    signupErrOffline: { en: "The signup list isn't connected yet. Please email us instead.", fr: "La liste d'inscription n'est pas encore connectée. Écrivez-nous plutôt.", ja: "登録リストはまだ接続されていません。メールでご連絡ください。", pt: "A lista de inscrição ainda não está conectada. Escreva para nós.", ro: "Lista de înscriere nu este încă conectată. Scrie-ne pe e-mail." },
+    signupErrOffline: { en: "The signup form isn't connected yet. Please email us instead.", fr: "Le formulaire d'inscription n'est pas encore connecté. Écrivez-nous plutôt.", ja: "登録フォームはまだ接続されていません。メールでご連絡ください。", pt: "O formulário de inscrição ainda não está conectado. Escreva para nós.", ro: "Formularul de înscriere nu este încă conectat. Scrie-ne pe e-mail." },
     rights:    { en: "SubmitologY · Singapore", fr: "SubmitologY · Singapour", ja: "SubmitologY · シンガポール", pt: "SubmitologY · Singapura", ro: "SubmitologY · Singapore" },
     preLaunch: { en: "Pre-launch site — nothing is for sale yet.", fr: "Site de pré-lancement — rien n'est encore en vente.", ja: "プレローンチサイト — 現在販売はしていません。", pt: "Site de pré-lançamento — nada está à venda ainda.", ro: "Site pre-lansare — nimic nu este încă de vânzare." },
   },
