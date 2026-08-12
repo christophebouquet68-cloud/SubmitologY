@@ -20,7 +20,7 @@ export const UI = {
     },
     map: {
       name: { en: "Technique Map", fr: "Carte des Techniques", ja: "テクニックマップ", pt: "Mapa de Técnicas", ro: "Harta Tehnicilor" },
-      desc: { en: "34 techniques and how they connect", fr: "34 techniques et leurs connexions", ja: "34の技術とそのつながり", pt: "34 técnicas e como se conectam", ro: "34 de tehnici și legăturile dintre ele" },
+      desc: { en: "60 techniques and how they connect", fr: "60 techniques et leurs connexions", ja: "60の技術とそのつながり", pt: "60 técnicas e como se conectam", ro: "60 de tehnici și legăturile dintre ele" },
     },
     concepts: {
       name: { en: "Basic Concepts", fr: "Concepts de base", ja: "基本概念", pt: "Conceitos Básicos", ro: "Concepte de bază" },
@@ -103,6 +103,25 @@ export const UI = {
   sc: {
     print:      { en: "Print / save as PDF", fr: "Imprimer / enregistrer en PDF", ja: "印刷・PDF保存", pt: "Imprimir / salvar em PDF", ro: "Printează / salvează PDF" },
     restored:   { en: "Showing the program you built last time.", fr: "Affichage du programme créé la dernière fois.", ja: "前回作成したプログラムを表示しています。", pt: "Mostrando o programa que você montou da última vez.", ro: "Se afișează programul creat data trecută." },
+
+    // ── Exercise detail: the cue and the diagram ────────────────────────
+    howTo:      { en: "How to do it", fr: "Comment l'exécuter", ja: "動作の解説", pt: "Como executar", ro: "Cum se execută" },
+    hideHowTo:  { en: "Hide", fr: "Masquer", ja: "閉じる", pt: "Ocultar", ro: "Ascunde" },
+    phaseStart: { en: "Start", fr: "Départ", ja: "開始", pt: "Início", ro: "Start" },
+    phaseEnd:   { en: "End", fr: "Fin", ja: "終了", pt: "Fim", ro: "Final" },
+    phaseHold:  { en: "Hold", fr: "Maintien", ja: "保持", pt: "Sustentação", ro: "Menținere" },
+    figureNote: { en: "The figures are simplified — they show the shape of the movement, not perfect form.", fr: "Les figures sont simplifiées : elles montrent la forme du mouvement, pas une exécution parfaite.", ja: "図は簡略化されています。完璧なフォームではなく、動作の形を示すものです。", pt: "As figuras são simplificadas — mostram o formato do movimento, não a execução perfeita.", ro: "Figurile sunt simplificate — arată forma mișcării, nu execuția perfectă." },
+
+    // ── Set tracker ─────────────────────────────────────────────────────
+    setDone:    { en: "Set done", fr: "Série faite", ja: "セット完了", pt: "Série feita", ro: "Serie făcută" },
+    roundDone:  { en: "Round done", fr: "Round fait", ja: "ラウンド完了", pt: "Round feito", ro: "Rundă făcută" },
+    skipRest:   { en: "Skip rest", fr: "Passer le repos", ja: "休憩をスキップ", pt: "Pular descanso", ro: "Sari peste pauză" },
+    resting:    { en: "Rest", fr: "Repos", ja: "休憩", pt: "Descanso", ro: "Pauză" },
+    resetSets:  { en: "Reset", fr: "Réinitialiser", ja: "リセット", pt: "Zerar", ro: "Resetează" },
+    sets:       { en: "sets", fr: "séries", ja: "セット", pt: "séries", ro: "serii" },
+    rounds:     { en: "rounds", fr: "rounds", ja: "ラウンド", pt: "rounds", ro: "runde" },
+    allLogged:  { en: "All done", fr: "Terminé", ja: "すべて完了", pt: "Concluído", ro: "Gata" },
+    trackerNote:{ en: "Set progress is kept while this page is open and clears when you leave — nothing is saved.", fr: "La progression est conservée tant que cette page est ouverte et s'efface lorsque vous la quittez — rien n'est enregistré.", ja: "セットの進捗はこのページを開いている間だけ保持され、離れると消去されます。保存は行われません。", pt: "O progresso das séries é mantido enquanto esta página estiver aberta e é apagado ao sair — nada é salvo.", ro: "Progresul seriilor este păstrat cât timp pagina este deschisă și se șterge când pleci — nimic nu este salvat." },
   },
 
   // ── Footer ─────────────────────────────────────────────────────────────

@@ -1509,3 +1509,117 @@ a { color: var(--accent-soft); }
   .hero { margin-inline: 0; padding: 0; }
   .tee__media::before, .tee__media::after { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   S&C — exercise detail, figures and the set tracker (2026-08)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* The list gains rows with three stacked parts, so the flat 0.4375rem gap of
+   `.sc-list` is too tight. `.sc-list--exercises` overrides only the spacing;
+   everything else is still inherited. */
+.sc-list--exercises { gap: 0.875rem; }
+
+.ex { display: block; }
+.ex__head {
+  display: flex; align-items: center; gap: 0.5rem;
+  flex-wrap: wrap; color: var(--text-muted); font-size: 0.9375rem;
+}
+.ex__head .dot { background: var(--accent-soft); width: 4px; height: 4px; flex: none; }
+.ex__name { color: var(--text); }
+
+/* A quiet text button rather than a pill: there is one per exercise and up to
+   fifteen on screen, so anything with a border turns the page into a grid of
+   boxes. The 44px target is met with padding and a negative margin so the
+   larger hit area doesn't push the row apart. */
+.ex__toggle {
+  margin-left: auto; padding: 0.625rem 0.25rem; margin-block: -0.625rem;
+  min-height: var(--tap); background: none; border: 0; cursor: pointer;
+  font-family: var(--font-util); font-size: var(--fs-util); letter-spacing: 0.04em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+.ex__toggle:hover { color: var(--accent-soft); }
+.ex__toggle:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 2px; border-radius: var(--radius-sm); }
+
+.ex__detail {
+  margin-top: 0.625rem; padding: 0.75rem 0.875rem;
+  background: var(--surface-sunk); border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.ex__cue { margin: 0.625rem 0 0; font-size: 0.875rem; line-height: 1.6; color: var(--text-muted); max-width: 44rem; }
+
+/* ── Figures ───────────────────────────────────────────────────────────────
+   The two frames sit side by side and shrink together; below 380px they would
+   each be under 120px wide, at which point the pose stops being readable, so
+   they stack instead. */
+.figure-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.figure { margin: 0; flex: 1 1 8rem; min-width: 7.5rem; max-width: 12rem; }
+.figure__svg { display: block; width: 100%; height: auto; }
+.figure__cap {
+  margin-top: 0.125rem; text-align: center;
+  font-family: var(--font-util); font-size: var(--fs-util); color: var(--text-dim);
+}
+
+/* Stroke weights carry the depth cue: near limbs solid, far limbs thinner and
+   dimmed. Colour alone would fail for anyone who can't distinguish them. */
+.figure__spine, .figure__limb {
+  fill: none; stroke: var(--accent-soft); stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.figure__head { fill: none; stroke: var(--accent-soft); stroke-width: 2.4; }
+.figure__far .figure__limb { stroke: var(--accent); stroke-width: 1.8; opacity: 0.55; }
+.figure__floor { stroke: var(--line-strong); stroke-width: 1.2; }
+.figure__prop { fill: var(--surface-2); stroke: var(--line-strong); stroke-width: 1.2; }
+.figure__prop-line { stroke: var(--line-strong); stroke-width: 2.4; stroke-linecap: round; }
+.figure__load { fill: var(--mission); stroke: none; opacity: 0.85; }
+.figure__band { stroke: var(--mission); stroke-width: 1.4; stroke-dasharray: 3 2.5; }
+
+/* ── Set tracker ─────────────────────────────────────────────────────────── */
+.tracker {
+  display: flex; align-items: center; gap: 0.5rem 0.625rem;
+  flex-wrap: wrap; margin-top: 0.375rem;
+}
+.tracker__pips { display: flex; gap: 0.3125rem; margin: 0; padding: 0; list-style: none; }
+.tracker__pip {
+  width: 9px; height: 9px; border-radius: 50%;
+  border: 1px solid var(--line-strong); background: transparent;
+}
+.tracker__pip.is-done { background: var(--accent); border-color: var(--accent); }
+.tracker__status {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text-dim); min-width: 5.5rem;
+}
+.tracker__btn {
+  min-height: var(--tap); padding: 0 0.875rem;
+  background: transparent; color: var(--text);
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  font-family: var(--font-util); font-size: var(--fs-util); cursor: pointer;
+}
+.tracker__btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent-soft); }
+.tracker__btn:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+.tracker__btn:disabled { opacity: 0.45; cursor: default; }
+.tracker__btn--quiet { border-color: transparent; color: var(--text-dim); padding: 0 0.5rem; }
+.tracker__btn--quiet:hover { color: var(--text-muted); }
+
+@media (max-width: 380px) {
+  .tracker__status { min-width: 0; }
+  .figure { max-width: none; }
+}
+
+/* ── Print ─────────────────────────────────────────────────────────────────
+   The handout should carry the instructions, so every detail panel is forced
+   open — `[hidden]` is display:none from the UA stylesheet and this rule is
+   specific enough to beat it. The tracker is interactive and prints as dead
+   controls, so it goes. */
+@media print {
+  .ex__detail[hidden], .ex__detail { display: block; page-break-inside: avoid; break-inside: avoid; }
+  .ex__toggle, .tracker { display: none !important; }
+  .ex__detail { background: #fff; border-color: #bbb; }
+  .ex__cue { color: #000; }
+  .figure__spine, .figure__limb, .figure__head { stroke: #000; }
+  .figure__far .figure__limb { stroke: #666; opacity: 1; }
+  .figure__floor, .figure__prop, .figure__prop-line { stroke: #999; }
+  .figure__prop { fill: #fff; }
+  .figure__load { fill: #444; }
+  .figure__band { stroke: #666; }
+  .figure__cap { color: #333; }
+}

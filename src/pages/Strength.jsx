@@ -1,7 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { T, t } from "../i18n";
 import usePersistentState from "../hooks/usePersistentState";
 import { AGE_RANGES, LEVELS, PROGRAM_TYPES, LEVEL_COLORS, buildProgram } from "../data/program";
+import { exCue } from "../data/exercise-cues";
+import ExerciseFigure from "../components/ExerciseFigure";
+import SetTracker from "../components/SetTracker";
 
 const BLOCK_TITLES = {
   lower:        T.sc.lowerTitle,
@@ -113,11 +116,16 @@ export default function Strength({ lang }) {
             </div>
           </div>
 
-          <Block title={t(T.sc.warmupTitle, lang)} rx={`${program.warmup.minutes} min`} items={program.warmup.items} lang={lang} />
+          <Block title={t(T.sc.warmupTitle, lang)} rx={`${program.warmup.minutes} min`}
+                 items={program.warmup.items} lang={lang} restSec={program.restSec} />
           {program.blocks.map((b) => (
-            <Block key={b.key} title={t(BLOCK_TITLES[b.key], lang)} rx={b.rx} items={b.items} lang={lang} />
+            <Block key={b.key} title={t(BLOCK_TITLES[b.key], lang)} rx={b.rx}
+                   items={b.items} lang={lang} restSec={program.restSec} />
           ))}
-          <Block title={t(T.sc.cooldownTitle, lang)} rx={`${program.cooldown.minutes} min`} items={program.cooldown.items} lang={lang} />
+          <Block title={t(T.sc.cooldownTitle, lang)} rx={`${program.cooldown.minutes} min`}
+                 items={program.cooldown.items} lang={lang} restSec={program.restSec} />
+
+          <p className="disclaimer" style={{ marginTop: "0.875rem" }}>{t(T.ui.sc.trackerNote, lang)}</p>
 
           <div className="note" style={{ marginTop: "1.375rem" }}>
             <span className="dot" aria-hidden="true" />
@@ -134,21 +142,53 @@ export default function Strength({ lang }) {
   );
 }
 
-function Block({ title, rx, items, lang }) {
+function Block({ title, rx, items, lang, restSec }) {
   return (
     <section className="sc-block">
       <div className="sc-block__head">
         <h2 className="sc-block__title">{title}</h2>
         <span className="sc-block__rx">{rx}</span>
       </div>
-      <ul className="sc-list">
+      <ul className="sc-list sc-list--exercises">
         {items.map((id) => (
-          <li key={id}>
-            <span className="dot" aria-hidden="true" />
-            {t(T.sc.ex[id], lang)}
-          </li>
+          <Exercise key={id} id={id} rx={rx} lang={lang} restSec={restSec} />
         ))}
       </ul>
     </section>
+  );
+}
+
+/** One exercise: its name, the set tracker, and a disclosure holding the cue
+ *  and the diagram.
+ *
+ *  The detail panel is always in the DOM and hidden with the `hidden`
+ *  attribute rather than being conditionally rendered. That is what lets the
+ *  print stylesheet open every one of them — a printed handout should carry
+ *  the instructions, and React cannot un-render something for the printer. */
+function Exercise({ id, rx, lang, restSec }) {
+  const [open, setOpen] = useState(false);
+  const panelId = `ex-${id}`;
+  const cue = exCue(id, lang);
+
+  return (
+    <li className="ex">
+      <div className="ex__head">
+        <span className="dot" aria-hidden="true" />
+        <span className="ex__name">{t(T.sc.ex[id], lang)}</span>
+        {cue && (
+          <button type="button" className="ex__toggle" aria-expanded={open} aria-controls={panelId}
+                  onClick={() => setOpen((v) => !v)}>
+            {open ? t(T.ui.sc.hideHowTo, lang) : t(T.ui.sc.howTo, lang)}
+          </button>
+        )}
+      </div>
+
+      <SetTracker rx={rx} restSec={restSec} lang={lang} />
+
+      <div className="ex__detail" id={panelId} hidden={!open}>
+        <ExerciseFigure id={id} lang={lang} />
+        <p className="ex__cue">{cue}</p>
+      </div>
+    </li>
   );
 }

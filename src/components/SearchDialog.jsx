@@ -7,7 +7,7 @@ import useFocusTrap from "../hooks/useFocusTrap";
 
 /** Search is the fastest route to anything once a site passes about a dozen
  *  destinations — and it is the only navigation pattern that costs the same on
- *  a 27" monitor and a phone. It indexes both sections and all 34 techniques. */
+ *  a 27" monitor and a phone. It indexes both sections and all 60 techniques. */
 export default function SearchDialog({ lang, onClose, navigate }) {
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);

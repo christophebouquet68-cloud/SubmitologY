@@ -10,8 +10,8 @@ test("hero graph draws the real map, not a decorative stand-in", () => {
   expect(svg).toBeTruthy();
   const nodes = svg.querySelectorAll("circle");
   const edges = svg.querySelectorAll(".hero__graph-edges line");
-  expect(nodes.length).toBe(34);
-  expect(edges.length).toBeGreaterThan(40);
+  expect(nodes.length).toBe(60);
+  expect(edges.length).toBeGreaterThan(100);
   // Every node must carry a taxonomy colour, not a default fill.
   const fills = new Set([...nodes].map((n) => n.getAttribute("fill")));
   expect(fills).toEqual(new Set(["#4cc9f0", "#ff8534", "#ff5c5c"]));
@@ -20,7 +20,7 @@ test("hero graph draws the real map, not a decorative stand-in", () => {
 test("hero stats are derived from data, not typed", () => {
   const { container } = render(<Home lang="en" navigate={noop} />);
   const dts = [...container.querySelectorAll(".hero__stats dt")].map((n) => n.textContent);
-  expect(dts).toEqual(["34", "36", "5", "1%"]);
+  expect(dts).toEqual(["60", "36", "5", "1%"]);
 });
 
 test("hero sets two weights rather than one heading plus a subheading", () => {
@@ -29,12 +29,12 @@ test("hero sets two weights rather than one heading plus a subheading", () => {
   expect(container.querySelector(".hero__line2").textContent).toBe("The Science of Resilience");
 });
 
-test("taxonomy grid counts the real split, 11/12/11", () => {
+test("taxonomy grid counts the real split, 19/20/21", () => {
   const { container } = render(<Home lang="en" navigate={noop} />);
   const cells = container.querySelectorAll(".tax__cell");
   expect(cells.length).toBe(3);
   const counts = [...container.querySelectorAll(".tax__n")].map((n) => n.textContent.trim());
-  expect(counts).toEqual(["11 mapped", "12 mapped", "11 mapped"]);
+  expect(counts).toEqual(["19 mapped", "20 mapped", "21 mapped"]);
 });
 
 test("bone chapter sits between two seams and shows the crest whole", () => {

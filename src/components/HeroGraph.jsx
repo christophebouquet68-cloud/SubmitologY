@@ -10,7 +10,7 @@ import {
 /**
  * HeroGraph — the technique map, drawn faintly behind the hero.
  *
- * This is the real graph, not decoration: the same 34 nodes, the same edges
+ * This is the real graph, not decoration: the same 60 nodes, the same edges
  * and the same seeded layout the map page renders. The site's most distinctive
  * asset used to sit one click away behind a promo card; opening with it means
  * the first thing a visitor sees is the thing no other BJJ brand page has.

@@ -11,7 +11,7 @@ const TECHNIQUE_COUNT = Object.keys(TECHMAP_NODES).length;
 const PROGRAM_COUNT = AGE_RANGES.length * LEVELS.length * PROGRAM_TYPES.length;
 
 // The taxonomy is the site's own structure, so the grid counts it rather than
-// restating it: 11 positions, 12 transitions, 11 submissions, from the data.
+// restating it: 19 positions, 20 transitions, 21 submissions, from the data.
 const TYPES = ["position", "transition", "submission"];
 const TYPE_COUNTS = TYPES.reduce((acc, ty) => {
   acc[ty] = Object.values(TECHMAP_NODES).filter((n) => n.type === ty).length;

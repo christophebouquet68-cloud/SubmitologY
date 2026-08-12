@@ -62,3 +62,45 @@ export function buildProgram(age, level, type) {
     cooldown: { items: COOLDOWN_EX, minutes: 5 + (older ? 1 : 0) },
   };
 }
+
+// ─── Reading a prescription string ───────────────────────────────────────────
+/** The `rx` strings above are written for a human to read on the page. The set
+ *  tracker needs them as numbers, so this parses the three shapes that exist —
+ *  and returns null for anything else rather than guessing.
+ *
+ *  "3 × 12"                       → { kind: "reps",   sets: 3, amount: 12 }
+ *  "3 × 30s"                      → { kind: "time",   sets: 3, amount: 30 }
+ *  "5 rounds · 30s on / 30s off"  → { kind: "rounds", sets: 5, workSec: 30, restSec: 30 }
+ *  "6 min"                        → null  (warm-up and cooldown: nothing to count)
+ *
+ *  Parsing rather than storing the numbers alongside the string keeps a single
+ *  source of truth. If the two could drift apart, one day they would: someone
+ *  edits STRENGTH_RX, the page shows 4 sets, and the tracker counts 3.
+ *
+ *  NOTE the separators: `×` is U+00D7 and `·` is U+00B7, both written by the
+ *  tables above. A plain "x" or "*" will not match, which is intentional —
+ *  a silent miss here shows up immediately as a missing tracker. */
+export function parseRx(rx) {
+  if (typeof rx !== "string") return null;
+
+  const straight = /^\s*(\d+)\s*×\s*(\d+)(s?)\s*$/.exec(rx);
+  if (straight) {
+    return {
+      kind: straight[3] ? "time" : "reps",
+      sets: Number(straight[1]),
+      amount: Number(straight[2]),
+    };
+  }
+
+  const rounds = /^\s*(\d+)\s+rounds\s*·\s*(\d+)s\s*on\s*\/\s*(\d+)s\s*off\s*$/.exec(rx);
+  if (rounds) {
+    return {
+      kind: "rounds",
+      sets: Number(rounds[1]),
+      workSec: Number(rounds[2]),
+      restSec: Number(rounds[3]),
+    };
+  }
+
+  return null;
+}
