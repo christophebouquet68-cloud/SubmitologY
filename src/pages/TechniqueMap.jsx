@@ -9,6 +9,7 @@ import {
   findPath, pathEdgeSet, edgeKey,
 } from "../data/techmap";
 import { techDesc } from "../data/techmap-i18n";
+import BeltRail, { stripesForProgress } from "../components/BeltRail";
 
 const TYPES = ["position", "transition", "submission"];
 const MIN_SPAN = 220;   // furthest zoom in
@@ -474,7 +475,11 @@ export default function TechniqueMap({ lang, slug, navigate }) {
         ))}
         {drilled.length > 0 && (
           <div className="map-legend__item">
-            <span className="dot dot--live" style={{ width: 9, height: 9 }} aria-hidden="true" />
+            {/* A white belt taking stripes as the map gets drilled: one per
+                quarter, the fourth only at the whole map. The count beside it
+                is the accessible version, which is why the rail is hidden. */}
+            <BeltRail colour="#f1eee6" className="rail--legend"
+                      stripes={stripesForProgress(drilled.length, NODE_IDS.length)} />
             {drilled.length} / {NODE_IDS.length} {t(T.ui.map.progress, lang)}
             <button className="pill" style={{ marginLeft: 8 }} onClick={() => setDrilled([])}>
               {t(T.ui.map.clearProgress, lang)}

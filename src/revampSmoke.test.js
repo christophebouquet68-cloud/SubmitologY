@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import Home from "./pages/Home";
 import Mission from "./pages/Mission";
+import Story from "./pages/Story";
+import Shop from "./pages/Shop";
 
 const noop = () => {};
 
@@ -20,7 +22,7 @@ test("hero graph draws the real map, not a decorative stand-in", () => {
 test("hero stats are derived from data, not typed", () => {
   const { container } = render(<Home lang="en" navigate={noop} />);
   const dts = [...container.querySelectorAll(".hero__stats dt")].map((n) => n.textContent);
-  expect(dts).toEqual(["60", "36", "5", "1%"]);
+  expect(dts).toEqual(["60", "36", "5", "46"]);
 });
 
 test("hero sets two weights rather than one heading plus a subheading", () => {
@@ -61,10 +63,27 @@ test("seams are deterministic across renders", () => {
   expect(a).toBe(b);
 });
 
-test("mission pledge keeps 1% and the reworded support line", () => {
+test("mission page states the stance and keeps the support line", () => {
   render(<Mission lang="en" navigate={noop} />);
-  expect(screen.getByText("1%")).toBeTruthy();
+  expect(screen.getByText("What we can say today")).toBeTruthy();
   expect(screen.getAllByText(/Samaritans of Singapore/).length).toBeGreaterThan(0);
+});
+
+/* The donation pledge was removed from every page and every language. A grep
+   would catch it in the source; this catches it in what actually renders,
+   including any string a future edit reintroduces through a translation. */
+test("no page in any language claims money is given to a cause", () => {
+  /* Deliberately narrow: Romanian "doar" means "only" and Portuguese "doar"
+     means "to donate", so a bare "doar" would fail on correct copy. The
+     donation verbs are matched in their inflected forms instead. */
+  const FORBIDDEN =
+    /1\s?%|donat|dona[çc]|doado|doar \d|reverse[rz]|reversé|charit|caritab|寄付|pledge|proceeds/i;
+  ["en", "fr", "ja", "pt", "ro"].forEach((lang) => {
+    [Home, Mission, Story, Shop].forEach((Page) => {
+      const { container } = render(<Page lang={lang} navigate={noop} />);
+      expect(container.textContent).not.toMatch(FORBIDDEN);
+    });
+  });
 });
 
 test("every new string resolves in all five languages", () => {

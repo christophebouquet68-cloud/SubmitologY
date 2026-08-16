@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
 import { T, t } from "../i18n";
 import usePersistentState from "../hooks/usePersistentState";
-import { AGE_RANGES, LEVELS, PROGRAM_TYPES, LEVEL_COLORS, buildProgram } from "../data/program";
+import { AGE_RANGES, LEVELS, PROGRAM_TYPES, LEVEL_COLORS, LEVEL_BELTS, LEVEL_STRIPES, buildProgram } from "../data/program";
 import { exCue } from "../data/exercise-cues";
 import ExerciseFigure from "../components/ExerciseFigure";
 import SetTracker from "../components/SetTracker";
+import BeltRail from "../components/BeltRail";
 
 const BLOCK_TITLES = {
   lower:        T.sc.lowerTitle,
@@ -89,6 +90,13 @@ export default function Strength({ lang }) {
 
       {built && complete && program && (
         <div>
+          {/* The belt for the level chosen. It carries no fact the line
+              beneath it doesn't also state in words, which is why it is
+              aria-hidden — but it states it in the sport's own vocabulary,
+              and it changes when you change the level. */}
+          <BeltRail colour={LEVEL_BELTS[level]} stripes={LEVEL_STRIPES[level]}
+                    className="rail--result" />
+
           <div className="result-head">
             <div>
               <div className="eyebrow eyebrow--accent">{t(T.sc.resultTag, lang)}</div>

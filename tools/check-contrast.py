@@ -31,6 +31,25 @@ for name,hexv in [('text       ','#ede8df'),('muted      ','#b3aab8'),
     r = ratio(hexv,INK)
     print(f"  {name} {hexv}  {r:5.2f}:1  {'PASS' if r>=4.5 else ('large-only' if r>=3 else 'FAIL')}")
 
+print(f"\n--- levels as belts (2026-08-16) ---")
+print("  LEVEL_COLORS set pill text and borders, so they need 4.5 on ink.")
+print("  LEVEL_BELTS fill the rail body, which is a bounded block: the 1px")
+print("  border on .rail is what guarantees its edge, not the fill's contrast.")
+for name, text, belt in [('Beginner    ', '#f1eee6', '#f1eee6'),
+                         ('Intermediate', '#7d9dd1', '#3c5a8a'),
+                         ('Advanced    ', '#c08a52', '#7a4f28')]:
+    rt, rb = ratio(text, INK), ratio(belt, INK)
+    print(f"  {name} text {text} {rt:5.2f}:1 {'PASS' if rt>=4.5 else 'FAIL'}"
+          f"   belt {belt} {rb:5.2f}:1 (bounded)")
+
+print(f"\n--- exercise figures on --surface-sunk #0d0a0f ---")
+SUNK = '#0d0a0f'
+for name, hexv, floor in [('accent-soft (near limbs)', '#ff8534', 3.0),
+                          ('accent (far limbs)      ', '#e85d04', 3.0),
+                          ('equip (bells, bands)    ', '#8ea0b5', 3.0)]:
+    r = ratio(hexv, SUNK)
+    print(f"  {name} {hexv}  {r:5.2f}:1  {'PASS' if r>=floor else 'FAIL'}")
+
 print(f"\n--- non-text UI (rules, borders, focus) need 3.0 ---")
 for label,fg,bg in [('gold seam on ink ','#d4a03c',INK),
                     ('gold seam on bone','#d4a03c',BONE),

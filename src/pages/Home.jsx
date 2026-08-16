@@ -4,11 +4,13 @@ import Seam from "../components/Seam";
 import HeroGraph from "../components/HeroGraph";
 import { TECHMAP_NODES, TECH_TYPE_COLOR } from "../data/techmap";
 import { AGE_RANGES, LEVELS, PROGRAM_TYPES } from "../data/program";
+import { EX_FIGURES } from "../data/exercise-figures";
 
 // Derived, never typed. A hardcoded count is a claim that rots the moment
 // someone adds a technique or a language.
 const TECHNIQUE_COUNT = Object.keys(TECHMAP_NODES).length;
 const PROGRAM_COUNT = AGE_RANGES.length * LEVELS.length * PROGRAM_TYPES.length;
+const FIGURE_COUNT = Object.keys(EX_FIGURES).length;
 
 // The taxonomy is the site's own structure, so the grid counts it rather than
 // restating it: 19 positions, 20 transitions, 21 submissions, from the data.
@@ -62,7 +64,7 @@ export default function Home({ lang, navigate }) {
             <div><dt>{TECHNIQUE_COUNT}</dt><dd>{t(T.overview.statTechniques, lang)}</dd></div>
             <div><dt>{PROGRAM_COUNT}</dt><dd>{t(T.overview.statPrograms, lang)}</dd></div>
             <div><dt>{LANGUAGES.length}</dt><dd>{t(T.overview.statLanguages, lang)}</dd></div>
-            <div><dt>1%</dt><dd>{t(T.overview.statPledge, lang)}</dd></div>
+            <div><dt>{FIGURE_COUNT}</dt><dd>{t(T.overview.statExercises, lang)}</dd></div>
           </dl>
         </div>
       </section>

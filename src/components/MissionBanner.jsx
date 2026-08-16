@@ -1,7 +1,7 @@
 import { T, t } from "../i18n";
 import { ROUTES } from "../router";
 
-/** The 1% pledge strip. Dismissible and persisted — an undismissable banner on
+/** The mission strip. Dismissible and persisted — an undismissable banner on
  *  every page is a tax on returning visitors, and on a phone it eats a
  *  meaningful share of the first screen. */
 export default function MissionBanner({ lang, navigate, onDismiss }) {

@@ -36,7 +36,7 @@ export const UI = {
     },
     mission: {
       name: { en: "Mental Health", fr: "Santé Mentale", ja: "メンタルヘルス", pt: "Saúde Mental", ro: "Sănătate Mintală" },
-      desc: { en: "Why we pledge 1% of profits", fr: "Pourquoi nous reversons 1% des profits", ja: "利益の1%を寄付する理由", pt: "Por que doamos 1% dos lucros", ro: "De ce donăm 1% din profit" },
+      desc: { en: "Why BJJ belongs in the conversation", fr: "Pourquoi le BJJ a sa place dans la conversation", ja: "BJJがこの議論に加わる理由", pt: "Por que o BJJ faz parte dessa conversa", ro: "De ce BJJ face parte din această discuție" },
     },
     story: {
       name: { en: "Our Story", fr: "Notre Histoire", ja: "私たちの物語", pt: "Nossa História", ro: "Povestea Noastră" },

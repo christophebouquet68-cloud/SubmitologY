@@ -92,12 +92,12 @@ d.text((PAD * S, 194 * S), "The Study of Submission", font=title, fill=TEXT)
 d.text((PAD * S, 256 * S), "The Science of Resilience", font=title, fill=ACCENT)
 
 sub = face(24, 400)
-d.text((PAD * S, 348 * S), "34 techniques, and every transition", font=sub, fill=MUTED)
+d.text((PAD * S, 348 * S), "60 techniques, and every transition", font=sub, fill=MUTED)
 d.text((PAD * S, 382 * S), "between them, on one interactive map.", font=sub, fill=MUTED)
 
-# ── Footing rule + pledge ───────────────────────────────────────────────────
+# ── Footing rule + standfirst ───────────────────────────────────────────────
 d.line([(PAD * S, 462 * S), ((PAD + 92) * S, 462 * S)], fill=GOLD, width=2 * S)
-tracked(d, (PAD, 484), "1% OF PROFITS PLEDGED TO MENTAL HEALTH",
+tracked(d, (PAD, 484), "BJJ APPAREL · COMMUNITY · MENTAL HEALTH",
         face(16, 600), MUTED, tracking=2.2)
 
 out = ROOT / "public" / "og-card.png"

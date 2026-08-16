@@ -17,12 +17,13 @@ export default function Mission({ lang }) {
         <p className="prose">{t(T.mh.lead2, lang)}</p>
       </div>
 
-      <div className="pledge" style={{ marginTop: "1.375rem" }}>
-        <span className="pledge__num">1%</span>
-        <div>
-          <h2 className="pledge__title">{t(T.mh.donationTitle, lang)}</h2>
-          <p className="pledge__body">{t(T.mh.donationBody, lang)}</p>
-        </div>
+      {/* This block used to be the 1% donation pledge. The pledge is gone, so
+          what stands here is the thing the brand can actually claim today —
+          stated plainly, which is the register the rest of the site uses about
+          its own limitations. */}
+      <div className="stance" style={{ marginTop: "1.375rem" }}>
+        <h2 className="stance__title">{t(T.mh.stanceTitle, lang)}</h2>
+        <p className="stance__body">{t(T.mh.stanceBody, lang)}</p>
       </div>
 
       <h2 className="section-title">{t(T.mh.pillarsTitle, lang)}</h2>

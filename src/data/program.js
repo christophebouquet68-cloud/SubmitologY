@@ -8,7 +8,28 @@ export const LEVELS         = ["Beginner", "Intermediate", "Advanced"];
 export const PROGRAM_TYPES  = ["Calisthenics", "Equipment"];
 const OLDER_BRACKETS        = ["50-60", ">60"];
 
-export const LEVEL_COLORS = { Beginner: "#35d07f", Intermediate: "#f5a524", Advanced: "#ff5c5c" };
+/* ── Levels as belts ────────────────────────────────────────────────────────
+   These were #35d07f / #f5a524 / #ff5c5c — a green-amber-red difficulty scale,
+   which is the generic answer and belongs to no sport in particular. BJJ has
+   its own rank scale and the reader already knows how to read it, so the three
+   levels take the first three belts instead.
+
+   Two values per belt, because one cannot do both jobs on a dark ground:
+
+     LEVEL_BELTS  the real belt colour, used as a fill in <BeltRail>. A blue
+                  belt is genuinely dark — 2.7:1 on --bg — which is fine for a
+                  large bounded block and would not be fine for text.
+     LEVEL_COLORS the same belt lifted until it passes AA as text (6.8:1 and
+                  6.2:1), used for the pill borders and labels.
+
+   Purple is skipped on purpose even though it is the belt after blue: the
+   stylesheet reserves purple for the mental-health thread, and a purple pill
+   on the conditioning page would spend that signal on a difficulty setting. */
+export const LEVEL_BELTS  = { Beginner: "#f1eee6", Intermediate: "#3c5a8a", Advanced: "#7a4f28" };
+export const LEVEL_COLORS = { Beginner: "#f1eee6", Intermediate: "#7d9dd1", Advanced: "#c08a52" };
+
+/* Stripes on the belt tip. Rank within the belt, so it climbs with the level. */
+export const LEVEL_STRIPES = { Beginner: 1, Intermediate: 2, Advanced: 3 };
 
 const CALISTHENICS_EX = {
   lower:             ["bodyweightSquat", "bulgarianSplitSquat", "broadJump"],

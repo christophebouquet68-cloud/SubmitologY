@@ -146,7 +146,6 @@ export const DOCS = {
 
       { h: "Nothing is for sale yet" },
       { p: "The shop is a preview of a planned collection. Prices, specifications and availability are indicative, may change, and are not an offer to sell. No order can be placed and no payment can be taken through this site. Terms of sale, shipping and returns will be published before that changes." },
-      { p: "Our pledge to give 1% of profits to mental health causes is a commitment we intend to honour from launch, not a claim about donations already made." },
 
       { h: "What's ours" },
       { p: "The SubmitologY name, logo, written content, technique data and design of this site belong to us. Read it, quote it with credit, link to it freely. Don't republish it wholesale or use our branding on merchandise." },

@@ -141,6 +141,30 @@
   --accent-on-bone:  #a83f02;  /* 4.8:1 on --bone */
   --mission-on-bone: #4c3a8f;  /* 7.0:1 on --bone */
 
+  /* ── The belt ───────────────────────────────────────────────────────────
+     The rank scale of the sport, used by <BeltRail>. The belt colours
+     themselves live in data/program.js, because they are keyed to the level
+     names and belong with them; what lives here is the furniture of the belt
+     — the black tip the stripes are taped to, the stripe colour, and the
+     stitching that runs the length of the body.
+
+     --belt-tip is lifted a little off --bg on purpose. A true black tip on a
+     near-black page loses its edge and the belt appears to stop early. */
+  --belt-tip:      #1e1c26;
+  --belt-stripe:   #ece7dd;
+  --belt-stitch:   rgba(0, 0, 0, 0.3);
+
+  /* ── Equipment ──────────────────────────────────────────────────────────
+     Bells, plates, bars and bands in the exercise figures were drawn in
+     --mission purple, which broke the site's own rule that purple means the
+     mental-health thread and nothing else. A dumbbell is not mental-health
+     content. Steel is what the kit is actually made of, it reads as
+     apparatus rather than as body, and it stays clear of both brand colours.
+     7.4:1 on --surface-sunk, well over the 3.0 floor for a meaningful
+     non-text graphic. */
+  --equip:         #8ea0b5;
+  --equip-dim:     rgba(142, 160, 181, 0.85);
+
   /* ── Technique taxonomy ─────────────────────────────────────────────── */
   --t-position:    #4cc9f0;
   --t-transition:  #ff8534;
@@ -317,12 +341,80 @@ a { color: var(--accent-soft); }
   margin-bottom: 1.5rem;
 }
 
+/* ═══ The belt rail ═══════════════════════════════════════════════════════
+   See components/BeltRail.jsx for why this exists and why it appears in only
+   two places. The outer border is load-bearing: a brown belt is 2.7:1 on the
+   page ground, which is fine for a bounded block and not fine for an unbounded
+   one, so the block is always bounded. */
+
+.rail {
+  display: flex; align-items: stretch;
+  height: 14px; border-radius: 3px; overflow: hidden;
+  border: 1px solid var(--line-strong);
+}
+.rail__body { flex: 1 1 auto; background: var(--belt); position: relative; }
+
+/* The two rows of stitching that run the length of a real belt. They are the
+   detail that stops it reading as a coloured progress bar. */
+.rail__body::before,
+.rail__body::after {
+  content: ""; position: absolute; left: 0; right: 0;
+  height: 1px; background: var(--belt-stitch);
+}
+.rail__body::before { top: 30%; }
+.rail__body::after  { top: 70%; }
+
+.rail__tip {
+  flex: 0 0 clamp(76px, 22%, 132px);
+  background: var(--belt-tip);
+  border-left: 1px solid rgba(0, 0, 0, 0.55);
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(4px, 1.4vw, 9px);
+  padding-inline: clamp(6px, 2vw, 12px);
+}
+.rail__stripe {
+  flex: 0 0 4px; height: 8px; border-radius: 1px;
+  background: rgba(255, 255, 255, 0.09);
+}
+.rail__stripe.is-on { background: var(--belt-stripe); }
+
+/* ── The two placements ────────────────────────────────────────────────────
+   Full width above the generated program, where it reads as the belt you are
+   training at; short and inline in the map legend, where it sits in a row of
+   legend items and must not outweigh them. */
+.rail--result { max-width: 26rem; margin-bottom: 1rem; }
+.rail--legend { width: 108px; height: 10px; flex: none; }
+.rail--legend .rail__tip { flex-basis: 40px; gap: 3px; padding-inline: 4px; }
+.rail--legend .rail__stripe { flex-basis: 3px; height: 6px; }
+
 /* ═══ Layout shell ════════════════════════════════════════════════════ */
 
 .shell { min-height: 100dvh; display: flex; flex-direction: column; position: relative; }
 
 .synaptic {
   position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.05;
+}
+
+/* ── The mat ───────────────────────────────────────────────────────────────
+   A woven ground under everything, so the page reads as a surface rather than
+   as a void. The brand's stated design language is neuroscience, and the
+   synaptic field above stays exactly as it was — this sits beneath it and
+   supplies the one thing the site never borrowed from the sport it is about.
+
+   Gradients rather than an image: no request, so the privacy policy's
+   "no third-party requests" claim is untouched, and nothing to route through
+   PUBLIC_URL. A separate fixed layer rather than a background on .shell,
+   because .shell scrolls and a scrolling 4px weave shimmers; fixed, it sits
+   still while the content moves over it. It is also why background-attachment
+   is not used — that is the same effect with a repaint cost on mobile Safari.
+
+   The pitch is deliberately uneven (4px against 5px). An exact square grid
+   moirés against the pixel grid at fractional zoom levels. */
+.matfield {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(237, 232, 223, 0.030) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg,  rgba(237, 232, 223, 0.020) 0 1px, transparent 1px 5px);
 }
 
 .main {
@@ -335,6 +427,17 @@ a { color: var(--accent-soft); }
 
 .page-header { margin-bottom: clamp(1.5rem, 4vw, 2rem); }
 .page-title { font-size: var(--fs-h2); margin-bottom: 0.5rem; }
+
+/* Every page opens the same way: title, then a short gold rule, then the
+   standfirst. Gold is the seam colour, so the mark that separates a heading
+   from its subtitle is the same mark that separates one section from the
+   next — one idea doing both jobs rather than two devices doing one each.
+   Kept to a hairline, because gold is for seams and never a fill. */
+.page-title::after {
+  content: ""; display: block;
+  width: 2.75rem; height: 2px; margin-top: 0.75rem;
+  background: var(--gold-edge);
+}
 .page-sub { color: var(--text-muted); font-size: var(--fs-small); max-width: var(--measure); margin: 0; }
 
 .page-sub--note {
@@ -785,8 +888,8 @@ a { color: var(--accent-soft); }
 }
 .note .dot { background: var(--mission); margin-top: 0.5rem; }
 
-/* The purple `.note` is the mission thread — it means "this is about the
-   pledge". A plain roadmap statement borrows the shape but not the colour,
+/* The purple `.note` is the mission thread — it means "this is about mental
+   health". A plain roadmap statement borrows the shape but not the colour,
    otherwise everything the brand hasn't done yet reads as mental-health copy. */
 .note--plain {
   background: var(--surface); border-color: var(--line);
@@ -933,14 +1036,12 @@ a { color: var(--accent-soft); }
 .merch__price { font-size: 0.9375rem; font-weight: 700; color: var(--accent-soft); }
 
 /* ═══ Mission ═════════════════════════════════════════════════════════ */
-.pledge {
-  display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+.stance {
   background: var(--mission-wash); border: 1px solid var(--mission-edge);
   border-radius: var(--radius); padding: 1.375rem 1.625rem; max-width: 48rem;
 }
-.pledge__num { font-size: 2.75rem; font-weight: 700; color: var(--mission); flex-shrink: 0; }
-.pledge__title { font-size: 1rem; margin-bottom: 0.375rem; }
-.pledge__body { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
+.stance__title { font-size: 1rem; margin-bottom: 0.375rem; }
+.stance__body { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
 
 .quote {
   margin-top: 1.75rem; max-width: 42rem;
@@ -1199,7 +1300,6 @@ a { color: var(--accent-soft); }
 /* Very small phones */
 @media (max-width: 380px) {
   .hero__ctas .btn { width: 100%; }
-  .pledge__num { font-size: 2.25rem; }
 
   /* The label sits above the pills rather than stealing a third of the row. */
   .tee-toolbar { align-items: flex-start; flex-direction: column; gap: 0.5rem; }
@@ -1247,11 +1347,26 @@ a { color: var(--accent-soft); }
   padding-block: clamp(2.25rem, 5vw, 3.5rem);
 }
 
-/* ── The bone surface ──────────────────────────────────────────────────── */
+/* ── The bone surface ──────────────────────────────────────────────────────
+   The paper ground gains a weave and becomes cotton. BJJ is a textile sport —
+   the gi is the equipment — and this is the one large light surface on the
+   site, so it is where a weave can be seen at all. Same technique as .matfield
+   and the same reasons: gradients, no request, uneven pitch.
+
+   Note the crest in the thesis block still ships on its own flat #f2f0ea
+   field, which the weave makes slightly more visible rather than less. The
+   real fix is still a crest exported on transparency (REVAMP-NOTES, open
+   item 2); the logo artwork is untouched here. */
 .surface--bone {
-  background: var(--bone);
+  background-color: var(--bone);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(58, 48, 33, 0.055) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(0deg,  rgba(58, 48, 33, 0.038) 0 1px, transparent 1px 6px);
   color: var(--bone-text);
 }
+
+/* Gold at 34% alpha disappears on paper. The bone variant is 4.1:1. */
+.surface--bone .page-title::after { background: var(--gold-on-bone); }
 
 .surface--bone h1,
 .surface--bone h2,
@@ -1342,7 +1457,7 @@ a { color: var(--accent-soft); }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   REVAMP part 2 — hero, taxonomy, tee lighting, pledge, wordmark
+   REVAMP part 2 — hero, taxonomy, tee lighting, stance, wordmark
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Hero ──────────────────────────────────────────────────────────────────
@@ -1466,26 +1581,30 @@ a { color: var(--accent-soft); }
 .tee { transition: transform 0.18s ease, border-color 0.18s ease; }
 .tee:hover { transform: translateY(-3px); border-color: var(--gold-edge); }
 
-/* ── Pledge ────────────────────────────────────────────────────────────────
-   1% is the whole claim, so it is set at display size rather than as a large
-   body number. Purple only: gold is the seam colour and would dilute the one
-   signal this page reserves. */
-.pledge {
-  display: flex; align-items: flex-start; gap: clamp(1rem, 3vw, 1.75rem);
-  flex-wrap: wrap;
+/* ── Stance ────────────────────────────────────────────────────────────────
+   This slot used to hold "1%" at display size, because the number was the
+   whole claim. With the donation pledge removed there is no number, so the
+   block is an epigraph instead: the weight moves into the title, and a short
+   rule marks it the way a standfirst is marked in print. Purple, because the
+   statement is mental-health content — gold stays reserved for seams. */
+.stance {
   background:
     linear-gradient(180deg, var(--mission-wash), transparent 70%),
     var(--surface);
   border: 1px solid var(--mission-edge);
   border-radius: var(--radius); padding: clamp(1.5rem, 4vw, 2.25rem); max-width: 48rem;
 }
-.pledge__num {
+.stance__title {
   font-family: var(--font-display); font-variation-settings: "wdth" 108;
-  font-size: clamp(3.25rem, 9vw, 5rem); font-weight: 800; line-height: 0.9;
-  letter-spacing: -0.03em; color: var(--mission); flex-shrink: 0;
+  font-size: clamp(1.5rem, 4vw, 2.125rem); font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.025em; color: var(--mission); margin-bottom: 0.875rem;
+  max-width: 22ch;
 }
-.pledge__title { font-size: var(--fs-h3); margin-bottom: 0.5rem; }
-.pledge__body { font-size: var(--fs-small); color: var(--text-muted); margin: 0; max-width: 46ch; }
+.stance__title::after {
+  content: ""; display: block; width: 3.25rem; height: 2px;
+  margin-top: 0.875rem; background: var(--mission-edge);
+}
+.stance__body { font-size: var(--fs-small); color: var(--text-muted); margin: 0; max-width: 52ch; }
 
 /* ── Wordmark ──────────────────────────────────────────────────────────────
    The capital Y is part of the name and is gold in the crest. Making it gold
@@ -1550,28 +1669,78 @@ a { color: var(--accent-soft); }
 /* ── Figures ───────────────────────────────────────────────────────────────
    The two frames sit side by side and shrink together; below 380px they would
    each be under 120px wide, at which point the pose stops being readable, so
-   they stack instead. */
+   they stack instead.
+
+   Every stroke width is an SVG attribute set by the component, because they
+   are geometry — a thigh is 3.0 and a forearm 2.0 in the drawing's own
+   coordinate space, and putting them in CSS would let a stylesheet change
+   silently misdraw a body. Colour and opacity live here, so the print sheet
+   can restate them for paper. */
 .figure-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 .figure { margin: 0; flex: 1 1 8rem; min-width: 7.5rem; max-width: 12rem; }
+
+/* The plate gives each frame an edge to sit inside. Two figures floating on
+   the panel background read as one wide picture; two framed ones read as
+   before and after, which is what they are. */
+.figure__plate {
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
 .figure__svg { display: block; width: 100%; height: auto; }
 .figure__cap {
-  margin-top: 0.125rem; text-align: center;
-  font-family: var(--font-util); font-size: var(--fs-util); color: var(--text-dim);
+  margin-top: 0.375rem; text-align: center;
+  font-family: var(--font-util); font-size: var(--fs-util);
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim);
 }
 
-/* Stroke weights carry the depth cue: near limbs solid, far limbs thinner and
-   dimmed. Colour alone would fail for anyone who can't distinguish them. */
+/* Near side solid, far side thinner AND dimmer. Two cues, because colour
+   alone would fail for anyone who can't separate the two tones. */
 .figure__spine, .figure__limb {
-  fill: none; stroke: var(--accent-soft); stroke-width: 2.4;
+  fill: none; stroke: var(--accent-soft);
   stroke-linecap: round; stroke-linejoin: round;
 }
-.figure__head { fill: none; stroke: var(--accent-soft); stroke-width: 2.4; }
-.figure__far .figure__limb { stroke: var(--accent); stroke-width: 1.8; opacity: 0.55; }
-.figure__floor { stroke: var(--line-strong); stroke-width: 1.2; }
+.figure__far .figure__limb { stroke: var(--accent); opacity: 0.62; }
+.figure__head { fill: var(--accent-soft); stroke: none; }
+
+/* The torso is a translucent capsule under the spine, not an outline. It is
+   the difference between a body and a wire cross, and it costs two strokes. */
+.figure__torso {
+  fill: none; stroke: rgba(255, 133, 52, 0.22);
+  stroke-linecap: round;
+}
+
+/* The start pose behind the end pose. Faint on purpose: it is context for
+   the pose in front of it, and anything stronger competes with it. */
+.figure__ghost-limb {
+  fill: none; stroke: var(--accent-soft); opacity: 0.22;
+  stroke-linecap: round;
+}
+
+/* The arrow is an annotation, not anatomy, so it takes the equipment colour
+   rather than the body colour — same reason a caption isn't set in the
+   heading face. */
+.figure__arc {
+  fill: none; stroke: var(--equip); stroke-width: 1.5;
+  stroke-linecap: round; opacity: 0.85;
+}
+.figure__arrowhead { fill: var(--equip); opacity: 0.85; }
+
+/* Mat, weave and contact shadow. Drawn only for poses that have a floor. */
+.figure__mat { fill: #2a2233; opacity: 0.55; }
+.figure__weave { stroke: var(--line-strong); stroke-width: 0.8; opacity: 0.35; }
+.figure__floor { stroke: var(--line-strong); stroke-width: 1.4; }
+.figure__shadow { fill: #000; opacity: 0.28; }
+.figure__shadow--core { opacity: 0.3; }
+
 .figure__prop { fill: var(--surface-2); stroke: var(--line-strong); stroke-width: 1.2; }
-.figure__prop-line { stroke: var(--line-strong); stroke-width: 2.4; stroke-linecap: round; }
-.figure__load { fill: var(--mission); stroke: none; opacity: 0.85; }
-.figure__band { stroke: var(--mission); stroke-width: 1.4; stroke-dasharray: 3 2.5; }
+.figure__bar { stroke: var(--equip); stroke-width: 2.6; stroke-linecap: round; }
+.figure__load { fill: var(--equip); stroke: none; }
+.figure__band {
+  stroke: var(--equip); stroke-width: 1.5;
+  stroke-dasharray: 3 2.5; stroke-linecap: round;
+}
 
 /* ── Set tracker ─────────────────────────────────────────────────────────── */
 .tracker {
@@ -1611,15 +1780,31 @@ a { color: var(--accent-soft); }
    specific enough to beat it. The tracker is interactive and prints as dead
    controls, so it goes. */
 @media print {
+  /* The belt is ink-heavy and says nothing the printed heading doesn't. */
+  .rail, .matfield, .synaptic { display: none !important; }
+  .page-title::after { background: #999; }
+
   .ex__detail[hidden], .ex__detail { display: block; page-break-inside: avoid; break-inside: avoid; }
   .ex__toggle, .tracker { display: none !important; }
   .ex__detail { background: #fff; border-color: #bbb; }
   .ex__cue { color: #000; }
-  .figure__spine, .figure__limb, .figure__head { stroke: #000; }
-  .figure__far .figure__limb { stroke: #666; opacity: 1; }
-  .figure__floor, .figure__prop, .figure__prop-line { stroke: #999; }
+  /* On paper the ground is white, so every tone inverts. The mat becomes a
+     tint rather than a panel, and the shadows go — a 28% black ellipse that
+     reads as contact on screen prints as a grey smear. */
+  .figure__plate { background: #fff; border-color: #ccc; }
+  .figure__spine, .figure__limb { stroke: #000; }
+  .figure__head { fill: #000; }
+  .figure__torso { stroke: rgba(0, 0, 0, 0.10); }
+  .figure__far .figure__limb { stroke: #777; opacity: 1; }
+  .figure__ghost-limb { stroke: #000; opacity: 0.22; }
+  .figure__arc { stroke: #555; opacity: 1; }
+  .figure__arrowhead { fill: #555; opacity: 1; }
+  .figure__mat { fill: #eee; opacity: 1; }
+  .figure__weave { stroke: #ddd; opacity: 1; }
+  .figure__shadows { display: none; }
+  .figure__floor, .figure__prop, .figure__bar { stroke: #999; }
   .figure__prop { fill: #fff; }
-  .figure__load { fill: #444; }
+  .figure__load { fill: #666; }
   .figure__band { stroke: #666; }
   .figure__cap { color: #333; }
 }

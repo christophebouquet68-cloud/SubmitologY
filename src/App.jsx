@@ -123,6 +123,10 @@ export default function App() {
     <div className="shell">
       <a className="skip-link" href="#main">{t(T.ui.chrome.skipToContent, lang)}</a>
 
+      {/* Two ambient layers, painted in this order: the mat is the ground,
+          the synaptic field is the brand's stated design language sitting on
+          top of it. Both fixed, both decorative, neither costs a request. */}
+      <div className="matfield" aria-hidden="true" />
       <SynapticField />
 
       <Header
