@@ -12,6 +12,12 @@ def ratio(a,b):
 
 BONE = '#e9e1d2'
 INK  = '#14111a'
+# --ink, added 2026-08-22 with the photographic system. A near-neutral black
+# used ONLY behind full-bleed imagery: photographs on the warm aubergine --bg
+# read as tinted. Sampling the supplied frames gave a warm-neutral mat and
+# wall (#4E4740, #716459), which is why this is #08080A and not the cooler
+# #0B0D12 first proposed.
+PHOTO_INK = '#08080a'
 
 print(f"--- text candidates on BONE {BONE} (AA body needs 4.5) ---")
 for name,hexv in [('bone-ink   ','#221d17'),('bone-ink alt','#2a231b'),
@@ -30,6 +36,18 @@ for name,hexv in [('text       ','#ede8df'),('muted      ','#b3aab8'),
                   ('accent-soft','#ff8534'),('mission    ','#a897f0')]:
     r = ratio(hexv,INK)
     print(f"  {name} {hexv}  {r:5.2f}:1  {'PASS' if r>=4.5 else ('large-only' if r>=3 else 'FAIL')}")
+
+print(f"\n--- on PHOTO_INK {PHOTO_INK} (the ground behind imagery) ---")
+for name,hexv in [('text       ','#ede8df'),('muted      ','#b3aab8'),
+                  ('dim        ','#8f8799'),('gold       ','#d4a03c'),
+                  ('gold-soft  ','#e8c274'),('accent     ','#e85d04'),
+                  ('accent-soft','#ff8534'),('mission    ','#a897f0')]:
+    r = ratio(hexv,PHOTO_INK)
+    print(f"  {name} {hexv}  {r:5.2f}:1  {'PASS' if r>=4.5 else ('large-only' if r>=3 else 'FAIL')}")
+
+print("\n  NOTE: type over a PHOTOGRAPH is not covered by this script. The veil")
+print("  gradients in .hero--photo::after and .band__scrim are what carry those")
+print("  ratios, and they have to be checked on the rendered page, not here.")
 
 print(f"\n--- levels as belts (2026-08-16) ---")
 print("  LEVEL_COLORS set pill text and borders, so they need 4.5 on ink.")

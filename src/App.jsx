@@ -138,7 +138,12 @@ export default function App() {
         hasUnread={hasUnread}
       />
 
-      {!bannerDismissed && (
+      {/* Hidden on the mission page itself. The whole strip is one button
+          that navigates to ROUTES.mission, so on that page its "Learn more →"
+          pointed at the page you were already reading and a click did
+          nothing — a dead control that looked like a live one. Suppressing it
+          there also gives the page it advertises the full first screen. */}
+      {!bannerDismissed && !isActive(path, ROUTES.mission) && (
         <MissionBanner lang={lang} navigate={navigate} onDismiss={() => setBannerDismissed(true)} />
       )}
 

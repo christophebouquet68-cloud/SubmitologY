@@ -173,14 +173,23 @@
   /* ── Type ───────────────────────────────────────────────────────────── */
   --font-display: "Archivo Display", "Hiragino Sans", "Yu Gothic",
                   "Noto Sans JP", system-ui, sans-serif;
-  --font-body:    "Newsreader", "Hiragino Mincho ProN", "Yu Mincho",
+  /* HARDER PUSH, 2026-08-22 — body copy moved from Newsreader to Archivo.
+     The photographs now supply the athleticism the type used to have to
+     carry alone, so display and body run on one grotesque and the site
+     reads flatter and more sporting. To A/B the other option, swap these
+     two declarations: --font-body: var(--font-editorial). If Archivo body
+     is kept permanently, delete the Newsreader @font-face above and
+     fonts/Newsreader-Variable.woff2 — it is 40 KB of dead payload. */
+  --font-body:    "Archivo Display", "Hiragino Sans", "Yu Gothic",
+                  "Noto Sans JP", system-ui, sans-serif;
+  --font-editorial: "Newsreader", "Hiragino Mincho ProN", "Yu Mincho",
                   "Noto Serif JP", Georgia, "Times New Roman", serif;
   --font-util:    "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono",
                   Menlo, Consolas, monospace;
 
-  --fs-hero:   clamp(2.25rem, 7vw, 4.25rem);
-  --fs-h2:     clamp(1.5rem, 4vw, 2rem);
-  --fs-h3:     clamp(1.125rem, 2.4vw, 1.25rem);
+  --fs-hero:   clamp(2.5rem, 7.6vw, 6.5rem);   /* was 4.25rem max */
+  --fs-h2:     clamp(1.85rem, 4.2vw, 3.4rem);  /* was 2rem max */
+  --fs-h3:     clamp(1.25rem, 2.8vw, 1.75rem); /* was 1.25rem max */
   --fs-body:   1rem;      /* 16px floor — was 12–14px */
   --fs-small:  0.875rem;  /* 14px  */
   --fs-util:   0.75rem;   /* 12px — utility/mono only, never body copy */
@@ -206,7 +215,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--fs-body);
-  line-height: 1.7;
+  line-height: 1.62;   /* was 1.7 — grotesque body sets tighter */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -284,12 +293,14 @@ a { color: var(--accent-soft); }
 /* Buttons ─────────────────────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  min-height: var(--tap);
-  padding: 0.6875rem 1.375rem;
-  border-radius: var(--radius-sm);
+  min-height: 52px;              /* was var(--tap) = 44px */
+  padding: 0.75rem 1.75rem;
+  border-radius: 2px;            /* was var(--radius-sm) = 6px */
   font-family: var(--font-util);
   font-size: var(--fs-util);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;        /* was 0.05em */
+  text-transform: uppercase;
+  font-weight: 500;
   cursor: pointer;
   border: 1px solid transparent;
   background: none;
@@ -426,7 +437,12 @@ a { color: var(--accent-soft); }
 .main:focus { outline: none; }
 
 .page-header { margin-bottom: clamp(1.5rem, 4vw, 2rem); }
-.page-title { font-size: var(--fs-h2); margin-bottom: 0.5rem; }
+.page-title {
+  font-size: var(--fs-h2); margin-bottom: 0.75rem;
+  text-transform: uppercase; font-weight: 900;
+  letter-spacing: -0.04em; line-height: 0.92;
+  text-wrap: balance;
+}
 
 /* Every page opens the same way: title, then a short gold rule, then the
    standfirst. Gold is the seam colour, so the mark that separates a heading
@@ -445,7 +461,11 @@ a { color: var(--accent-soft); }
   color: var(--text-dim); margin-top: 0.625rem;
 }
 
-.section-title { font-size: var(--fs-h3); margin: 2.5rem 0 1rem; }
+.section-title {
+  font-size: var(--fs-h3); margin: 2.5rem 0 1rem;
+  text-transform: uppercase; font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1;
+}
 
 /* ═══ Header / navigation ═════════════════════════════════════════════ */
 
@@ -474,9 +494,11 @@ a { color: var(--accent-soft); }
   font-size: 0.9375rem; font-weight: 600; letter-spacing: 0.04em;
 }
 
-.nav { display: flex; align-items: center; gap: 0.125rem; }
+.nav { display: flex; align-items: center; gap: 0.125rem; position: relative; }
 
-.nav__group { position: relative; }
+/* Static, so .nav__menu positions against .nav and can span its full width
+   — the panel is a table of contents, not a dropdown list. */
+.nav__group { position: static; }
 
 .nav__link {
   display: inline-flex; align-items: center; gap: 0.3125rem;
@@ -497,15 +519,18 @@ a { color: var(--accent-soft); }
 .nav__link[aria-expanded="true"] .nav__chev { transform: rotate(180deg); }
 
 .nav__menu {
-  position: absolute; top: calc(100% + 6px); left: 0;
+  position: absolute; top: calc(100% + 10px); left: 0; right: 0;
   min-width: 268px;
   background: var(--surface-2);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-  padding: 0.375rem;
+  padding: 0.5rem;
   z-index: 80;
-  display: flex; flex-direction: column;
+  /* auto-fit rather than a fixed 3 columns: the groups hold 1–3 items and a
+     one-item group must not be stretched across the whole header. */
+  display: grid; gap: 0.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
 
 .nav__item {
@@ -518,7 +543,8 @@ a { color: var(--accent-soft); }
 }
 .nav__item:hover { background: var(--surface); }
 .nav__item[aria-current="page"] .nav__item-name { color: var(--accent-soft); }
-.nav__item-name { display: block; font-size: 0.9375rem; font-weight: 700; }
+.nav__item-name { display: block; font-size: 0.9375rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: -0.01em; }
 .nav__item-desc {
   display: block; font-family: var(--font-util); font-size: 0.6875rem;
   color: var(--text-dim); margin-top: 0.1875rem; line-height: 1.5;
@@ -1807,4 +1833,414 @@ a { color: var(--accent-soft); }
   .figure__load { fill: #666; }
   .figure__band { stroke: #666; }
   .figure__cap { color: #333; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REVAMP part 3 — the photographic system            (2026-08-22)
+   ───────────────────────────────────────────────────────────────────────────
+   Seven supplied frames, eleven crops, in public/photo/.
+
+   THE RULE (Option C): COLOUR where the photograph IS the content — the hero,
+   product; DUOTONE (#08080A → #E9E1D2, contrast +12 %) wherever type sits on
+   top of it; GRADED — saturation down, warm cast toward the paper — where the
+   photograph is the content AND its colour is information, but it butts
+   against a coloured surface it would otherwise fight. One case today: the
+   home story split beside the bone chapter. See tools/photo.py grade(). Duotone compresses the mid-tones so white
+   type separates, and it stops the gi blue / gi pink / arena colour competing
+   with --accent orange. One decision, both problems.
+
+   The treatments are BAKED INTO THE FILES, not applied in CSS. A CSS filter
+   would cost a repaint on every scroll frame over a full-bleed image, and the
+   duotone has to survive the images being reused in og:image and elsewhere.
+   tools/photo.py regenerates the whole set from the originals.
+
+   RHYTHM: never two colour photo bands adjacent, never two duotones. On Home:
+   hero (colour) → fist seam (duotone) → story split (colour) → taxonomy (flat)
+   → technique band (duotone) → index (flat) → shop band (orange). Every photo
+   band is separated from the next by something that is not a photograph; that
+   is what stops the page reading as a gallery.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Photographs on --bg (#14111a, warm aubergine) read as tinted. Sampling the
+     supplied frames gives a warm-neutral mat and wall (#4E4740, #716459), so
+     the ground behind imagery is a near-neutral black rather than the cool
+     #0B0D12 first proposed. Text tokens re-checked: --text 16.6:1, --text-muted
+     9.0:1, --text-dim 5.9:1 — all pass. Registered in tools/check-contrast.py. */
+  --ink: #08080a;
+
+  /* Band rhythm. Section padding was 56–80px, which reads as cramped once the
+     display type triples in size. */
+  --band-pad: clamp(3rem, 7vw, 6.5rem);
+}
+
+/* ── Full-bleed band ───────────────────────────────────────────────────────
+   Same escape hatch as .chapter: 100vw plus a negative inline margin, held in
+   check by .shell { overflow-x: clip }. Backgrounds and imagery run edge to
+   edge; the content inside stays on the 1180px measure. */
+.band {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  position: relative;
+  isolation: isolate;
+  background: var(--ink);
+}
+.band__in {
+  position: relative; z-index: 2;
+  max-width: 1180px; margin-inline: auto;
+  padding-inline: var(--pad-page);
+  padding-block: var(--band-pad);
+}
+.band__in > :last-child { margin-bottom: 0; }
+
+.band__photo {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover; background-position: center;
+  background-repeat: no-repeat;
+}
+/* Type over photography always gets a scrim. Weighted to the side the type is
+   on so the image still reads as an image on the other. */
+.band__scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(
+    95deg,
+    rgba(8, 8, 10, 0.94) 0%,
+    rgba(8, 8, 10, 0.78) 42%,
+    rgba(8, 8, 10, 0.30) 78%,
+    rgba(8, 8, 10, 0.12) 100%);
+}
+.band__body { max-width: 34rem; color: var(--text-muted); }
+.band__title {
+  font-size: var(--fs-h2);
+  text-transform: uppercase; font-weight: 900;
+  letter-spacing: -0.04em; line-height: 0.92;
+  margin: 0 0 0.75rem; text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  /* On a phone the image is behind the whole column, not beside it, so the
+     side-weighted scrim stops working and becomes a vertical one. */
+  .band__scrim {
+    background: linear-gradient(180deg, rgba(8,8,10,0.72) 0%, rgba(8,8,10,0.9) 100%);
+  }
+}
+
+/* ── The photographic seam ─────────────────────────────────────────────────
+   Frame 03 (the fist bump) cropped to 32:9 and duotoned, doing the job the
+   drawn kintsugi seam does elsewhere. It carries no type, so it costs nothing
+   in legibility, and it repeats between chapters without becoming the subject.
+
+   Kept as a separate class from .seam on purpose: .seam is the drawn SVG and
+   stays the default everywhere the page must load light (legal pages, 404,
+   and the bone chapter, where a photograph would break the paper ground). */
+.photoseam {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  height: clamp(90px, 13vw, 190px);
+  background-image: url("../photo/seam-fist.jpg");
+  background-size: cover;
+  background-position: center 42%;
+  background-repeat: no-repeat;
+  background-color: var(--ink);
+}
+
+/* ── Hero, photographic ────────────────────────────────────────────────────
+   Frame 01 in colour: the crest reads at full size, the gold seam is legible,
+   and the black wall behind the figure fills the left two-thirds — which is
+   why this hero needs a diagonal scrim rather than the usual bottom fade. A
+   bottom fade flattens the crest, and the crest is the point of the frame. */
+.hero--photo {
+  margin-inline: calc(50% - 50vw);
+  width: 100vw;
+  border-radius: 0;
+  min-height: min(88vh, 780px);
+  display: flex; align-items: flex-end;
+  padding: clamp(4rem, 10vw, 7rem) 0 clamp(2.25rem, 5vw, 3.5rem);
+}
+.hero__photo {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url("../photo/hero-crest.jpg");
+  background-size: cover; background-position: center 30%;
+}
+@media (max-width: 720px) {
+  .hero__photo { background-image: url("../photo/hero-crest-sm.jpg"); }
+}
+.hero--photo .hero__inner {
+  width: 100%; max-width: 1180px; margin-inline: auto;
+  padding-inline: var(--pad-page);
+}
+/* Overrides the graph veil from part 2 — same specificity, later in the file. */
+.hero--photo::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(101deg,
+      rgba(8, 8, 10, 0.96) 0%, rgba(8, 8, 10, 0.88) 26%,
+      rgba(8, 8, 10, 0.34) 52%, rgba(8, 8, 10, 0.00) 78%),
+    linear-gradient(180deg,
+      rgba(8, 8, 10, 0.00) 60%, rgba(8, 8, 10, 0.55) 88%, var(--ink) 100%);
+}
+@media (max-width: 720px) {
+  .hero--photo::after {
+    background: linear-gradient(180deg,
+      rgba(8,8,10,0.55) 0%, rgba(8,8,10,0.35) 34%,
+      rgba(8,8,10,0.92) 78%, var(--ink) 100%);
+  }
+}
+.hero--photo .hero__title { letter-spacing: -0.045em; line-height: 0.86; }
+.hero--photo .hero__line1 {
+  font-weight: 400; font-size: 0.42em; color: var(--text-dim);
+  letter-spacing: -0.02em; margin-bottom: 0.35rem;
+}
+.hero--photo .hero__line2 { font-weight: 900; }
+.hero--photo .hero__title,
+.hero--photo .hero__line1,
+.hero--photo .hero__line2 { text-transform: uppercase; }
+.hero--photo .hero__body { max-width: 30rem; }
+
+/* On a photograph, white is a louder and cleaner primary than orange — and it
+   leaves orange free to own the shop band alone further down the page. This is
+   the single rule that keeps the interface quieter as the imagery gets louder. */
+.btn--onphoto { background: var(--text); color: var(--ink); font-weight: 600; }
+.btn--onphoto:hover { background: #fff; }
+.btn--lg { min-height: 54px; padding: 0.85rem 2.25rem; }
+
+/* ── Stat strip ────────────────────────────────────────────────────────────
+   Lifted out of the hero box and pinned across the full width on a gold
+   hairline. It was the most reference-like element on the site and the least
+   visible one. */
+.statstrip {
+  width: 100vw; margin-inline: calc(50% - 50vw);
+  background: var(--ink);
+  border-top: 1px solid var(--gold-edge);
+  padding: clamp(1.1rem, 2.5vw, 1.6rem) 0;
+}
+.statstrip .hero__stats {
+  max-width: 1180px; margin: 0 auto;
+  padding-inline: var(--pad-page);
+  border-top: 0; padding-top: 0;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.statstrip .hero__stats dt { font-size: clamp(1.5rem, 3.4vw, 2.1rem); font-weight: 900; letter-spacing: -0.05em; }
+@media (max-width: 720px) { .statstrip .hero__stats { grid-template-columns: 1fr 1fr; gap: 1.25rem; } }
+
+/* ── Story split — photograph beside the bone chapter ─────────────────────
+   Frame 06 in colour: the only frame with faces to camera, and the only one
+   showing more than one colourway, so it belongs where the page is talking
+   about the brand rather than about the sport.
+
+   The photo column is flush to the viewport edge; the bone column keeps the
+   chapter's own inline padding, so the paper still reads as paper. */
+.storysplit { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; }
+.storysplit__img {
+  background-image: url("../photo/split-trio.jpg");
+  background-size: cover; background-position: center 18%;
+  min-height: 420px;
+}
+.storysplit__body {
+  padding-block: clamp(2.25rem, 5vw, 3.75rem);
+  padding-inline: clamp(1.5rem, 4vw, 3.25rem);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.storysplit__body > :last-child { margin-bottom: 0; }
+@media (max-width: 820px) {
+  .storysplit { grid-template-columns: 1fr; }
+  .storysplit__img { min-height: 300px; }
+}
+
+/* ── Technique band ────────────────────────────────────────────────────────
+   Frame 02 duotoned — two hands fighting for a grip is the most literal
+   illustration of a graph edge available — with the real map drawn over the
+   right-hand side. The graph moved here from the hero: it belongs beside the
+   thing it links to rather than behind an unrelated headline. */
+.techband .band__photo {
+  background-image: url("../photo/band-grip.jpg");
+  background-position: center 38%;
+}
+.techband .hero__graph {
+  position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%;
+  opacity: 0.38; pointer-events: none;
+}
+.techband .band__scrim { z-index: 1; }
+.techband .band__in { min-height: 26rem; display: flex; flex-direction: column; justify-content: center; }
+.techband .legend {
+  display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 1.25rem;
+  font-family: var(--font-util); font-size: var(--fs-util);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted);
+}
+.techband .legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+.techband .legend i { width: 9px; height: 9px; border-radius: 50%; display: block; background: var(--c); }
+
+/* ── Mission band ──────────────────────────────────────────────────────────
+   Frame 04, duotone. The JJIF banner and the scoreboard are cropped out of
+   the source file, not hidden with CSS — an image that shows a federation
+   mark claims a sanctioned result the brand has never had. */
+.missionband .band__photo {
+  background-image: url("../photo/band-mission.jpg");
+  background-position: center 30%;
+}
+
+/* ── Shop band — the one orange surface ───────────────────────────────────
+   Orange means commerce, so it appears exactly once per page and only where
+   there is something to point at. Never on Mission, where the purple thread
+   has to stay uncontested. No photograph: the accent is the whole surface. */
+.band--orange { background: var(--accent); }
+.band--orange .band__title,
+.band--orange .eyebrow { color: #1a0c02; }
+.band--orange .band__body { color: #4a1e01; }
+.band--orange .btn--onphoto { background: #1a0c02; color: #fff; }
+.band--orange .btn--onphoto:hover { background: #000; }
+.band--orange :focus-visible { outline-color: #1a0c02; }
+
+/* ── Caps for the display tier only ───────────────────────────────────────
+   Grid and card headings join the display tier. Data-bearing names do NOT:
+   technique names, exercise names and t-shirt design names stay sentence case,
+   because they are read for meaning rather than scanned for hierarchy, and
+   "Knee Shield Half Guard" in caps is markedly slower to read. */
+.tax__name, .dest__name, .feature .section-title {
+  text-transform: uppercase; font-weight: 900; letter-spacing: -0.02em;
+}
+
+/* The bone chapter inherits everything above and needs its scrim colours
+   re-pointed, same as the rest of --surface--bone. */
+.surface--bone .band__title { color: var(--bone-text); }
+.surface--bone .band__body { color: var(--bone-muted); }
+
+/* The thesis block is a two-column grid (text | crest) at full width. Inside
+   half of a split it has nowhere near the room for that, so it stacks. */
+.storysplit__body.thesis { display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+.storysplit__body .thesis__mark { align-self: flex-start; }
+
+/* A page header that IS the band: the title keeps its gold rule, but the
+   standfirst note needs its own ground to stay legible over an image. */
+.missionband .page-title { margin-bottom: 1rem; }
+.missionband .note {
+  background: rgba(8, 8, 10, 0.55);
+  border: 1px solid var(--mission-edge);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  max-width: 46rem;
+}
+.band .page-title { color: var(--text); }
+
+/* ── Band flow ─────────────────────────────────────────────────────────────
+   .home is a flex column with a 2.5–3.75rem gap, which is right between two
+   text sections and wrong between two full-bleed bands: a band that meets the
+   page background on both edges stops reading as edge-to-edge. Negative
+   margins collapse the gap for the bleeding children only, so the ordinary
+   sections keep their rhythm.
+
+   Written as a variable rather than a literal so the two values can never
+   drift apart — a mismatch here leaves a hairline of page background between
+   the hero and the stat strip, which is exactly the bug it is closing. */
+:root { --home-gap: clamp(2.5rem, 6vw, 3.75rem); }
+.home { gap: var(--home-gap); }
+.home > .hero--photo,
+.home > .statstrip,
+.home > .photoseam,
+.home > .chapter,
+.home > .band { margin-block: calc(var(--home-gap) / -2); }
+/* The first and last children have no gap to swallow on the outside edge. */
+.home > .hero--photo:first-child { margin-block: 0 calc(var(--home-gap) / -2); }
+.home > .band:last-child { margin-block: calc(var(--home-gap) / -2) 0; }
+/* .main's bottom padding would leave the closing orange band floating. */
+.home > .band:last-child { margin-bottom: -5rem; }
+
+/* ── Hero type on a photograph ─────────────────────────────────────────────
+   The headline has to stay inside the dark half of frame 01. Unconstrained it
+   runs across the crest, where cream on a white gi is both a contrast failure
+   and a waste of the one frame whose subject is the mark itself. */
+.hero--photo .hero__title,
+.hero--photo .hero__body,
+.hero--photo .eyebrow { max-width: min(38rem, 54vw); }
+.hero--photo .hero__title { font-size: clamp(2.25rem, 5.6vw, 4.75rem); }
+/* Line 1 is the quiet half of the sentence, so it sits at --text-dim on flat
+   ground. Over a photograph that is 3.1:1 against the gi behind it; --text-muted
+   keeps the weight contrast while clearing AA. */
+.hero--photo .hero__line1 { color: var(--text-muted); }
+.hero--photo::after {
+  background:
+    linear-gradient(101deg,
+      rgba(8, 8, 10, 0.97) 0%, rgba(8, 8, 10, 0.92) 34%,
+      rgba(8, 8, 10, 0.55) 56%, rgba(8, 8, 10, 0.00) 82%),
+    linear-gradient(180deg,
+      rgba(8, 8, 10, 0.00) 60%, rgba(8, 8, 10, 0.55) 88%, var(--ink) 100%);
+}
+@media (max-width: 720px) {
+  .hero--photo .hero__title,
+  .hero--photo .hero__body,
+  .hero--photo .eyebrow { max-width: none; }
+  /* On a phone the type sits over the crest itself — there is no dark half to
+     move it into — so the veil has to be flat and heavy rather than shaped. */
+  .hero--photo::after {
+    background: linear-gradient(180deg,
+      rgba(8, 8, 10, 0.55) 0%, rgba(8, 8, 10, 0.45) 28%,
+      rgba(8, 8, 10, 0.86) 52%, rgba(8, 8, 10, 0.95) 82%, var(--ink) 100%);
+  }
+  .hero--photo { min-height: 78vh; }
+}
+
+/* The story photograph needs height to show three standing figures; at the
+   text column's natural height it crops them at the collarbone. */
+.storysplit__img { min-height: clamp(360px, 40vw, 560px); }
+
+/* Contrast pass on the hero veil. Measured on the built page: at 54vw the
+   body copy's last words landed at ~0.68 veil over the white gi, which puts
+   --text-muted at 3.4:1 — under the 4.5 floor for body text. Narrowing the
+   measure alone was not enough (one long word still reaches), so the veil's
+   mid stop moves too. Both together clear AA across the whole column. */
+.hero--photo .hero__body { max-width: min(33rem, 47vw); }
+.hero--photo::after {
+  background:
+    linear-gradient(101deg,
+      rgba(8, 8, 10, 0.97) 0%, rgba(8, 8, 10, 0.94) 36%,
+      rgba(8, 8, 10, 0.75) 58%, rgba(8, 8, 10, 0.00) 86%),
+    linear-gradient(180deg,
+      rgba(8, 8, 10, 0.00) 60%, rgba(8, 8, 10, 0.55) 88%, var(--ink) 100%);
+}
+@media (max-width: 720px) {
+  .hero--photo::after {
+    background: linear-gradient(180deg,
+      rgba(8, 8, 10, 0.62) 0%, rgba(8, 8, 10, 0.62) 26%,
+      rgba(8, 8, 10, 0.88) 50%, rgba(8, 8, 10, 0.95) 82%, var(--ink) 100%);
+  }
+}
+
+/* The shop band carries two words and a button. Left-aligned in a single
+   column it left a third of a full-bleed orange surface empty, which reads as
+   an unfinished section rather than as generosity. Title left, action right,
+   and the band gets the shorter padding that its content actually needs. */
+.band__in--row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: clamp(1.5rem, 4vw, 3rem); flex-wrap: wrap;
+}
+.band--orange .band__in { padding-block: clamp(2.5rem, 5vw, 3.75rem); }
+
+/* ── Nav panel width ───────────────────────────────────────────────────────
+   .nav is the positioning context and it is only as wide as its four links
+   (~290px at desktop), so left:0/right:0 alone left the panel as narrow as
+   the old dropdown. It is anchored to the nav's RIGHT edge and given its own
+   width instead: extending leftwards keeps it inside the 1180px header at
+   every viewport, where extending rightwards would push it off screen.
+
+   auto-fit, not a fixed three columns — "train" holds three destinations,
+   "about" holds two, and a two-item group stretched across three columns
+   reads as a layout bug rather than as a menu. */
+@media (min-width: 861px) {
+  .nav__menu {
+    left: auto; right: 0;
+    width: min(42rem, calc(100vw - 2 * var(--pad-page)));
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+  .nav__item { padding: 0.75rem 0.875rem; }
+}
+
+/* ── Story band ────────────────────────────────────────────────────────────
+   Frame 07, duotone. Shares every rule with .missionband; only the image and
+   the accent on the standfirst differ, so the two pages read as the same
+   kind of page rather than as two one-off designs. */
+.storyband .band__photo {
+  background-image: url("../photo/band-story.jpg");
+  background-position: center 26%;
 }

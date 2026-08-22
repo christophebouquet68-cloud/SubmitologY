@@ -7,9 +7,23 @@ const TYPES = ["position", "transition", "submission"];
 export default function Story({ lang, navigate }) {
   return (
     <div>
-      <div className="page-header">
-        <h1 className="page-title">{t(T.about.pageTitle, lang)}</h1>
-      </div>
+      {/* ── Story band ───────────────────────────────────────────────────
+          Frame 07, duotone, same treatment as the mission band. A formal,
+          centred, symmetrical portrait reads as an introduction, which is
+          exactly what this page is — and it is the one placement where a
+          posed shot is right rather than a compromise.
+
+          Duotone because a headline sits on it. The eyebrow reuses the
+          section description from DESTINATIONS, so this adds no new string
+          in any of the five languages. */}
+      <section className="band storyband">
+        <div className="band__photo" aria-hidden="true" />
+        <div className="band__scrim" aria-hidden="true" />
+        <div className="band__in">
+          <p className="eyebrow">{t(T.ui.sections.story.desc, lang)}</p>
+          <h1 className="page-title">{t(T.about.pageTitle, lang)}</h1>
+        </div>
+      </section>
 
       <div className="card" style={{ maxWidth: "44rem" }}>
         <p className="prose" style={{ color: "var(--text)", fontWeight: 600 }}>

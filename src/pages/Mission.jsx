@@ -3,14 +3,32 @@ import { T, t } from "../i18n";
 export default function Mission({ lang }) {
   return (
     <div>
-      <div className="page-header">
-        <div className="eyebrow eyebrow--mission">{t(T.mh.pageTag, lang)}</div>
-        <h1 className="page-title">{t(T.mh.pageTitle, lang)}</h1>
-        <div className="note">
-          <span className="dot" aria-hidden="true" />
-          <span>{t(T.mh.planNote, lang)}</span>
+      {/* ── Mission band ─────────────────────────────────────────────────
+          Frame 04, duotone. Duotone here is not a preference: this band
+          always carries a headline, and the arena colour behind is exactly
+          the kind of mid-range value that leaves white type nothing to sit
+          against.
+
+          The JJIF banner and the scoreboard are cropped out of the source
+          file rather than hidden with CSS. An image carrying a federation
+          mark claims a sanctioned result the brand has never had, and
+          cropping is the only version of that fix which survives the file
+          being reused somewhere else.
+
+          No orange anywhere on this page. Orange means commerce, and this is
+          the one page where the purple thread has to stay uncontested. */}
+      <section className="band missionband">
+        <div className="band__photo" aria-hidden="true" />
+        <div className="band__scrim" aria-hidden="true" />
+        <div className="band__in">
+          <p className="eyebrow eyebrow--mission">{t(T.mh.pageTag, lang)}</p>
+          <h1 className="page-title">{t(T.mh.pageTitle, lang)}</h1>
+          <div className="note">
+            <span className="dot" aria-hidden="true" />
+            <span>{t(T.mh.planNote, lang)}</span>
+          </div>
         </div>
-      </div>
+      </section>
 
       <div className="card" style={{ maxWidth: "48rem", borderColor: "var(--mission-edge)" }}>
         <p className="prose">{t(T.mh.lead, lang)}</p>
