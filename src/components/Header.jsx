@@ -107,17 +107,25 @@ export default function Header({ lang, setLang, path, navigate, onOpenSearch, ha
           })}
         </nav>
 
+        {/* Order is music, language, search — deliberately, and it is the
+            order they matter in on a phone rather than on a desktop.
+
+            Sound was last and got dropped at 520px, which meant the one
+            control people most want to reach quickly was the one they could
+            not find. Search moves to the end instead: on a phone it is the
+            least used of the three, and unlike the other two it has no state
+            to check at a glance.
+
+            All three stay visible at every width now — see the narrow-header
+            rules in app.css. */}
+        <SoundToggle lang={lang} />
+
+        <LangSelector lang={lang} setLang={setLang} />
+
         <button className="search-btn" onClick={onOpenSearch} aria-label={t(T.ui.search.open, lang)}>
           <span aria-hidden="true">⌕</span>
           <span className="search-btn__hint">⌘K</span>
         </button>
-
-        {/* Sits with the other utilities rather than floating over the page:
-            a music control that follows you around is harder to dismiss than
-            one that lives where every other site-wide setting lives. */}
-        <SoundToggle lang={lang} />
-
-        <LangSelector lang={lang} setLang={setLang} />
 
         <button className="burger" onClick={() => setDrawerOpen(true)}
                 aria-label={t(T.ui.chrome.openMenu, lang)} aria-expanded={drawerOpen}>

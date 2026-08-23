@@ -19,7 +19,7 @@ export const UI = {
   // have made the ladder untrue.
   conceptsPage: {
     stepsEyebrow: { en: "The order of operations", fr: "L'ordre des opérations", ja: "手順の順序", pt: "A ordem das operações", ro: "Ordinea operațiilor" },
-    stepsTitle:   { en: "Four things, in this order", fr: "Quatre choses, dans cet ordre", ja: "この順に、四つのこと", pt: "Quatro coisas, nesta ordem", ro: "Patru lucruri, în această ordine" },
+    stepsTitle:   { en: "The 4 steps sequence", fr: "La séquence en 4 étapes", ja: "4ステップのシークエンス", pt: "A sequência de 4 passos", ro: "Secvența în 4 pași" },
     stepsLead:    { en: "Almost everything in jiu-jitsu is a detail of one of these four, or a way of stopping an opponent completing them. Learn the order and the map stops looking like a list of names.", fr: "Presque tout, au jiu-jitsu, est un détail de l'un de ces quatre points, ou un moyen d'empêcher l'adversaire de les accomplir. Apprenez l'ordre et la carte cesse de ressembler à une liste de noms.", ja: "柔術のほとんどは、この四つのいずれかの細部か、相手にそれをさせないための手段です。順序を覚えれば、マップは技名の一覧には見えなくなります。", pt: "Quase tudo no jiu-jitsu é um detalhe de um destes quatro pontos, ou uma forma de impedir que o adversário os cumpra. Aprenda a ordem e o mapa deixa de parecer uma lista de nomes.", ro: "Aproape tot în jiu-jitsu este un detaliu al unuia dintre aceste patru lucruri, sau o modalitate de a-l împiedica pe adversar să le ducă la capăt. Învață ordinea și harta încetează să mai pară o listă de nume." },
     why:          { en: "Why", fr: "Pourquoi", ja: "理由", pt: "Por quê", ro: "De ce" },
     rulesEyebrow: { en: "Two rules, from the first day", fr: "Deux règles, dès le premier jour", ja: "初日からの二つの約束", pt: "Duas regras, desde o primeiro dia", ro: "Două reguli, din prima zi" },

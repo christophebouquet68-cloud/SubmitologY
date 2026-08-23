@@ -530,3 +530,128 @@ row becomes a single stack.
 default section gap the ladder and the two recommendations read as one
 continuous list, which is exactly the confusion the two sections exist to
 avoid — they are different kinds of thing and now they look it.
+
+---
+
+# Addendum — header order, and one reversal
+
+## Music, language, search
+
+Reordered from search → music → language. The new order is the order these
+matter in **on a phone**, which is not the order they matter in on a desktop:
+
+- **Sound** first. It is the only one of the three with an audible consequence,
+  so it is the one people want to reach in a hurry.
+- **Language** second. On a five-language site the current code is information,
+  which is why the button keeps `EN` / `FR` rather than becoming a globe icon —
+  a globe says only "there are languages".
+- **Search** last. Least used on a phone, and the only one of the three with no
+  state to read at a glance.
+
+## The reversal
+
+`@media (max-width: 520px) { .sound-btn { display: none } }` is gone. It was
+added on the reasoning that sound was the least essential of the three
+utilities. That was wrong twice over:
+
+1. It is the control with the audible consequence, so it is the one most worth
+   reaching quickly — the opposite of least essential.
+2. Hiding it meant music could be playing with **no visible way to stop it**.
+   That is the WCAG 1.4.2 mechanism disappearing exactly where it is hardest to
+   do without, and it is why the owner noticed: the icon was missing on the
+   device where it mattered most.
+
+All three controls now survive to **320px**, verified at 320 / 360 / 390 / 430 /
+760 / 1440 with no horizontal overflow at any of them. Nothing is hidden and no
+tap target drops below 38px. The give happens in order — header gap, then
+control padding, then the wordmark's font size — and the search button loses its
+label padding below 480px to become an icon square, which is the cheapest thing
+to surrender.
+
+## Copy
+
+`stepsTitle`: "Four things, in this order" → **"The BJJ four steps sequence"**,
+five languages. No release note for this or the header reorder: the entry
+already describes both features, and padding it with layout tweaks makes it
+less useful to read.
+
+---
+
+# Addendum — the shop gets photographs
+
+The t-shirts were flat vector renders: a shirt outline with the artwork placed
+on it, front and back, on a cream plate at 1412×740. Honest about being
+drawings, and listed in these notes as the shop's oldest open gap. They are now
+photographic mockups — twelve of them, four designs × three colourways.
+
+**Still a render, not a photograph of a garment that exists.** The gap is
+narrowed rather than closed. But it is the first thing on the shop page that
+reads as a product instead of a diagram.
+
+## Verifying the mapping, and why it was worth doing slowly
+
+`teeImage()` builds the path as `<design>-<colour>.jpg`, so the filename *is*
+the lookup. A wrong file does not throw — it silently shows the wrong garment
+under the right product name, which is the kind of error that survives to
+launch and is then found by a customer.
+
+An earlier batch was rejected for exactly this: six of twelve had a chest and
+back combination that matched none of the four catalogue designs, and two
+colourways of the same design disagreed with each other. Rather than infer, the
+whole set was rendered against the four definitions and checked frame by frame:
+
+    crest-*      small circular crest on the chest
+    wordmark-*   "SUBMITOLOGY BJJ" set as type on the chest
+    *-kintsugi   back reads KINTSUGI / crest / MIND AND BODY
+    *-team       back reads SUBMITOLOGY / crest / BJJ TEAM
+
+All twelve of the replacement set verify. `tools/tees.py` carries the mapping
+and the reasoning.
+
+## One aspect ratio, three source shapes
+
+The mockups arrived at 1.0, 1.25 and 1.39 — separate render batches. Cards in a
+grid have to agree, so everything is cropped to **7:5** and `.tee__media`
+reserves that ratio up front; a grid that reflows as images arrive is worse
+than one that waits.
+
+The vertical anchor is per-source rather than shared. The square frames are shot
+head-to-knee and the wide ones head-to-hip, so a common centre crop would have
+left the collection looking framed by accident. Anchoring the tall ones high
+crops legs instead of shirt, which is the subject.
+
+## Two things the photographs broke
+
+**The painted studio lighting.** `.tee__media::before` and `::after` used to
+paint a soft key from above and a floor shadow below, because the flat renders
+had no lighting of their own and read as stickers without it. The photographs
+arrive lit; leaving the gradients on multiplied a second key over the first,
+flattening the black colourway and putting a grey wash over the white one.
+Removed rather than tuned — there is no correct strength for a highlight that
+is already in the picture. (The now-dead `@media print` rule that hid them went
+with it.)
+
+**The "Coming Q1 2027" badge.** Dark ink on a translucent white pill, sized for
+a cream plate. Over photography it landed on white cotton in one colourway and
+near-black in another, reliably legible in neither. Inverted to an opaque dark
+chip with light type and a gold hairline: same value whatever is behind it,
+13.4:1, which is the only way a badge over photography keeps a ratio you can
+state.
+
+**Plate colour** went from `#efece3` to `--surface-sunk` for the same reason —
+cream flashed pale before each dark-gym photograph arrived.
+
+## Weight
+
+1200px wide at q80, ~97 KB each, 1.17 MB for all twelve. Four load per
+colourway, so a first view of the shop costs about 390 KB of imagery. Sources
+are kept in `tools/tee-src/`; `python3 tools/tees.py` rebuilds the set.
+
+## Unchanged, deliberately
+
+The wider gear range — gi, rashguards, shorts, spats, belt — keeps its previous
+treatment and its "to be announced" badges. It has no artwork, no date and no
+price, and it should keep looking different from the drop that does.
+
+Nothing about what the shop claims has moved: Target Price, Coming Q1 2027, the
+two-tier hierarchy, no cart, no stock count, no countdown.

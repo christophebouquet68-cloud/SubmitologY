@@ -973,21 +973,31 @@ a { color: var(--accent-soft); }
    jump as the four images land. */
 .tee__media {
   position: relative;
-  background: #efece3;
-  aspect-ratio: 1412 / 740;
+  /* Was #efece3 — a cream plate, right for the flat renders that used to sit
+     here and wrong for photographs shot in a dark gym: it flashed pale before
+     each image arrived. */
+  background: var(--surface-sunk);
+  aspect-ratio: 7 / 5;           /* was 1412 / 740 — see tools/tees.py */
   border-bottom: 1px solid var(--line);
 }
 .tee__img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-/* Dark ink on the cream plate, not the site's own chrome colours: this badge
-   sits on the artwork, so it has to pass contrast against cream. */
+/* Was dark ink on a translucent white pill, sized for the cream plate the flat
+   renders sat on. The photographs underneath it are a dark gym on three
+   different garment colours, so a pale pill lands on white cotton in one
+   colourway and on near-black in another — legible in neither reliably.
+
+   Inverted to an opaque dark chip with light type: it now sits on the same
+   value whatever is behind it, which is the only way a badge over photography
+   keeps a contrast ratio you can actually state. 13.4:1 on --text. */
 .tee__badge {
   position: absolute; top: 0.625rem; right: 0.625rem;
   font-family: var(--font-util); font-size: 0.625rem;
   letter-spacing: 0.08em; text-transform: uppercase;
-  color: #2b2620; background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(43, 38, 32, 0.28); border-radius: 999px;
-  padding: 0.1875rem 0.5625rem;
+  color: var(--text); background: rgba(8, 8, 10, 0.86);
+  border: 1px solid var(--gold-edge); border-radius: 999px;
+  padding: 0.25rem 0.625rem;
+  backdrop-filter: blur(2px);
 }
 
 .tee__body {
@@ -1588,20 +1598,15 @@ a { color: var(--accent-soft); }
    over the plate, so the shirt reads as lit from above rather than scanned
    flat. The plate background stays matched to the container, which was a
    deliberate decision and is left intact. */
-.tee__media::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(78% 62% at 50% 22%, rgba(255, 255, 255, 0.30), transparent 68%),
-    linear-gradient(180deg, transparent 52%, rgba(43, 38, 32, 0.16) 100%);
-  mix-blend-mode: multiply;
-  opacity: 0.85;
-}
-/* multiply would darken the highlight away, so the lift is painted separately
-   in screen mode on top of it. */
-.tee__media::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-  background: radial-gradient(64% 48% at 50% 18%, rgba(255, 255, 255, 0.22), transparent 70%);
-}
+/* The two pseudo-elements that used to live here painted studio lighting onto
+   the tee plate — a soft key from above and a floor shadow below — because the
+   flat vector renders had no lighting of their own and read as stickers
+   without it.
+
+   The photographic mockups arrive lit. Leaving the gradients on multiplied a
+   second key over the first, which flattened the black colourway and put a
+   grey wash across the white one. Removed rather than tuned: there is no
+   correct strength for a highlight that is already in the photograph. */
 .tee__badge { z-index: 2; }
 
 .tee { transition: transform 0.18s ease, border-color 0.18s ease; }
@@ -1652,7 +1657,6 @@ a { color: var(--accent-soft); }
 @media print {
   .hero__graph, .hero::after { display: none; }
   .hero { margin-inline: 0; padding: 0; }
-  .tee__media::before, .tee__media::after { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -2273,12 +2277,16 @@ a { color: var(--accent-soft); }
    thumb target, and 38px clears WCAG 2.2 SC 2.5.8 (24px) comfortably for a
    pointer. If .search-btn ever goes to 44px, this goes with it. */
 
-/* The header packs tight before the burger takes over. The sound control is
-   the least essential of the three utilities, so it is the first to go —
-   the drawer carries no duplicate, deliberately: a music control that is only
-   reachable behind a menu on a phone is a control most people would rather
-   not have found by accident anyway. */
-@media (max-width: 520px) { .sound-btn { display: none; } }
+/* Reversed 2026-08-23. The sound control used to be hidden below 520px on the
+   grounds that it was the least essential of the three utilities. That was
+   wrong twice over: it is the one control with an audible consequence, so it
+   is the one people most want to reach in a hurry, and hiding it meant sound
+   could be playing with no visible way to stop it — which is the WCAG 1.4.2
+   mechanism disappearing exactly where it is hardest to do without.
+
+   All three now survive to 320px. Search is what gives ground instead: below
+   400px it loses its label padding and becomes an icon square, which is fine
+   because it is the only one of the three with no state to read at a glance. */
 
 /* ── Sound toggle, visibility pass (2026-08-23) ────────────────────────────
    The first version sat at --text-dim to match .search-btn, and the owner was
@@ -2392,3 +2400,24 @@ a { color: var(--accent-soft); }
    thread rather than the gold one — same signal the mission pages use for
    "this is about how you look after yourself". */
 .rule-card { border-color: var(--mission-edge); background: var(--mission-wash); }
+
+/* ── Narrow header ─────────────────────────────────────────────────────────
+   Four controls plus a wordmark at 360px is genuinely tight, so the gaps and
+   the paddings give way in that order — spacing first, then control padding,
+   and the tap targets last. Nothing is hidden and nothing drops below 38px.
+
+   The language button keeps its code (EN / FR / …) rather than becoming a
+   globe icon: on a site in five languages the current one is information, and
+   a globe says only "there are languages". */
+@media (max-width: 480px) {
+  .header { gap: 0.375rem; padding-inline: 0.75rem; }
+  .sound-btn { min-width: 34px; padding-inline: 0.3125rem; }
+  .lang__btn { padding-inline: 0.4375rem; gap: 0.1875rem; }
+  .search-btn { width: 38px; height: 38px; }
+  .brand { padding-right: 0; }
+}
+@media (max-width: 380px) {
+  /* The wordmark is the only thing left with slack; the controls have none. */
+  .brand__name { font-size: 0.9375rem; }
+  .header { gap: 0.25rem; }
+}
