@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { T, t } from "../i18n";
 import { DESTINATIONS, ROUTES, isActive } from "../router";
 import LangSelector from "./LangSelector";
+import SoundToggle from "./SoundToggle";
 
 const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
 
@@ -110,6 +111,11 @@ export default function Header({ lang, setLang, path, navigate, onOpenSearch, ha
           <span aria-hidden="true">⌕</span>
           <span className="search-btn__hint">⌘K</span>
         </button>
+
+        {/* Sits with the other utilities rather than floating over the page:
+            a music control that follows you around is harder to dismiss than
+            one that lives where every other site-wide setting lives. */}
+        <SoundToggle lang={lang} />
 
         <LangSelector lang={lang} setLang={setLang} />
 

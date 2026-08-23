@@ -273,3 +273,260 @@ Layout recommendation for when it arrives, in order of preference:
 If the image turns out to be a diagram of the six concepts rather than a
 photograph, none of the above applies — it should replace or sit above the
 grid at full width, in colour, with no scrim.
+
+---
+
+# Addendum — background music
+
+A speaker button in the header, between search and the language selector.
+**Off by default, and that is not a preference — it is the requirement.**
+
+## Default OFF — after briefly trying the other way
+
+Flipped on 2026-08-23 on request, and reverted the same day once the measured
+behaviour was on the table. Recording the reasoning so nobody re-litigates it.
+
+**Every current browser refuses audible playback until it has seen a gesture it
+trusts.** A page cannot assert autoplay. Every honest implementation of "on by
+default" therefore reduces to *"starts whenever you happen to touch
+something"* — and that is worse than silence, because the visitor gets music at
+an arbitrary moment they did not choose, from a control they had not yet
+noticed. This is what the measurements showed:
+
+| Visitor | On load | After first click anywhere |
+|---|---|---|
+| First-time (strict policy) | silent, button reads off | music starts |
+| Returning (browser trusts the site) | music starts | — |
+
+Two visitors, two completely different first experiences of the same page, and
+neither of them chose it. Off by default, with a visible control, is the
+coherent option.
+
+Three further reasons it belongs at off: WCAG 1.4.2 (auto-playing audio over
+three seconds needs a stop mechanism — not autoplaying satisfies that more
+simply than any control can); a default-on toggle spends most of its life
+showing "on" over silence; and this site carries distress content and a crisis
+line, where music that starts by itself is an ambush.
+
+### The gesture path is kept, and it is not autoplay
+
+`armGesture()` survives the revert. It only ever arms when `wanted` is already
+true — which now requires an explicit opt-in on a previous visit. Someone who
+turned sound on last week, whose browser declines to resume without a fresh
+gesture, gets it back on their first interaction instead of having to hunt for
+the button again. **That is the preference working, not the site helping
+itself.**
+
+## The bug that shaped the component
+
+The first version held one flag. It broke on the commonest path: turn sound
+on, come back tomorrow, browser declines to start without a fresh gesture.
+One flag forces a choice between two wrong behaviours — `aria-pressed` claims
+"on" over silence, or the refusal writes `false` back and quietly discards the
+preference the visitor set.
+
+`SoundToggle` now holds two:
+
+- **`wanted`** — persisted, what the visitor asked for.
+- **`playing`** — not persisted, what is actually audible.
+
+They diverge only on an autoplay refusal, and then correctly: the button
+reports silence, the stored wish survives to be honoured on a visit the
+browser trusts. Verified both ways in Chromium, with the autoplay policy
+strict and relaxed.
+
+## Weight
+
+The master is 320 kbps stereo, 2:44, **6.3 MB** — seven times the weight of
+the entire rest of the site. Re-encoded to 96 kbps stereo, **1.9 MB**
+(`tools/audio.sh`, ID3 stripped). At this playback level 96k is transparent.
+
+More important than the re-encode: **the track is never fetched unless it is
+actually going to play.** `preload="none"`, the `<audio>` element is not
+constructed until playback is attempted, and — the part that matters now the
+default is on — a refused `play()` tears the element down (`removeAttribute
+("src")` then `load()`), which cancels the request in flight. `play()` forces a
+load regardless of `preload`, so without that teardown every bounce would have
+pulled 1.9 MB for nothing.
+
+Measured: a visitor who opens the page and never touches it issues **zero**
+requests for the mp3. Default page weight is unchanged for them.
+
+## Details
+
+- Volume 0.32 — under reading, not over it.
+- 600 ms fade in and out. Hard starts are the jarring part of background
+  audio, not the audio.
+- `prefers-reduced-motion` jumps to the target level instead of ramping. Less
+  motion is not a request for less sound, but it is a request for fewer
+  animated transitions.
+- Icon is inline SVG on `currentColor` — no icon font, no extra request, crisp
+  at any zoom. No colour change when playing: an accent living permanently in
+  the header for anyone leaving music on would put orange (which means
+  commerce here) where it does not belong.
+- Hidden below 520px. The header is tight there, and this is the least
+  essential of the three utilities. No duplicate in the drawer, deliberately.
+- 38px box, matching `.search-btn` rather than the site's 44px rule — recorded
+  as a decision in the stylesheet, not a slip.
+
+## Privacy policy updated in the same change
+
+`src/data/legal.js` **enumerates** the localStorage keys, so it gained one:
+*"Whether you've switched the background music on."* This is exactly the rule
+that has bitten before. Nothing else in the policy moves — the audio is
+self-hosted, so "loading a page doesn't announce your visit to anyone else"
+stays true.
+
+## Known limitation
+
+The track is 2:44 and loops natively, so there is a hard seam at the loop
+point. Fixing it properly needs either a track authored to loop or a
+two-second crossfade via the Web Audio API; the latter is real complexity for
+a background element and was not worth it here. If the seam annoys you, the
+cheaper fix is a shorter track that was written to repeat.
+
+---
+
+# Addendum — sound simplified, Basic Concepts rebuilt
+
+## Sound: one flag, always off
+
+Third and final shape. The history is worth keeping because each version was a
+correct fix for the last one's problem:
+
+1. **One persisted flag.** Broke on the commonest path — opt in, return
+   tomorrow, browser declines to resume without a gesture. The button then
+   either claimed "on" over silence or silently discarded the preference.
+2. **Two flags plus a first-gesture fallback.** Fixed that, and was still
+   confusing: the honest consequence was that music could begin at a moment
+   the visitor had not chosen, from a control they had not yet noticed, and
+   only on some visits.
+3. **One flag, no persistence.** Sound is off at every load. The button's
+   pressed state *is* whether audio is playing. There is no second source of
+   truth that can drift out of step with it.
+
+Two consequences worth knowing. `usePersistentState` is gone from the
+component, so the localStorage key is gone, so **the privacy policy lost a
+line** — `src/data/legal.js` enumerates what is stored, and it changed in the
+same commit, as it must whenever what the site stores changes. And because the
+only route to playback is now a press of this button, the autoplay policy never
+comes into it: `play()` is always inside a user gesture, always allowed.
+
+State still survives navigation — single-page app, the header never remounts —
+so music runs until it is switched off or the page is genuinely reloaded.
+
+### Visibility
+
+The button sat at `--text-dim` to match `.search-btn` and disappeared. It now
+reads at full `--text` with a **gold hairline**, and inverts to a filled cream
+chip while playing. Gold rather than orange or purple: those two carry meaning
+here (commerce, and the mental-health thread) and a music control is neither.
+Gold is the site's line colour and this is a border — the one brand colour that
+can take the job without saying something false.
+
+## Train menu order
+
+`DESTINATIONS` now reads Basic Concepts → Technique Map → Strength &
+Conditioning. Teaching order rather than build order: the concepts explain why
+the map is shaped the way it is, and conditioning is what you add once you know
+what you are conditioning for. One array, and it propagated to the header
+panel, the drawer, search and the home-page index without touching any of them.
+
+## Basic Concepts, rebuilt
+
+The page presented six "mental models" as equals. **They were not equals** —
+four of them were describing one thing from different angles, and that thing is
+the order jiu-jitsu is actually built in. That order is now the spine:
+
+1. **Take it to the ground** — a standing opponent can step, load their hips
+   and swing; on the ground there is no room to wind up and nowhere to step to.
+2. **Pass the legs** — the longest, strongest limbs they have, doing three jobs
+   at once: holding distance, threatening sweeps and leg attacks, and making
+   control impossible.
+3. **Pin, then climb** — positions are not equal; the difference is how much of
+   their movement you own. Top of the ladder is mount or the back.
+4. **Submit** — the end of the sequence, not the start. Hunted early it is a
+   gamble that gives the position back when it fails.
+
+Each step carries its reason, because the reason is what makes the order stick:
+*"pass the legs"* is an instruction, *"the legs do three jobs at once and none
+of them are yours"* is an explanation you can rebuild the instruction from.
+
+**Numbering is information here, not decoration** — you cannot pass legs you
+have not brought to the ground, and you cannot submit what you have not pinned.
+Marked up as an `<ol>` so assistive tech gets the sequence too, with the
+visible numbers `aria-hidden` rather than duplicated.
+
+**Timing Over Force** and **Tap Early, Tap Often** survive unchanged, in their
+own section on the purple thread. They are advice about how to train rather
+than steps in a sequence, and folding them into the ladder would have made the
+ladder untrue. They are matched out of `T.conceptItems` by English title, so
+the translated copy stays in one place — if either title is ever reworded, the
+`RECOMMENDED` array in `Concepts.jsx` has to move with it, and the section is
+skipped rather than rendering empty if the match fails.
+
+The four other originals — Positional Hierarchy, The Guard, Flowing &
+Chaining, Base & Posture — are not deleted so much as absorbed: the hierarchy
+*is* step 3, and the guard *is* what step 2 passes.
+
+All new copy is in five languages, verified complete before build.
+
+## The photograph
+
+Frame 08, graded to match the home-page story split rather than duotoned — the
+pink gi is information there and here, and the headline sits in the dark left
+third rather than over her.
+
+**The crop removes the gym decal at source.** The frame has "SUBMITOLOGY
+JIU-JITSU" on the wall behind her, and SubmitologY is an apparel brand with no
+academy — a wall sign implying one is the same class of overclaim as the gi
+that does not exist yet. Cropped in `tools/photo.py` at anchor 0.17, not hidden
+with CSS. It is a tight anchor: below it the decal returns, above it her face
+gets cut. Check the render if you change it.
+
+32:9 rather than 21:9, because this band's content is a title and one line, so
+`cover` in a short box was eating nearly half the height and cropping her at
+the nose.
+
+---
+
+# Addendum — the four steps, illustrated
+
+One photograph per step, in a third column beside the number and the copy.
+Frames 09–12: takedown, guard pass, mount, rear choke — one per element, in
+the order the page teaches them.
+
+**4:3, not square, and the reason is the decal again.** All four frames carry
+"SUBMITOLOGY JIU-JITSU" on the wall at roughly y=205 of 1402. A square crop
+leaves only 280px of vertical travel and cannot clear it without cutting heads
+off; 4:3 leaves ~560px, which is enough to start the window below the decal and
+still hold the action. Anchors are per-frame and were picked against the render
+rather than guessed — 0.50 on the takedown because 0.40 still caught a sliver
+of "JIU-JITSU", 0.45 on the pass and the mount because anything lower crops the
+top player's head.
+
+Graded with the same `grade()` as the concepts band and the home story split,
+so the page reads as one photographic pass rather than a header followed by a
+gallery.
+
+**The images are `aria-hidden`.** The step title and its two paragraphs already
+say what the position is, so alt text would only repeat them — and would have
+to repeat them in five languages to do it honestly. They are background images
+on a `div` rather than `<img>` elements, which keeps the crop a design decision
+in one place, consistent with every other photograph on the site.
+
+Fixed aspect ratio rather than intrinsic height, so the four rows keep a common
+rhythm however long the copy runs; the number column is fixed and the text
+column takes the slack.
+
+**Two breakpoints, not one.** Below 900px the image column squeezes the reason
+paragraph to about four words a line, so the picture drops under the text and
+takes the full text width. Below 620px the number column collapses too and the
+row becomes a single stack.
+
+## Spacing
+
+`.steps-section` gained `margin-bottom: clamp(3.5rem, 8vw, 6rem)`. At the
+default section gap the ladder and the two recommendations read as one
+continuous list, which is exactly the confusion the two sections exist to
+avoid — they are different kinds of thing and now they look it.

@@ -26,8 +26,13 @@ export const ROUTES = {
  *  home page all read from this so a new section can never be added to one
  *  surface and forgotten on the others. */
 export const DESTINATIONS = [
-  { key: "map",      path: ROUTES.map,      group: "train",   titleKey: "map" },
+  /* Train, in teaching order rather than in the order these were built:
+     the concepts explain why the map is shaped the way it is, so they come
+     first; conditioning is the thing you add once you know what you are
+     conditioning for, so it comes last. Reordering here propagates to the
+     header, the drawer, search and the home-page index automatically. */
   { key: "concepts", path: ROUTES.concepts, group: "train",   titleKey: "concepts" },
+  { key: "map",      path: ROUTES.map,      group: "train",   titleKey: "map" },
   { key: "strength", path: ROUTES.strength, group: "train",   titleKey: "strength" },
   { key: "shop",     path: ROUTES.shop,     group: "shop",    titleKey: "shop" },
   { key: "mission",  path: ROUTES.mission,  group: "mission", titleKey: "mission" },

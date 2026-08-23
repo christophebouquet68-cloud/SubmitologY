@@ -3,6 +3,13 @@
 photo.py — regenerate every crop and treatment in src/photo/ from the
 originals in tools/photo-src/.
 
+The masters are JPEG at quality 92, 4:4:4, not PNG. They arrived as PNG and
+were converted for one reason: twelve 1122x1402 PNGs are 26 MB, which pushed
+the delivery archive past its transfer limit and would have meant shipping the
+repo without the originals at all. At q92 with no chroma subsampling the whole
+set is under 5 MB and every crop below still regenerates. The extra generation
+of loss is invisible once the output is itself a q76–78 JPEG.
+
 Run:  python3 tools/photo.py            (needs Pillow: pip install Pillow)
 
 WHY THIS EXISTS
@@ -61,14 +68,37 @@ BONE = (233, 225, 210)
 MID = (150, 142, 130)   # a lower white point, for images that sit under type
 
 FRAMES = {
-    "crest": "01-back-crest.png",     # top position, crest legible
-    "grip": "02-grip-fight.png",      # close, tactile
-    "fist": "03-fist-bump.png",       # the seam
-    "jump": "04-celebration.png",     # arena — see crop note above
-    "ref": "05-referee.png",          # arena — duotone only
-    "trio": "06-trio.png",            # three colourways, faces to camera
-    "solo": "07-solo.png",            # formal portrait
+    "crest": "01-back-crest.jpg",     # top position, crest legible
+    "grip": "02-grip-fight.jpg",      # close, tactile
+    "fist": "03-fist-bump.jpg",       # the seam
+    "jump": "04-celebration.jpg",     # arena — see crop note above
+    "ref": "05-referee.jpg",          # arena — duotone only
+    "trio": "06-trio.jpg",            # three colourways, faces to camera
+    "solo": "07-solo.jpg",            # formal portrait
+    "kneel": "08-kneeling.jpg",       # seated, to camera — basic concepts
+    # The four steps on the Basic Concepts page, one per element.
+    "takedown": "09-takedown.jpg",
+    "pass": "10-pass.jpg",
+    "mount": "11-mount.jpg",
+    "choke": "12-choke.jpg",
 }
+
+# Basic Concepts step illustrations. 4:3 rather than square: at 4:3 a
+# 1402-tall source leaves ~560px of vertical travel, which is what lets the
+# window start below the gym decal (~y=205) and still hold the action. A
+# square crop leaves 280px and cannot clear it without cutting heads off.
+#
+# The anchors are per-frame and were picked against the render, not guessed —
+# 0.50 on the takedown because 0.40 still caught a sliver of "JIU-JITSU", and
+# 0.45 on the pass and the mount because anything lower crops the top player's
+# head. Same decal reasoning as the concepts band: SubmitologY is an apparel
+# brand with no academy.
+STEP_FRAMES = [
+    ("takedown", 0.50),   # 01 take it to the ground
+    ("pass",     0.45),   # 02 pass the legs
+    ("mount",    0.45),   # 03 pin, then climb
+    ("choke",    0.42),   # 04 submit
+]
 
 
 def duotone(img, dark=INK, light=BONE, contrast=1.12):
@@ -153,6 +183,28 @@ def main():
     # grade() for the reasoning and the numbers.
     write(grade(crop_to(im["trio"], 4 / 5, 0.06)),
           os.path.join(DST, "split-trio.jpg"), 1000, 78)
+    # 08 concepts band. GRADED to match the story split rather than duotoned:
+    # the pink gi is the same piece of information here as it is there, and the
+    # band's headline sits in the dark left third rather than over her.
+    #
+    # Anchor 0.30 is not arbitrary. The gym decal reading "SUBMITOLOGY
+    # JIU-JITSU" sits in the top ~14% of the frame, and SubmitologY is an
+    # apparel brand with no academy — a wall sign implying otherwise is the
+    # same class of overclaim as a gi that does not exist yet. The crop
+    # removes it at source. Do not raise this anchor.
+    # 32:9 rather than 21:9. The band is short — its content is a title and
+    # one line — so a 21:9 source lost nearly half its height to `cover` and
+    # cropped her at the nose. A wider source loses almost nothing.
+    #
+    # Anchor 0.17 puts the top edge just below the decal and keeps the face
+    # whole; both constraints are tight, so check the render if you change it.
+    write(grade(crop_to(im["kneel"], 32 / 9, 0.17)),
+          os.path.join(DST, "band-concepts.jpg"), 1800, 78)
+    # The four step illustrations, graded to match the band above them so the
+    # page reads as one photographic pass rather than a header plus a gallery.
+    for i, (key, anchor) in enumerate(STEP_FRAMES, start=1):
+        write(grade(crop_to(im[key], 4 / 3, anchor)),
+              os.path.join(DST, f"step-{i}.jpg"), 760, 78)
     # 02 square, colour: a card, so nothing sits on top of it.
     write(crop_to(im["grip"], 1 / 1, 0.35), os.path.join(DST, "card-grip.jpg"), 900, 76)
     # og:image lives in public/ because index.html references it literally.

@@ -2244,3 +2244,151 @@ a { color: var(--accent-soft); }
   background-image: url("../photo/band-story.jpg");
   background-position: center 26%;
 }
+
+/* ── Sound toggle ──────────────────────────────────────────────────────────
+   Matches .search-btn's box exactly so the three utilities in the header read
+   as one row of controls rather than three separately-designed buttons.
+
+   No colour change when it is on. An orange or gold "playing" state would put
+   an accent in the header permanently for anyone who leaves music running,
+   and orange means commerce on this site; the icon itself changing from a
+   crossed-out speaker to a sounding one already carries the state, and
+   aria-pressed carries it for anyone not looking at the icon. */
+.sound-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 38px; min-width: 38px; padding: 0.375rem 0.5rem;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+  background: none; color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+.sound-btn:hover { color: var(--text); border-color: var(--text-dim); }
+.sound-btn[aria-pressed="true"] { color: var(--text); }
+.sound-btn__icon { display: block; }
+
+/* 38px, matching .search-btn rather than the site's 44px touch-target rule.
+   Deliberate: these three utilities have to read as one row, and a 44px
+   control between two 38px ones looks like a mistake. The rule is met where
+   it actually bites — the control is hidden below 520px, so it is never a
+   thumb target, and 38px clears WCAG 2.2 SC 2.5.8 (24px) comfortably for a
+   pointer. If .search-btn ever goes to 44px, this goes with it. */
+
+/* The header packs tight before the burger takes over. The sound control is
+   the least essential of the three utilities, so it is the first to go —
+   the drawer carries no duplicate, deliberately: a music control that is only
+   reachable behind a menu on a phone is a control most people would rather
+   not have found by accident anyway. */
+@media (max-width: 520px) { .sound-btn { display: none; } }
+
+/* ── Sound toggle, visibility pass (2026-08-23) ────────────────────────────
+   The first version sat at --text-dim to match .search-btn, and the owner was
+   right that it disappeared. It now reads at full --text with a gold hairline,
+   and inverts to a filled cream chip while playing.
+
+   Gold rather than orange or purple: those two carry meaning here — orange is
+   commerce, purple is the mental-health thread — and a music control is
+   neither. Gold is the site's line colour and this is a border, so it is the
+   one brand colour that can take the job without saying something false. The
+   filled state uses --text, which is loud without being a hue at all. */
+.sound-btn {
+  color: var(--text);
+  border-color: var(--gold-edge);
+}
+.sound-btn:hover {
+  color: var(--text);
+  border-color: var(--gold);
+  background: var(--gold-wash);
+}
+.sound-btn[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--ink);
+  border-color: var(--text);
+}
+.sound-btn[aria-pressed="true"]:hover { background: #fff; border-color: #fff; }
+
+/* ── Basic Concepts ────────────────────────────────────────────────────────
+   Frame 08, graded to match the home-page story split. */
+.conceptsband .band__photo {
+  background-image: url("../photo/band-concepts.jpg");
+  background-position: center 42%;
+}
+/* The band's own content is a title and one line, which is shorter than the
+   image wants. A floor keeps the portrait from being squeezed to a letterbox
+   strip on a wide screen. */
+.conceptsband .band__in { min-height: 20rem; display: flex; flex-direction: column; justify-content: center; }
+.conceptsband .page-sub { color: var(--text-muted); max-width: 34rem; }
+
+.steps-section { margin-top: clamp(2rem, 5vw, 3rem); }
+
+/* The number is the structure, so it gets a column of its own rather than an
+   ::before that text can reflow around. Counter comes from the markup, not
+   from CSS: an <ol> already numbers itself for assistive tech, and a
+   CSS-generated number would be a second, silent copy that could disagree. */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.step {
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr) minmax(0, 15rem);
+  gap: 0 clamp(1rem, 2.5vw, 1.75rem);
+  align-items: center;
+  padding: clamp(1.35rem, 3vw, 1.85rem) clamp(1.25rem, 3vw, 1.75rem);
+}
+.step__n {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(1.75rem, 4vw, 2.5rem); line-height: 0.85;
+  letter-spacing: -0.05em; color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.step__body > :last-child { margin-bottom: 0; }
+.step__title {
+  font-size: var(--fs-h3); text-transform: uppercase; font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1; margin: 0 0 0.6rem;
+}
+.step__what { color: var(--text); max-width: var(--measure); margin-bottom: 0.75rem; }
+.step__why { color: var(--text-muted); font-size: var(--fs-small); max-width: var(--measure); margin: 0; }
+/* The label is a change of register rather than a heading — it prefixes the
+   sentence it belongs to instead of sitting above it, so the reason reads as
+   one thought rather than as a labelled field. */
+.step__why-label {
+  font-family: var(--font-util); font-size: 0.625rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+  margin-right: 0.6rem;
+}
+/* One illustration per step, graded to match the band above so the page reads
+   as a single photographic pass rather than a header plus a gallery. Fixed
+   4:3 so the four rows keep a common rhythm no matter how long the copy runs;
+   the number column stays put and the text column takes the slack. */
+.step__img {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  background-size: cover; background-position: center;
+  background-color: var(--surface-sunk);
+  border: 1px solid var(--line);
+}
+.step__img--1 { background-image: url("../photo/step-1.jpg"); }
+.step__img--2 { background-image: url("../photo/step-2.jpg"); }
+.step__img--3 { background-image: url("../photo/step-3.jpg"); }
+.step__img--4 { background-image: url("../photo/step-4.jpg"); }
+
+@media (max-width: 900px) {
+  /* Below this the image column squeezes the reason paragraph to about four
+     words a line, so the picture moves under the text instead of beside it
+     and gets the full width to itself. */
+  .step { grid-template-columns: 4rem minmax(0, 1fr); }
+  .step__img { grid-column: 2; margin-top: 1rem; max-width: 22rem; }
+}
+@media (max-width: 620px) {
+  .step { grid-template-columns: 1fr; gap: 0.5rem; }
+  .step__n { font-size: 1.5rem; }
+  .step__img { grid-column: 1; max-width: none; }
+}
+
+/* The ladder and the two recommendations are different kinds of thing, and at
+   the default section gap they read as one continuous list. This is the seam
+   between them. */
+.steps-section { margin-bottom: clamp(3.5rem, 8vw, 6rem); }
+
+/* The two recommendations are advice, not steps, so they sit on the purple
+   thread rather than the gold one — same signal the mission pages use for
+   "this is about how you look after yourself". */
+.rule-card { border-color: var(--mission-edge); background: var(--mission-wash); }

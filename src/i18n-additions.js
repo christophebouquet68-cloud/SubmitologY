@@ -4,6 +4,51 @@
 
 export const UI = {
 
+
+  // ── Basic Concepts: the four elements ──────────────────────────────────
+  // Reworked 2026-08-23. The page used to be six parallel "mental models"
+  // presented as equals. They were not equals — four of them were describing
+  // one thing from different angles, which is the order jiu-jitsu is actually
+  // built in. Numbering these 1–4 is legitimate because the order is real
+  // information: you cannot pass legs you have not brought to the ground, and
+  // you cannot submit what you have not pinned.
+  //
+  // Two of the original six survive unchanged, as recommendations rather than
+  // structure: Timing Over Force and Tap Early. They are advice about how to
+  // train, not steps in a sequence, and flattening them into the ladder would
+  // have made the ladder untrue.
+  conceptsPage: {
+    stepsEyebrow: { en: "The order of operations", fr: "L'ordre des opérations", ja: "手順の順序", pt: "A ordem das operações", ro: "Ordinea operațiilor" },
+    stepsTitle:   { en: "Four things, in this order", fr: "Quatre choses, dans cet ordre", ja: "この順に、四つのこと", pt: "Quatro coisas, nesta ordem", ro: "Patru lucruri, în această ordine" },
+    stepsLead:    { en: "Almost everything in jiu-jitsu is a detail of one of these four, or a way of stopping an opponent completing them. Learn the order and the map stops looking like a list of names.", fr: "Presque tout, au jiu-jitsu, est un détail de l'un de ces quatre points, ou un moyen d'empêcher l'adversaire de les accomplir. Apprenez l'ordre et la carte cesse de ressembler à une liste de noms.", ja: "柔術のほとんどは、この四つのいずれかの細部か、相手にそれをさせないための手段です。順序を覚えれば、マップは技名の一覧には見えなくなります。", pt: "Quase tudo no jiu-jitsu é um detalhe de um destes quatro pontos, ou uma forma de impedir que o adversário os cumpra. Aprenda a ordem e o mapa deixa de parecer uma lista de nomes.", ro: "Aproape tot în jiu-jitsu este un detaliu al unuia dintre aceste patru lucruri, sau o modalitate de a-l împiedica pe adversar să le ducă la capăt. Învață ordinea și harta încetează să mai pară o listă de nume." },
+    why:          { en: "Why", fr: "Pourquoi", ja: "理由", pt: "Por quê", ro: "De ce" },
+    rulesEyebrow: { en: "Two rules, from the first day", fr: "Deux règles, dès le premier jour", ja: "初日からの二つの約束", pt: "Duas regras, desde o primeiro dia", ro: "Două reguli, din prima zi" },
+    rulesTitle:   { en: "How to train the four", fr: "Comment travailler ces quatre points", ja: "四つをどう練習するか", pt: "Como treinar os quatro", ro: "Cum antrenezi cele patru" },
+  },
+
+  conceptSteps: [
+    {
+      title: { en: "Take it to the ground", fr: "Amener le combat au sol", ja: "寝技に持ち込む", pt: "Levar para o chão", ro: "Du lupta la sol" },
+      body:  { en: "Close the distance and bring the fight off the feet — a takedown, a throw, or pulling guard.", fr: "Réduire la distance et faire quitter la position debout — un amené au sol, une projection, ou tirer la garde.", ja: "距離を詰め、立ち技から寝技へ移行します。テイクダウン、投げ、あるいはガードを引く形で。", pt: "Fechar a distância e tirar a luta de pé — uma queda, um arremesso, ou puxar para a guarda.", ro: "Reduci distanța și scoți lupta din picioare — un takedown, o aruncare, sau tragi garda." },
+      why:   { en: "A standing opponent can step, load their hips and swing. On the ground almost all of that is gone: there is no room to wind up and nowhere to step to, so the same person becomes far less dangerous without becoming any weaker.", fr: "Debout, un adversaire peut se déplacer, charger ses hanches et frapper. Au sol, presque tout cela disparaît : plus d'espace pour armer un coup, nulle part où poser un appui. La même personne devient bien moins dangereuse sans avoir perdu la moindre force.", ja: "立っている相手は、足を運び、腰に力をため、大きく振ることができます。寝た状態ではその大半が失われます。力をためる空間も、踏み出す先もありません。相手は弱くなったわけではないのに、はるかに危険でなくなります。", pt: "Em pé, um adversário pode dar passos, carregar o quadril e girar com força. No chão quase tudo isso desaparece: não há espaço para armar nem para onde pisar. A mesma pessoa fica muito menos perigosa sem ficar nem um pouco mais fraca.", ro: "În picioare, un adversar poate păși, își poate încărca șoldurile și poate lovi din elan. La sol aproape tot ce ține de asta dispare: nu are spațiu să se încarce și nu are unde să pășească. Aceeași persoană devine mult mai puțin periculoasă fără să fi devenit mai slabă." },
+    },
+    {
+      title: { en: "Pass the legs", fr: "Passer les jambes", ja: "脚を越える", pt: "Passar as pernas", ro: "Treci de picioare" },
+      body:  { en: "Get past the guard, so that the legs are no longer between you and their upper body.", fr: "Franchir la garde, pour que les jambes ne soient plus entre vous et le haut de son corps.", ja: "ガードを突破し、脚が自分と相手の上半身のあいだから外れた状態をつくります。", pt: "Ultrapassar a guarda, de modo que as pernas deixem de estar entre você e o tronco dele.", ro: "Treci de gardă, astfel încât picioarele să nu mai fie între tine și trunchiul lui." },
+      why:   { en: "The legs are the longest and strongest limbs they have, and while they are in the way they do three jobs at once: they hold distance, they threaten sweeps and leg attacks of their own, and they make control impossible. Nothing after this step is available until they are dealt with.", fr: "Les jambes sont les membres les plus longs et les plus puissants dont il dispose, et tant qu'elles sont là, elles font trois choses à la fois : elles maintiennent la distance, elles menacent renversements et attaques de jambes, et elles rendent tout contrôle impossible. Rien de ce qui suit n'est possible avant de les avoir réglées.", ja: "脚は相手の最も長く強い部位であり、あいだにある限り三つの働きを同時に果たします。距離を保ち、スイープや脚関節の脅威となり、コントロールを不可能にします。この段階を越えるまで、その先の手はどれも成立しません。", pt: "As pernas são os membros mais longos e fortes que ele tem, e enquanto estiverem no caminho fazem três coisas ao mesmo tempo: mantêm distância, ameaçam raspagens e ataques de perna, e tornam o controle impossível. Nada depois deste passo fica disponível antes de resolvê-las.", ro: "Picioarele sunt cele mai lungi și mai puternice membre pe care le are, iar cât timp stau în cale fac trei lucruri deodată: țin distanța, amenință cu răsturnări și atacuri la picioare, și fac controlul imposibil. Nimic din ce urmează nu este disponibil până nu le rezolvi." },
+    },
+    {
+      title: { en: "Pin, then climb", fr: "Immobiliser, puis progresser", ja: "抑え込み、そして上へ", pt: "Prender, depois subir", ro: "Imobilizează, apoi urcă" },
+      body:  { en: "Hold them still, then improve: side control, knee-on-belly, and upward. The top of the ladder is the mount or the back.", fr: "Le maintenir immobile, puis progresser : contrôle latéral, genou sur le ventre, et plus haut. Le sommet de l'échelle, c'est la montée ou le dos.", ja: "まず相手を止め、そこから位置を上げます。サイドコントロール、ニーオンベリー、さらに上へ。階段の頂点はマウントかバックです。", pt: "Mantê-lo imóvel e então melhorar: cem-quilos, joelho na barriga, e acima. O topo da escada é a montada ou as costas.", ro: "Îl ții pe loc, apoi îmbunătățești: control lateral, genunchi pe burtă, și mai sus. Vârful scării este montarea sau spatele." },
+      why:   { en: "Positions are not equal, and the difference between them is how much of their movement you own. Control is what turns a submission from something you catch into something you choose — and the top two positions are the ones where they can offer the least in return.", fr: "Les positions ne se valent pas, et ce qui les distingue, c'est la part de ses mouvements que vous contrôlez. Le contrôle est ce qui transforme une soumission trouvée par hasard en une soumission choisie — et les deux positions les plus hautes sont celles où il peut le moins vous répondre.", ja: "ポジションは対等ではなく、その差は相手の動きをどれだけ握っているかで決まります。コントロールこそが、たまたま極まった技を、選んで極める技に変えます。上位二つのポジションは、相手が返せるものが最も少ない場所です。", pt: "As posições não são iguais, e o que as diferencia é quanto do movimento dele você domina. O controle é o que transforma uma finalização de algo que você pega em algo que você escolhe — e as duas posições do topo são aquelas em que ele tem menos a oferecer de volta.", ro: "Pozițiile nu sunt egale, iar diferența dintre ele este cât din mișcarea lui controlezi. Controlul transformă o submisie din ceva ce prinzi în ceva ce alegi — iar primele două poziții sunt cele în care el are cel mai puțin de oferit în schimb." },
+    },
+    {
+      title: { en: "Submit", fr: "Soumettre", ja: "極める", pt: "Finalizar", ro: "Finalizează" },
+      body:  { en: "Finish with a choke or a joint lock, from a position you already own.", fr: "Conclure par un étranglement ou une clé articulaire, depuis une position déjà acquise.", ja: "すでに支配しているポジションから、絞めか関節技で終わらせます。", pt: "Finalizar com um estrangulamento ou uma chave articular, a partir de uma posição que você já domina.", ro: "Închei cu o sufocare sau o cheie articulară, dintr-o poziție pe care o deții deja." },
+      why:   { en: "The submission is the end of the sequence, not the start of it. Hunted early it is a gamble that gives the position back when it fails; arrived at in order it is the only thing left for them to defend.", fr: "La soumission est la fin de la séquence, pas son début. Cherchée trop tôt, c'est un pari qui rend la position quand il échoue ; atteinte dans l'ordre, c'est la seule chose qu'il lui reste à défendre.", ja: "サブミッションは流れの終点であって、出発点ではありません。早く狙えば、失敗した時にポジションを返す賭けになります。順序どおりに辿り着けば、相手に守るものはそれしか残りません。", pt: "A finalização é o fim da sequência, não o começo. Caçada cedo demais é uma aposta que devolve a posição quando falha; alcançada na ordem certa, é a única coisa que resta para ele defender.", ro: "Submisia este finalul secvenței, nu începutul ei. Vânată devreme, e un pariu care îți dă poziția înapoi când eșuează; atinsă în ordine, e singurul lucru care îi mai rămâne de apărat." },
+    },
+  ],
+
   // ── Navigation groups (the four top-level categories) ──────────────────
   groups: {
     train:   { en: "Train",   fr: "S'entraîner", ja: "練習",     pt: "Treinar",  ro: "Antrenament" },
@@ -57,6 +102,11 @@ export const UI = {
     dismiss:       { en: "Dismiss", fr: "Masquer", ja: "閉じる", pt: "Dispensar", ro: "Ascunde" },
     language:      { en: "Language", fr: "Langue", ja: "言語", pt: "Idioma", ro: "Limbă" },
     close:         { en: "Close", fr: "Fermer", ja: "閉じる", pt: "Fechar", ro: "Închide" },
+    /* Labels describe the ACTION, not the state — the button already reports
+       its state through aria-pressed, and a screen reader announcing
+       "Sound on, pressed" is ambiguous about what a click will do. */
+    soundOn:       { en: "Turn sound on", fr: "Activer le son", ja: "音を再生する", pt: "Ligar o som", ro: "Pornește sunetul" },
+    soundOff:      { en: "Turn sound off", fr: "Couper le son", ja: "音を停止する", pt: "Desligar o som", ro: "Oprește sunetul" },
   },
 
   // ── Search ─────────────────────────────────────────────────────────────
