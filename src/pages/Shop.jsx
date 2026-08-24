@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { T, t } from "../i18n";
 import { MERCH_PRODUCTS } from "../data/merch";
+import { RASHGUARDS, RASHGUARD_DESIGN, rashguardImage } from "../data/rashguards";
 import {
   DEFAULT_COLOURWAY,
   TEE_COLOURWAYS,
@@ -10,11 +11,16 @@ import {
 
 /** The shop, in two parts.
  *
- *  The t-shirts are the first drop — they have artwork, a price and a quarter,
- *  so they get the top of the page, the largest cards and a colour picker. The
- *  wider gear range is real but undated, so it sits underneath as a smaller
- *  grid labelled "to be announced". Putting them in one flat grid, as the page
- *  used to, gave a shirt we can show and a gi we can't equal billing.
+ *  The first drop — rashguards, then t-shirts — has artwork, prices and a
+ *  quarter, so it takes the top of the page with the largest cards. The wider
+ *  gear range is real but undated, so it sits underneath as a smaller grid
+ *  labelled "to be announced". Putting them in one flat grid, as the page once
+ *  did, gave a shirt we can show and a gi we can't equal billing.
+ *
+ *  Rashguards lead, 2026-08-23. They were in the undated grid until artwork
+ *  arrived; now they are the newest thing the brand can actually show, and the
+ *  page should open with it. They were deleted from merch.js in the same
+ *  change — listed in both places, the two entries would have drifted.
  */
 export default function Shop({ lang }) {
   /* One colourway drives the whole rail: the point of the picker is to see the
@@ -57,11 +63,81 @@ export default function Shop({ lang }) {
         <p className="page-sub">{t(T.merch.pageSubtitle, lang)}</p>
       </div>
 
-      {/* ── The first drop ───────────────────────────────────────────────
-          No heading of its own: the h1 above already names this collection,
-          and a hidden one repeating the same words only makes a screen reader
-          say it twice. The shirt names below are the h2s. */}
-      <section>
+      {/* ── Rashguards ───────────────────────────────────────────────────
+          One design, two cuts, one colourway — so no picker and no swatches.
+          The cards are otherwise the tee cards: same media ratio, same badge,
+          same foot. Two grids that look like siblings read as one drop; two
+          that look designed apart read as two shops. */}
+      <section aria-labelledby="rg-heading">
+        <h2 id="rg-heading" className="section-title" style={{ marginTop: 0 }}>
+          {t(T.merch.rgSection, lang)}
+        </h2>
+
+        <div className="tee-grid">
+          {RASHGUARDS.map((rg) => (
+            <article className="card tee" key={rg.id}>
+              <div className="tee__media">
+                <img
+                  className="tee__img"
+                  src={rashguardImage(rg.id)}
+                  alt={`${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)} · ${t(T.merch.frontBack, lang)}`}
+                  width="1200"
+                  height="857"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="tee__badge">{t(T.merch.comingSoon, lang)}</span>
+              </div>
+
+              <div className="tee__body">
+                <h3 className="tee__name">
+                  {RASHGUARD_DESIGN} — {t(T.merch[rg.cutKey], lang)}
+                </h3>
+                <p className="tee__blurb">{t(rg.blurb, lang)}</p>
+                <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+
+                <div className="tee__foot">
+                  {/* "Target Price" rather than the cut, which the card's own
+                      heading already says. The tee cards fill this slot with
+                      swatches; here it carries the same label the gear grid
+                      below uses, so the price never appears as a bare number
+                      that could be read as a price you can pay. */}
+                  <span className="tee__caption">{t(T.merch.priceLbl, lang)}</span>
+                  <span className="tee__price">{rg.price} SGD</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* ── Spec strip ───────────────────────────────────────────────── */}
+        <h2 className="section-title">{t(T.merch.rgSpecsTitle, lang)}</h2>
+        <dl className="spec-strip">
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.fabricLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.rgFabricVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.buildLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.rgBuildVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</dt>
+            <dd className="spec-strip__val spec-strip__val--accent">{t(T.merch.rgPriceBoth, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
+          </div>
+        </dl>
+      </section>
+
+      {/* ── T-shirts ─────────────────────────────────────────────────────
+          The colour picker belongs to this grid alone: the rashguards come in
+          one colourway, so a shared control at the top of the page would have
+          been half-dead the moment it was pressed. */}
+      <section aria-labelledby="tees-heading">
+        <h2 id="tees-heading" className="section-title">{t(T.merch.teesSection, lang)}</h2>
         <div className="tee-toolbar">
           <span className="field-label" id="colourway-label">
             {t(T.merch.colourLbl, lang)}
@@ -105,7 +181,7 @@ export default function Shop({ lang }) {
                 </div>
 
                 <div className="tee__body">
-                  <h2 className="tee__name">{design.name}</h2>
+                  <h3 className="tee__name">{design.name}</h3>
                   <p className="tee__blurb">{t(design.blurb, lang)}</p>
                   <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
 
@@ -158,11 +234,6 @@ export default function Shop({ lang }) {
             <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
           </div>
         </dl>
-
-        <div className="note">
-          <span className="dot" aria-hidden="true" />
-          <span>{t(T.merch.notForSale, lang)}</span>
-        </div>
       </section>
 
       {/* ── The rest of the range ──────────────────────────────────────── */}

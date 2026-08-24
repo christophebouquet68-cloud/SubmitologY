@@ -655,3 +655,74 @@ price, and it should keep looking different from the drop that does.
 
 Nothing about what the shop claims has moved: Target Price, Coming Q1 2027, the
 two-tier hierarchy, no cart, no stock count, no countdown.
+
+---
+
+# Addendum — rashguards join the first drop
+
+Two rashguards — the Kintsugi Fighter design, long and short sleeve — now open
+the shop, above the tees. They were in "the rest of the range" with a spec line
+and a "to be announced" badge, which was right while there was no artwork.
+There is artwork and a quarter now, so they moved up.
+
+**Deleted from `merch.js` in the same change, not duplicated.** Listed in both
+places, the spec line in the gear grid and the spec strip on the card would have
+drifted apart, and one of them would have become wrong without anyone noticing.
+
+## The captions were cut before the crop, not after
+
+The mockups arrived as presentation sheets: a slate across the bottom ~15%
+reading "KINTSUGI FIGHTER / SUBMITOLOGY | KINTSUGI FOR THE MIND | BJJ APPAREL".
+That is a designer's caption, not part of the garment, and it would have put a
+second product name on a card that already has one.
+
+Order matters here. The caption is removed first and only then is the remainder
+squared to 7:5 — which at that point has to come off the sides, because what
+survives is already wider than 7:5. Cropping to ratio first would have framed
+around the caption and kept a sliver of it.
+
+## Page structure
+
+The h1 named one product family and the page now has two, so:
+
+- `pageTag` "T-Shirts · First Drop · Q1 2027" → **"First Drop · Q1 2027"**
+- `pageTitle` "Four Tees, Three Colourways" → **"Two Rashguards, Four Tees"**
+- `pageSubtitle` rewritten to cover both, keeping the Q1 2027 expectation
+- `gearIntro` "Beyond the t-shirts…" → **"Beyond the first drop…"**
+- Each grid gained its own `h2` (Rashguards / T-Shirts). The tee cards' names
+  drop from `h2` to `h3`, because they are no longer the only headings under
+  the h1. The outline now nests properly instead of running flat.
+
+The colour picker stays with the tee grid rather than moving to the top of the
+page: the rashguards come in one colourway, and a shared control would have
+been half-dead the moment it was pressed.
+
+## The note box is gone
+
+`notForSale` — *"These t-shirts are not for sale yet… leave your email at the
+bottom of this page…"* — was removed, and its string deleted from `i18n.js`
+rather than left orphaned. What it said is now carried by the standfirst, the
+"Coming Q1 2027" badge on every card, the "Expected Q1 2027" row in both spec
+strips, and "Target Price" on every number. Four places said it; a fifth in a
+box was repetition, not emphasis.
+
+**Nothing about what the shop claims has weakened.** Every price is still
+labelled Target Price, every card still carries a quarter, and there is still no
+cart.
+
+## A mistake worth recording
+
+The i18n edit was scripted with a regex that matched the *first* `pageTitle:` in
+the file. `i18n.js` has seven — one per section — and the first belongs to
+Concepts, so the shop's new title and standfirst were written over
+`concepts.pageTitle` and `concepts.pageSubtitle`.
+
+Caught by reading the rendered outline: the shop h1 still said "Four Tees" after
+an edit that reported success. Recovered by pulling the two original lines out
+of `git show HEAD:src/i18n.js` and re-applying the shop copy to the right block,
+then diffing the full key list old-vs-new to confirm nothing else had moved.
+
+The lesson is in the tooling, not the care: a key-name regex over a file with
+repeated key names needs to be anchored to its section, and a script that
+reports "updated" without verifying *which* occurrence it hit is not reporting
+anything.

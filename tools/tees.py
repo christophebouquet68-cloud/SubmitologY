@@ -83,6 +83,24 @@ TEES = [
 ]
 
 
+# The two rashguards, which arrive as presentation sheets rather than plain
+# mockups: a caption band reading "KINTSUGI FIGHTER / SUBMITOLOGY | KINTSUGI FOR
+# THE MIND | BJJ APPAREL" runs across the bottom ~15% of the frame. That text
+# is a designer's slate, not part of the garment, and leaving it in would put a
+# second product name on a card that already has one.
+#
+# So the caption is cut first, and only then is the remainder squared to 7:5 —
+# which at this point has to come off the sides, because the surviving frame is
+# already wider than 7:5. Doing it in the other order would crop to ratio around
+# the caption and keep a sliver of it.
+RG_CAPTION_TOP = 0.845     # everything below this is the slate
+
+RASHGUARDS = [
+    ("rashguard-long",  "rashguard-long.jpg"),
+    ("rashguard-short", "rashguard-short.jpg"),
+]
+
+
 def crop_to(img, ratio, anchor=0.5):
     """Crop to an aspect ratio. `anchor` slides the window along whichever
     axis is being cut: 0 is top/left, 1 is bottom/right."""
@@ -103,12 +121,23 @@ def main():
     os.makedirs(DST, exist_ok=True)
 
     missing = [s for _, s, _ in TEES if not os.path.exists(os.path.join(SRC, s))]
+    missing += [s for _, s in RASHGUARDS if not os.path.exists(os.path.join(SRC, s))]
     if missing:
         sys.exit("missing sources:\n  " + "\n  ".join(missing))
 
     for name, src, anchor in TEES:
         im = Image.open(os.path.join(SRC, src)).convert("RGB")
         out = crop_to(im, RATIO, anchor)
+        out = out.resize((WIDTH, int(WIDTH / RATIO)), Image.LANCZOS)
+        path = os.path.join(DST, name + ".jpg")
+        out.save(path, quality=QUALITY, optimize=True, progressive=True)
+        print(f"  {name + '.jpg':28} {out.size[0]}x{out.size[1]}  "
+              f"{os.path.getsize(path) // 1024} KB")
+
+    for name, src in RASHGUARDS:
+        im = Image.open(os.path.join(SRC, src)).convert("RGB")
+        im = im.crop((0, 0, im.width, int(im.height * RG_CAPTION_TOP)))
+        out = crop_to(im, RATIO, 0.5)
         out = out.resize((WIDTH, int(WIDTH / RATIO)), Image.LANCZOS)
         path = os.path.join(DST, name + ".jpg")
         out.save(path, quality=QUALITY, optimize=True, progressive=True)
