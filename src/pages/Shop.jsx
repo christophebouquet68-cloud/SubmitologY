@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { T, t } from "../i18n";
-import { MERCH_PRODUCTS } from "../data/merch";
 import { RASHGUARDS, RASHGUARD_DESIGN, rashguardImage } from "../data/rashguards";
+import { SHORTS, shortsImage } from "../data/shorts";
+import { GI_COLOURWAYS, GI_DESIGN, giImage } from "../data/gis";
+import { BELT_NAME, BELT_PRICE, BELT_BLURB, beltImage } from "../data/belt";
 import {
   DEFAULT_COLOURWAY,
   TEE_COLOURWAYS,
@@ -9,19 +11,22 @@ import {
   teeImage,
 } from "../data/tshirts";
 
-/** The shop, in two parts.
+/** The shop is entirely the first drop now — rashguards, shorts, the gi,
+ *  t-shirts, then the belt. Everything here has artwork, a price and a
+ *  quarter (Q1 2027); there is no more undated "rest of the range" grid
+ *  underneath, which is why merch.js no longer exists.
  *
- *  The first drop — rashguards, then t-shirts — has artwork, prices and a
- *  quarter, so it takes the top of the page with the largest cards. The wider
- *  gear range is real but undated, so it sits underneath as a smaller grid
- *  labelled "to be announced". Putting them in one flat grid, as the page once
- *  did, gave a shirt we can show and a gi we can't equal billing.
+ *  Rashguards lead, 2026-08-23. They were in that undated grid until artwork
+ *  arrived; once it did, they were deleted from merch.js in the same change
+ *  — listed in both places, the two entries would have drifted.
  *
- *  Rashguards lead, 2026-08-23. They were in the undated grid until artwork
- *  arrived; now they are the newest thing the brand can actually show, and the
- *  page should open with it. They were deleted from merch.js in the same
- *  change — listed in both places, the two entries would have drifted.
- */
+ *  Shorts, the gi and the belt followed the same way on 2026-08-30, once
+ *  photography existed for all three. Order on the page follows what each
+ *  garment is, not the order artwork arrived in: shorts sit under the
+ *  rashguards (both are something worn to train in, not a shirt), the gi
+ *  follows, then the tees, then the belt last — it's the one piece nobody
+ *  buys without already training, so it closes the list rather than
+ *  competing for attention at the top. */
 export default function Shop({ lang }) {
   /* One colourway drives the whole rail: the point of the picker is to see the
      collection *as a collection* in white, then in dark blue, then in black.
@@ -124,6 +129,133 @@ export default function Shop({ lang }) {
           <div className="spec-strip__cell">
             <dt className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</dt>
             <dd className="spec-strip__val spec-strip__val--accent">{t(T.merch.rgPriceBoth, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
+          </div>
+        </dl>
+      </section>
+
+      {/* ── Shorts ───────────────────────────────────────────────────────
+          Two products, not two variants of one — an outer 2-in-1 short with
+          a compression liner built in, and the compression layer sold on its
+          own. Different fabrics, so unlike the rashguard's shared spec line
+          the two get their own fabric text, joined the way the rashguard's
+          two prices already are. */}
+      <section aria-labelledby="shorts-heading">
+        <h2 id="shorts-heading" className="section-title">{t(T.merch.shortsSection, lang)}</h2>
+
+        <div className="tee-grid">
+          {SHORTS.map((s) => (
+            <article className="card tee" key={s.id}>
+              <div className="tee__media tee__media--shorts">
+                <img
+                  className="tee__img"
+                  src={shortsImage(s.id)}
+                  alt={`${s.name} · ${t(T.merch.frontBack, lang)}`}
+                  width="1402"
+                  height="609"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="tee__badge">{t(T.merch.comingSoon, lang)}</span>
+              </div>
+
+              <div className="tee__body">
+                <h3 className="tee__name">{s.name}</h3>
+                <p className="tee__blurb">{t(s.blurb, lang)}</p>
+                <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+
+                <div className="tee__foot">
+                  <span className="tee__caption">{t(T.merch.priceLbl, lang)}</span>
+                  <span className="tee__price">{s.price} SGD</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* ── Spec strip ───────────────────────────────────────────────── */}
+        <h2 className="section-title">{t(T.merch.shortsSpecsTitle, lang)}</h2>
+        <dl className="spec-strip">
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.fabricLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.shortsFabricVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.buildLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.shortsBuildVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</dt>
+            <dd className="spec-strip__val spec-strip__val--accent">{t(T.merch.shortsPriceBoth, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
+          </div>
+        </dl>
+      </section>
+
+      {/* ── Gi ───────────────────────────────────────────────────────────
+          One design, four colourways — all shown at once, same as the
+          rashguards above and for the same reason: there's one design here,
+          not several, so a picker would only hide three of the four
+          photographs someone came to see. */}
+      <section aria-labelledby="gi-heading">
+        <h2 id="gi-heading" className="section-title">{t(T.merch.giSection, lang)}</h2>
+
+        <div className="tee-grid">
+          {GI_COLOURWAYS.map((c) => (
+            <article className="card tee" key={c.id}>
+              <div className="tee__media tee__media--gi">
+                <img
+                  className="tee__img"
+                  src={giImage(c.id)}
+                  alt={`${GI_DESIGN} — ${t(T.merch.giColours[c.id], lang)} · ${t(T.merch.frontSideBack, lang)}`}
+                  width="1402"
+                  height="710"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="tee__badge">{t(T.merch.comingSoon, lang)}</span>
+              </div>
+
+              <div className="tee__body">
+                <h3 className="tee__name">
+                  {GI_DESIGN} — {t(T.merch.giColours[c.id], lang)}
+                </h3>
+                <p className="tee__blurb">{t(T.merch.giBlurb, lang)}</p>
+                {c.womensCut && <p className="tee__caption">{t(T.merch.giWomensCut, lang)}</p>}
+                <p className="tee__caption">{t(T.merch.frontSideBack, lang)}</p>
+
+                <div className="tee__foot">
+                  {/* Same reasoning as the rashguard foot: "Target Price"
+                      rather than a bare number, so it never reads as a price
+                      you can actually pay. */}
+                  <span className="tee__caption">{t(T.merch.priceLbl, lang)}</span>
+                  <span className="tee__price">{t(T.merch.giPrice, lang)}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* ── Spec strip ───────────────────────────────────────────────── */}
+        <h2 className="section-title">{t(T.merch.giSpecsTitle, lang)}</h2>
+        <dl className="spec-strip">
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.fabricLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.giFabricVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.buildLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.giBuildVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</dt>
+            <dd className="spec-strip__val spec-strip__val--accent">{t(T.merch.giPrice, lang)}</dd>
           </div>
           <div className="spec-strip__cell">
             <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
@@ -236,34 +368,63 @@ export default function Shop({ lang }) {
         </dl>
       </section>
 
-      {/* ── The rest of the range ──────────────────────────────────────── */}
-      <section aria-labelledby="gear-heading">
-        <h2 id="gear-heading" className="section-title">{t(T.merch.gearTitle, lang)}</h2>
-        <p className="page-sub" style={{ marginBottom: "1rem" }}>{t(T.merch.gearIntro, lang)}</p>
+      {/* ── Belt ─────────────────────────────────────────────────────────
+          One product, one photograph — all five adult ranks shot together,
+          so a single card rather than the gi's per-colourway grid. Last of
+          the apparel sections on purpose: it's the one piece nobody buys
+          without already training, so it closes the list rather than
+          competing with the rashguards or the tees for the top of the page. */}
+      <section aria-labelledby="belt-heading">
+        <h2 id="belt-heading" className="section-title">{t(T.merch.beltSection, lang)}</h2>
 
-        <div className="merch-grid">
-          {MERCH_PRODUCTS.map((p) => (
-            <article className="card merch" key={p.id}>
-              <div className="merch__top">
-                <span className="merch__icon" aria-hidden="true">{p.icon}</span>
-                <span className="merch__soon">{t(T.merch.tba, lang)}</span>
+        <div className="tee-grid">
+          <article className="card tee">
+            <div className="tee__media tee__media--belt">
+              <img
+                className="tee__img"
+                src={beltImage()}
+                alt={`${BELT_NAME} — ${t(T.merch.beltRanks, lang)}`}
+                width="1536"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="tee__badge">{t(T.merch.comingSoon, lang)}</span>
+            </div>
+
+            <div className="tee__body">
+              <h3 className="tee__name">{BELT_NAME}</h3>
+              <p className="tee__blurb">{t(BELT_BLURB, lang)}</p>
+              <p className="tee__caption">{t(T.merch.beltRanks, lang)}</p>
+
+              <div className="tee__foot">
+                <span className="tee__caption">{t(T.merch.priceLbl, lang)}</span>
+                <span className="tee__price">{BELT_PRICE} SGD</span>
               </div>
-              <h3 className="merch__name">{p.name}</h3>
-              <p className="merch__spec">
-                <span className="merch__spec-lbl">{t(T.merch.specLbl, lang)}</span>{p.spec}
-              </p>
-              <div className="merch__price-row">
-                <span className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</span>
-                <span className="merch__price">{p.price} SGD</span>
-              </div>
-            </article>
-          ))}
+            </div>
+          </article>
         </div>
 
-        <div className="note note--plain">
-          <span className="dot" aria-hidden="true" />
-          <span>{t(T.merch.gearNote, lang)}</span>
-        </div>
+        {/* ── Spec strip ───────────────────────────────────────────────── */}
+        <h2 className="section-title">{t(T.merch.beltSpecsTitle, lang)}</h2>
+        <dl className="spec-strip">
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.fabricLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.beltFabricVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.buildLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.beltBuildVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</dt>
+            <dd className="spec-strip__val spec-strip__val--accent">{BELT_PRICE} SGD</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
+          </div>
+        </dl>
       </section>
 
       {/* ── Why ────────────────────────────────────────────────────────── */}

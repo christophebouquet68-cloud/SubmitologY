@@ -915,13 +915,10 @@ a { color: var(--accent-soft); }
 .note .dot { background: var(--mission); margin-top: 0.5rem; }
 
 /* The purple `.note` is the mission thread — it means "this is about mental
-   health". A plain roadmap statement borrows the shape but not the colour,
-   otherwise everything the brand hasn't done yet reads as mental-health copy. */
-.note--plain {
-  background: var(--surface); border-color: var(--line);
-  color: var(--text-muted);
-}
-.note--plain .dot { background: var(--text-dim); }
+   health". `.note--plain`, the neutral variant used for the shop's roadmap
+   copy, was removed 2026-08-30 with the "rest of the range" section it
+   belonged to — every apparel section is dated now, so there's no more
+   undated roadmap statement to style. */
 
 .disclaimer {
   margin-top: 1.25rem; font-size: 0.8125rem; color: var(--text-dim);
@@ -981,6 +978,22 @@ a { color: var(--accent-soft); }
   border-bottom: 1px solid var(--line);
 }
 .tee__img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* The gi's photograph shows three views — front, side and back — side by
+   side, wider than the tee/rashguard renders' two-up 7:5 plate. Reusing 7/5
+   here would make object-fit: cover crop into the sleeves on every colourway;
+   this modifier keeps the whole garment in frame instead. */
+.tee__media--gi { aspect-ratio: 1402 / 710; }
+
+/* The shorts renders are front/back only, like the rashguards, but shot
+   tighter — no room reserved above the waistband — so they come out wider
+   than 7:5. Same fix as the gi: match the source ratio instead of cropping. */
+.tee__media--shorts { aspect-ratio: 1402 / 609; }
+
+/* The belt is one photograph of all five ranks side by side, close to 7:5
+   already (1536/1024 ≈ 1.5) but not exact — this modifier avoids the small
+   crop 7:5 would otherwise take off both ends of the row. */
+.tee__media--belt { aspect-ratio: 1536 / 1024; }
 
 /* Was dark ink on a translucent white pill, sized for the cream plate the flat
    renders sat on. The photographs underneath it are a dark gym on three
@@ -1049,27 +1062,12 @@ a { color: var(--accent-soft); }
 .spec-strip__val { margin: 0; font-size: 0.9375rem; color: var(--text); }
 .spec-strip__val--accent { font-weight: 700; color: var(--accent-soft); }
 
-/* ═══ Shop — the rest of the range ════════════════════════════════════ */
-/* Deliberately tighter than the tee grid. These have no artwork and no date,
-   and sizing them the same as the shirts would claim a readiness they don't
-   have. */
-.merch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.875rem; margin-bottom: 0.5rem; }
-.merch { display: flex; flex-direction: column; gap: 0.5rem; }
-.merch__top { display: flex; align-items: center; justify-content: space-between; }
-.merch__icon { font-size: 1.375rem; }
-.merch__soon {
-  font-family: var(--font-util); font-size: 0.625rem; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--text-dim);
-  border: 1px solid var(--line-strong); border-radius: 999px; padding: 0.1875rem 0.5625rem;
-}
-.merch__name { font-size: 1rem; }
-.merch__spec { font-size: 0.8125rem; color: var(--text-muted); margin: 0; }
+/* .merch-grid and its card styles (.merch, .merch__top/icon/soon/name/spec/
+   price-row/price) were the undated "rest of the range" grid, removed
+   2026-08-30 once the shorts and belt joined the first drop and nothing
+   undated was left to show. .merch__spec-lbl survives below — the spec-strip
+   label style, still used by every apparel section's info box. */
 .merch__spec-lbl { font-family: var(--font-util); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-right: 0.375rem; }
-.merch__price-row {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-top: auto; padding-top: 0.625rem; border-top: 1px solid var(--line);
-}
-.merch__price { font-size: 0.9375rem; font-weight: 700; color: var(--accent-soft); }
 
 /* ═══ Mission ═════════════════════════════════════════════════════════ */
 .stance {

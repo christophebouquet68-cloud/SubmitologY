@@ -115,14 +115,13 @@ export const T = {
   },
 
   // ── MERCHANDISE / SHOP ────────────────────────────────────────────────────
-  // The shop leads with the t-shirts (the first drop, with a date and a price
-  // attached) and lists the wider range underneath as an intention. Strings
-  // are grouped in that order so the copy reads top-to-bottom in this file the
-  // same way it does on the page.
+  // The whole shop is the first drop now: rashguards, shorts, the gi, tees,
+  // then the belt. Strings are grouped in that order so the copy reads
+  // top-to-bottom in this file the same way it does on the page.
   merch: {
     pageTag:      { en: "First Drop · Q1 2027", fr: "Première Collection · T1 2027", ja: "ファーストドロップ · 2027年第1四半期", pt: "Primeira Coleção · T1 2027", ro: "Prima Colecție · T1 2027" },
-    pageTitle:    { en: "Two Rashguards, Four Tees", fr: "Deux Rashguards, Quatre T-Shirts", ja: "ラッシュガード2型、Tシャツ4型", pt: "Dois Rashguards, Quatro Camisetas", ro: "Două Rashguard-uri, Patru Tricouri" },
-    pageSubtitle: { en: "The first SubmitologY drop is two rashguards and a t-shirt collection: one Kintsugi Fighter design cut long and short sleeve, and four tee designs on premium quality 200GSM cotton, 100% natural, in white, dark blue and jet black. All coming up for you — the first run is expected in the first quarter of 2027.", fr: "La première collection SubmitologY réunit deux rashguards et une série de t-shirts : un design Kintsugi Fighter en manches longues et manches courtes, et quatre designs de t-shirts en coton 200 g/m² de qualité premium, 100 % naturel, en blanc, bleu foncé et noir intense. Tout arrive bientôt — la première production est prévue pour le premier trimestre 2027.", ja: "SubmitologYのファーストドロップは、ラッシュガードとTシャツのコレクションです。Kintsugi Fighterのデザインを長袖と半袖の2型で、Tシャツは4デザインを、プレミアム品質200g/m²の100%天然コットンで、ホワイト・ダークブルー・ジェットブラックの3色で展開します。初回生産は2027年第1四半期を予定しています。", pt: "A primeira coleção SubmitologY reúne dois rashguards e uma linha de camisetas: um design Kintsugi Fighter em manga longa e manga curta, e quatro designs de camiseta em algodão 200 g/m² de qualidade premium, 100% natural, em branco, azul-escuro e preto. Tudo a caminho — a primeira tiragem está prevista para o primeiro trimestre de 2027.", ro: "Prima colecție SubmitologY reunește două rashguard-uri și o serie de tricouri: un model Kintsugi Fighter în mânecă lungă și mânecă scurtă, și patru modele de tricou din bumbac de 200 g/m² de calitate premium, 100% natural, în alb, albastru închis și negru intens. Toate în curând — prima serie este așteptată în primul trimestru din 2027." },
+    pageTitle:    { en: "Two Rashguards, Two Shorts, One Gi, Four Tees, One Belt", fr: "Deux Rashguards, Deux Shorts, Un Kimono, Quatre T-Shirts, Une Ceinture", ja: "ラッシュガード2型、ショーツ2型、柔術衣、Tシャツ4型、帯", pt: "Dois Rashguards, Dois Shorts, Um Kimono, Quatro Camisetas, Uma Faixa", ro: "Două Rashguard-uri, Doi Pantaloni Scurți, Un Kimono, Patru Tricouri, O Centură" },
+    pageSubtitle: { en: "The first SubmitologY drop is everything worn on the mats: two rashguards (one Kintsugi Fighter design, cut long and short sleeve), two Kintsugi NoGi shorts (the 2-in-1 build and the compression layer on its own), the Kintsugi Gi in premium pearl weave across black, blue, pink and white, four tee designs on premium quality 200GSM cotton, 100% natural, in white, dark blue and jet black, and the Kintsugi Belt across all five adult ranks. All coming up for you — the first run is expected in the first quarter of 2027.", fr: "La première collection SubmitologY réunit tout ce qui se porte sur le tatami : deux rashguards (un design Kintsugi Fighter, en manches longues et manches courtes), deux shorts Kintsugi NoGi (la version 2-en-1 et la couche de compression seule), le Kintsugi Gi en pearl weave premium décliné en noir, bleu, rose et blanc, quatre designs de t-shirts en coton 200 g/m² de qualité premium, 100 % naturel, en blanc, bleu foncé et noir intense, et la Ceinture Kintsugi dans les cinq grades adultes. Tout arrive bientôt — la première production est prévue pour le premier trimestre 2027.", ja: "SubmitologYのファーストドロップは、マットの上で身につけるものすべてです。ラッシュガード2型（Kintsugi Fighterのデザインを長袖と半袖で）、Kintsugi NoGiショーツ2型（アウター一体型の2-in-1と、コンプレッションレイヤー単体）、Kintsugi Giはプレミアムパールウィーブ素材でブラック・ブルー・ピンク・ホワイトの4色展開、Tシャツは4デザインをプレミアム品質200g/m²の100%天然コットンで、ホワイト・ダークブルー・ジェットブラックの3色で展開、そして成人の5階級すべてに対応するKintsugi Belt。初回生産は2027年第1四半期を予定しています。", pt: "A primeira coleção SubmitologY reúne tudo o que se veste no tatame: dois rashguards (um design Kintsugi Fighter, em manga longa e manga curta), dois shorts Kintsugi NoGi (a versão 2 em 1 e a camada de compressão isolada), o Kintsugi Gi em pearl weave premium nas cores preto, azul, rosa e branco, quatro designs de camiseta em algodão 200 g/m² de qualidade premium, 100% natural, em branco, azul-escuro e preto, e a Faixa Kintsugi nas cinco faixas adultas. Tudo a caminho — a primeira tiragem está prevista para o primeiro trimestre de 2027.", ro: "Prima colecție SubmitologY reunește tot ce se poartă pe saltea: două rashguard-uri (un model Kintsugi Fighter, în mânecă lungă și mânecă scurtă), doi pantaloni scurți Kintsugi NoGi (varianta 2-în-1 și stratul de compresie de sine stătător), Kintsugi Gi din pearl weave premium în negru, albastru, roz și alb, patru modele de tricou din bumbac de 200 g/m² de calitate premium, 100% natural, în alb, albastru închis și negru intens, și Centura Kintsugi în toate cele cinci centuri pentru adulți. Toate în curând — prima serie este așteptată în primul trimestru din 2027." },
 
     // ── T-shirt collection ──────────────────────────────────────────────
     colourLbl:    { en: "Colour", fr: "Couleur", ja: "カラー", pt: "Cor", ro: "Culoare" },
@@ -133,6 +132,7 @@ export const T = {
       black: { en: "Jet Black", fr: "Noir intense",  ja: "ジェットブラック", pt: "Preto",       ro: "Negru intens" },
     },
     frontBack:    { en: "Shown front and back.", fr: "Vue avant et arrière.", ja: "前面と背面。", pt: "Frente e costas.", ro: "Față și spate." },
+    frontSideBack: { en: "Shown front, side and back.", fr: "Vue avant, profil et arrière.", ja: "前面・側面・背面。", pt: "Frente, lado e costas.", ro: "Față, profil și spate." },
     /* Section headings. The h1 now names two product families, so each grid
        needs its own h2 — previously the tee grid ran under the h1 alone,
        which was right when it was the only thing on the page. */
@@ -145,6 +145,34 @@ export const T = {
     rgPriceBoth:  { en: "60 – 80 SGD long · 55 – 75 SGD short", fr: "60 – 80 SGD manches longues · 55 – 75 SGD manches courtes", ja: "長袖 60〜80 SGD · 半袖 55〜75 SGD", pt: "60 – 80 SGD manga longa · 55 – 75 SGD manga curta", ro: "60 – 80 SGD mânecă lungă · 55 – 75 SGD mânecă scurtă" },
     cutLs:        { en: "Long sleeve", fr: "Manches longues", ja: "長袖", pt: "Manga longa", ro: "Mânecă lungă" },
     cutSs:        { en: "Short sleeve", fr: "Manches courtes", ja: "半袖", pt: "Manga curta", ro: "Mânecă scurtă" },
+
+    // ── Shorts ───────────────────────────────────────────────────────────
+    // Joined the first drop 2026-08-30 — see data/shorts.js. Two products,
+    // one spec strip, same pattern the rashguard's two cuts already use for
+    // a combined price line.
+    shortsSection:    { en: "Shorts", fr: "Shorts", ja: "ショーツ", pt: "Shorts", ro: "Pantaloni Scurți" },
+    shortsSpecsTitle: { en: "The Shorts", fr: "Le Short", ja: "ショーツについて", pt: "O Shorts", ro: "Pantalonii Scurți" },
+    shortsFabricVal:  { en: "Stretch ripstop (shorts) · poly-spandex (compression)", fr: "Ripstop stretch (short) · poly-élasthanne (compression)", ja: "ストレッチリップストップ（ショーツ）・ポリエステル・スパンデックス（コンプレッション）", pt: "Ripstop com elastano (shorts) · poliéster-elastano (compressão)", ro: "Ripstop elastic (pantaloni) · poliester-elastan (compresie)" },
+    shortsBuildVal:   { en: "Moisture-wicking, flatlock stitch, built for jiu-jitsu", fr: "Évacuation de l'humidité, coutures flatlock, conçu pour le jiu-jitsu", ja: "吸湿速乾、フラットロック縫製、柔術のために設計", pt: "Tecido que absorve umidade, costura flatlock, feito para o jiu-jitsu", ro: "Absoarbe umiditatea, cusătură flatlock, construit pentru jiu-jitsu" },
+    shortsPriceBoth:  { en: "65 – 85 SGD shorts · 60 – 75 SGD compression", fr: "65 – 85 SGD short · 60 – 75 SGD compression", ja: "ショーツ 65〜85 SGD · コンプレッション 60〜75 SGD", pt: "65 – 85 SGD shorts · 60 – 75 SGD compressão", ro: "65 – 85 SGD pantaloni · 60 – 75 SGD compresie" },
+
+    // ── Gi ───────────────────────────────────────────────────────────────
+    // Joined the first drop 2026-08-30 — see data/gis.js. One design, four
+    // colourways, all shown at once rather than behind a picker.
+    giSection:    { en: "Gi", fr: "Kimono", ja: "柔術衣", pt: "Kimono", ro: "Kimono" },
+    giSpecsTitle: { en: "The Gi", fr: "Le Kimono", ja: "柔術衣について", pt: "O Kimono", ro: "Kimono-ul" },
+    giBlurb:      { en: "The back crest split by a gold kintsugi seam, matching patches on both sleeves, and 金継ぎ embroidered at the cuff and down the pant leg.", fr: "Le blason dans le dos traversé par une couture kintsugi dorée, les mêmes patchs sur les deux manches, et 金継ぎ brodé au poignet et le long de la jambe du pantalon.", ja: "背中のクレストを金色の金継ぎの継ぎ目が貫き、両袖には同じパッチを配置。袖口とパンツの裾には金継ぎの刺繍を入れています。", pt: "O brasão nas costas atravessado por uma emenda kintsugi dourada, os mesmos patches nas duas mangas, e 金継ぎ bordado no punho e ao longo da perna da calça.", ro: "Emblema de pe spate străbătută de o cusătură kintsugi aurie, aceleași embleme pe ambele mâneci, și 金継ぎ brodat la manșetă și de-a lungul crăcii pantalonului." },
+    giColours: {
+      black: { en: "Black", fr: "Noir",  ja: "ブラック", pt: "Preto", ro: "Negru" },
+      blue:  { en: "Blue",  fr: "Bleu",  ja: "ブルー",   pt: "Azul",  ro: "Albastru" },
+      pink:  { en: "Pink",  fr: "Rose",  ja: "ピンク",   pt: "Rosa",  ro: "Roz" },
+      white: { en: "White", fr: "Blanc", ja: "ホワイト", pt: "Branco", ro: "Alb" },
+    },
+    giWomensCut:  { en: "Women's cut for comfort and performance.", fr: "Coupe femme, pensée pour le confort et la performance.", ja: "快適性とパフォーマンスを追求した女性用カット。", pt: "Corte feminino, pensado para conforto e desempenho.", ro: "Croială pentru femei, gândită pentru confort și performanță." },
+    giFabricVal:  { en: "Premium pearl weave, 350 – 450 GSM jacket", fr: "Tissu pearl weave premium, veste 350 – 450 g/m²", ja: "プレミアムパールウィーブ、350〜450g/m²ジャケット", pt: "Pearl weave premium, japona 350 – 450 g/m²", ro: "Țesătură pearl weave premium, jachetă 350 – 450 g/m²" },
+    giBuildVal:   { en: "Reinforced stitching, built for jiu-jitsu", fr: "Coutures renforcées, conçu pour le jiu-jitsu", ja: "補強縫製、柔術のために設計", pt: "Costuras reforçadas, feito para o jiu-jitsu", ro: "Cusături întărite, construit pentru jiu-jitsu" },
+    giPrice:      { en: "160 – 220 SGD", fr: "160 – 220 SGD", ja: "160 – 220 SGD", pt: "160 – 220 SGD", ro: "160 – 220 SGD" },
+
     specsTitle:   { en: "The Shirt", fr: "Le T-Shirt", ja: "シャツについて", pt: "A Camiseta", ro: "Tricoul" },
     fabricLbl:    { en: "Fabric", fr: "Matière", ja: "素材", pt: "Tecido", ro: "Material" },
     fabricVal:    { en: "Premium quality 200GSM cotton, 100% natural", fr: "Coton 200 g/m² de qualité premium, 100 % naturel", ja: "プレミアム品質 200g/m² コットン（100%天然）", pt: "Algodão 200 g/m² de qualidade premium, 100% natural", ro: "Bumbac de 200 g/m² de calitate premium, 100% natural" },
@@ -153,15 +181,18 @@ export const T = {
     teePrice:     { en: "30 – 50 SGD", fr: "30 – 50 SGD", ja: "30 – 50 SGD", pt: "30 – 50 SGD", ro: "30 – 50 SGD" },
     availLbl:     { en: "Availability", fr: "Disponibilité", ja: "発売時期", pt: "Disponibilidade", ro: "Disponibilitate" },
     availVal:     { en: "Expected Q1 2027", fr: "Prévu T1 2027", ja: "2027年第1四半期予定", pt: "Previsto para o T1 2027", ro: "Estimat T1 2027" },
-    // ── The rest of the range ───────────────────────────────────────────
-    gearTitle:    { en: "The Rest of the Range", fr: "Le Reste de la Gamme", ja: "その他のラインナップ", pt: "O Resto da Linha", ro: "Restul Gamei" },
-    gearIntro:    { en: "Beyond the first drop, this is the gear we are working towards. Specifications and prices are indicative, and none of it is on sale.", fr: "Au-delà de la première collection, voici l'équipement sur lequel nous travaillons. Les caractéristiques et les prix sont indicatifs, et rien n'est en vente.", ja: "ファーストドロップに続いて、私たちが準備を進めているギアです。仕様と価格は目安であり、いずれもまだ販売しておりません。", pt: "Além da primeira coleção, este é o equipamento em que estamos trabalhando. As especificações e os preços são indicativos, e nada está à venda.", ro: "Dincolo de prima colecție, acesta este echipamentul la care lucrăm. Specificațiile și prețurile sunt orientative, și nimic nu este de vânzare." },
-    gearNote:     { en: "Our products range is planned to expand further, to be announced.", fr: "Notre gamme de produits est appelée à s'élargir davantage ; les détails seront annoncés ultérieurement.", ja: "製品ラインナップは今後さらに拡大する予定です。詳細は追って発表いたします。", pt: "Nossa linha de produtos está planejada para se expandir ainda mais; detalhes a serem anunciados.", ro: "Gama noastră de produse este planificată să se extindă în continuare; detaliile urmează să fie anunțate." },
-    tba:          { en: "To be announced", fr: "À annoncer", ja: "近日発表", pt: "A ser anunciado", ro: "Urmează" },
+    // ── Belt ─────────────────────────────────────────────────────────────
+    // Joined the first drop 2026-08-30, alongside the shorts — see
+    // data/belt.js. One product, one photograph, last of the apparel
+    // sections on the page.
+    beltSection:    { en: "Belts", fr: "Ceintures", ja: "帯", pt: "Faixas", ro: "Centuri" },
+    beltSpecsTitle: { en: "The Belt", fr: "La Ceinture", ja: "帯について", pt: "A Faixa", ro: "Centura" },
+    beltRanks:      { en: "White, blue, purple, brown and black.", fr: "Blanc, bleu, violet, marron et noir.", ja: "白・青・紫・茶・黒。", pt: "Branca, azul, roxa, marrom e preta.", ro: "Albă, albastră, mov, maro și neagră." },
+    beltFabricVal:  { en: "Cotton weave, custom woven label", fr: "Tissage coton, étiquette tissée sur mesure", ja: "コットン織り、専用織りネーム", pt: "Trama de algodão, etiqueta tecida personalizada", ro: "Țesătură de bumbac, etichetă țesută personalizată" },
+    beltBuildVal:   { en: "Bar-tacked stitching, all five adult ranks", fr: "Coutures renforcées, les cinq grades adultes", ja: "閂止め補強縫製、成人の5階級すべてに対応", pt: "Costura reforçada, todas as cinco faixas adultas", ro: "Cusături întărite, toate cele cinci centuri pentru adulți" },
 
     // ── Shared labels ───────────────────────────────────────────────────
     priceLbl:     { en: "Target Price",  fr: "Prix cible",        ja: "目標価格",        pt: "Preço-alvo",       ro: "Preț țintă"     },
-    specLbl:      { en: "Spec",          fr: "Caractéristiques",  ja: "スペック",        pt: "Especificação",    ro: "Specificații"   },
     comingSoon:   { en: "Coming Q1 2027",fr: "Disponible T1 2027",ja: "2027年第1四半期発売", pt: "Chegando no T1 2027", ro: "Disponibil T1 2027" },
     pillarsTitle: { en: "Why SubmitologY Gear",  fr: "Pourquoi le matériel SubmitologY", ja: "SubmitologYギアの理由", pt: "Por que o Equipamento SubmitologY", ro: "De ce echipamentul SubmitologY" },
     pillars: [
