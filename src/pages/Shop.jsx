@@ -65,7 +65,18 @@ export default function Shop({ lang }) {
       <div className="page-header">
         <div className="eyebrow eyebrow--accent">{t(T.merch.pageTag, lang)}</div>
         <h1 className="page-title">{t(T.merch.pageTitle, lang)}</h1>
+        {/* Six short paragraphs rather than one standfirst — the brand copy
+            reads as a short piece of writing (the Kintsugi philosophy, then
+            the lineup, then the belt, then the line, then the date), not a
+            single descriptive sentence. Stacked page-sub paragraphs with a
+            little breathing room between them, same device TechniqueMap.jsx
+            uses for its second header paragraph. */}
         <p className="page-sub">{t(T.merch.pageSubtitle, lang)}</p>
+        <p className="page-sub" style={{ marginTop: "0.75rem" }}>{t(T.merch.pageIntroPhilosophy, lang)}</p>
+        <p className="page-sub" style={{ marginTop: "0.75rem" }}>{t(T.merch.pageIntroLineup, lang)}</p>
+        <p className="page-sub" style={{ marginTop: "0.75rem" }}>{t(T.merch.pageIntroBelt, lang)}</p>
+        <p className="page-sub" style={{ marginTop: "0.75rem" }}>{t(T.merch.pageIntroTagline, lang)}</p>
+        <p className="page-sub" style={{ marginTop: "0.75rem" }}>{t(T.merch.pageIntroDate, lang)}</p>
       </div>
 
       {/* ── Rashguards ───────────────────────────────────────────────────
