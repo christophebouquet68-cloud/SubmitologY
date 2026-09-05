@@ -11,14 +11,14 @@
 //    the page in orange with a dashed underline precisely so an unfilled one
 //    is impossible to miss. `grep -n "{{" src/data/legal.js` lists them all.
 //
-// 3. The privacy policy describes the signup as it currently works: a
-//    form-to-inbox service forwards the address to our mailbox, nothing is
-//    sent back to the visitor, and one email goes out at launch. If you switch
-//    to a mailing list — confirmations, unsubscribe links, a single send to
-//    everyone — the wording here has to change with it, and so does the copy
-//    under the form in i18n-additions.js. A policy that describes a process
-//    you don't follow is worse than no policy, because it is a written claim
-//    you are failing to meet.
+// 3. The privacy policy describes contact as it currently works: the footer
+//    and the contact page are plain mailto: links to our own inbox, nothing
+//    is collected or stored by the site, and no list exists to be added to.
+//    If that ever changes — a signup form, a mailing list, analytics — the
+//    wording here has to change with it, and so does the copy in
+//    i18n-additions.js (footer.contactTitle / contactBody). A policy that
+//    describes a process you don't follow is worse than no policy, because
+//    it is a written claim you are failing to meet.
 //
 // 4. If the site starts doing something new — analytics, a payment processor,
 //    shipping, accounts, a cookie banner — the privacy policy has to change
@@ -32,8 +32,8 @@ export const BUSINESS = {
   legalName: "{{Registered business name — e.g. SubmitologY Pte. Ltd.}}",
   uen:       "{{UEN / business registration number}}",
   address:   "{{Registered address, including postcode}}",
-  general:   "{{hello@submitology.com}}",
-  privacy:   "{{privacy@submitology.com}}",
+  general:   "submitology@proton.me",
+  privacy:   "submitology@proton.me",
   instagram: "{{@submitology}}",
 };
 
@@ -83,7 +83,7 @@ export const DOCS = {
       { p: `This policy explains what ${BUSINESS.legalName} ("SubmitologY", "we") collects through this website, why, and what you can ask us to do about it. It applies to this site only.` },
 
       { h: "What we collect" },
-      { p: "One thing, and only if you hand it over: the email address you enter into the launch-notification form. Nothing on this site asks for your name, address, phone number or payment details, because nothing on this site sells anything yet." },
+      { p: "Nothing, by default. This site has no signup form, no accounts and no checkout. Nothing on this site asks for your name, address, phone number or payment details, because nothing on this site sells anything yet." },
       { p: "We do not run analytics, advertising pixels, session recording or third-party tracking of any kind. Fonts are served from this site rather than a font CDN, so loading a page doesn't announce your visit to anyone else. Our host records standard server logs, including IP addresses, for security and reliability." },
 
       { h: "What stays on your device" },
@@ -94,33 +94,25 @@ export const DOCS = {
         "Which techniques you've marked as drilled on the technique map",
         "Your answers in the strength & conditioning builder",
         "Which release notes you've already seen",
-        "Whether you've already joined the launch list",
       ]},
       { p: "Clearing your browser data for this site erases all of it. We use no cookies." },
 
-      { h: "Why we collect your email, and your consent" },
-      { p: "To tell you when the first collection is available. You will receive one email, at launch. That is the entire purpose, and it is the only thing we will use your address for." },
-      { p: "Submitting the form is your consent under the PDPA, which is why the form says plainly what you are agreeing to and links to this page beside it. Nothing is sent to you when you sign up — no confirmation, no welcome note — so the message you receive at launch may well be the first you hear from us. We will ask for fresh consent before using your address for anything beyond that one email." },
-      { p: "You can withdraw at any time by writing to the address below, and the launch email will carry a way to opt out." },
-      { p: "We won't sell, rent or trade your address." },
-
-      { h: "Who else sees it" },
-      { p: "The form is handled by {{Formspree — name whichever service you actually connect}}, which passes your address to our mailbox and does not send you anything itself. From there it sits in our email, read by whoever is running SubmitologY. Our form provider may process the submission outside Singapore; we require protection comparable to the PDPA. We disclose data to no one else unless the law requires it." },
-      { p: "If we later move to a mailing-list provider, so that you receive a confirmation and can unsubscribe from a link in every message, we will update this page before making the change." },
-
-      { h: "How long we keep it" },
-      { p: "Until you ask us to delete it, or until {{24}} months after the launch email goes out, whichever comes first. Because there is no list to unsubscribe from yet, deletion means writing to us — we do it on request and we don't ask why." },
+      { h: "If you email us" },
+      { p: `The "contact us" links in the footer and on the Contact page are plain mailto: links to ${BUSINESS.general}. Clicking one opens your own email application — nothing about that message passes through this website or any third-party form or mailing-list service, and we don't see or store anything until you actually hit send.` },
+      { p: "We use whatever you send only to reply to you and to run SubmitologY. We won't sell, rent or trade your address, and we don't add it to any list — there isn't one." },
+      { p: "We keep the correspondence for as long as is reasonably necessary to deal with it, or until you ask us to delete it, whichever comes first." },
+      { p: "If that ever changes — if we add a signup form or a mailing list with confirmations and unsubscribe links — this page will say so before it happens." },
 
       { h: "Your rights" },
-      { p: "You can ask us to tell you what we hold about you, correct it, delete it, or withdraw your consent entirely. The launch email will carry a way to opt out, and until then — or at any time after — you can write to us directly:" },
+      { p: "You can ask us to tell you what we hold about you, correct it, or delete it. Write to us directly:" },
       { dl: [["Data Protection Officer", BUSINESS.privacy]] },
-      { p: "We'll respond within 30 days. Withdrawing consent means we stop emailing you; it doesn't undo mail already sent." },
+      { p: "We'll respond within 30 days." },
 
       { h: "Security" },
-      { p: "The site is served over HTTPS, the form provider encrypts submissions in transit, and the mailbox that receives them is protected by a strong password and two-factor authentication. No system is perfect, and we won't pretend otherwise — if a breach ever affects you, we'll notify you and the PDPC as the PDPA requires." },
+      { p: "The site is served over HTTPS. A message you email us is only as secure as email generally is — we don't control how it travels to us — but the mailbox that receives it is protected by a strong password and two-factor authentication. No system is perfect, and we won't pretend otherwise — if a breach ever affects you, we'll notify you and the PDPC as the PDPA requires." },
 
       { h: "Children" },
-      { p: "This site isn't aimed at children under 13, and we don't knowingly collect their data. If you believe a child has given us an email address, write to us and we'll remove it." },
+      { p: "This site isn't aimed at children under 13, and we don't knowingly collect their data. If you believe a child has emailed us personal data, write to us and we'll remove it." },
 
       { h: "Changes" },
       { p: `We'll update this page when our practices change and move the date at the top. Last updated ${LAST_UPDATED}.` },
