@@ -35,13 +35,15 @@ export default function Mission({ lang }) {
         <p className="prose">{t(T.mh.lead2, lang)}</p>
       </div>
 
-      {/* This block used to be the 1% donation pledge. The pledge is gone, so
-          what stands here is the thing the brand can actually claim today —
-          stated plainly, which is the register the rest of the site uses about
-          its own limitations. */}
-      <div className="stance" style={{ marginTop: "1.375rem" }}>
-        <h2 className="stance__title">{t(T.mh.stanceTitle, lang)}</h2>
-        <p className="stance__body">{t(T.mh.stanceBody, lang)}</p>
+      {/* This block used to hold a short, plainly-stated disclosure ("no
+          product, no shop, no revenue yet" — still covered by planNote in
+          the band above). It now carries the founder's personal note on why
+          mental health sits at the centre of the mission, so it's styled as
+          a full prose section rather than the small muted "stance" note. */}
+      <h2 className="section-title" style={{ marginTop: "1.375rem" }}>{t(T.mh.stanceTitle, lang)}</h2>
+      <div className="card" style={{ maxWidth: "48rem" }}>
+        <p className="prose">{t(T.mh.stanceBody, lang)}</p>
+        <p className="prose">{t(T.mh.stanceBody2, lang)}</p>
       </div>
 
       <h2 className="section-title">{t(T.mh.pillarsTitle, lang)}</h2>

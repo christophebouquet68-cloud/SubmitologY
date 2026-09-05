@@ -65,7 +65,7 @@ test("seams are deterministic across renders", () => {
 
 test("mission page states the stance and keeps the support line", () => {
   render(<Mission lang="en" navigate={noop} />);
-  expect(screen.getByText("What we can say today")).toBeTruthy();
+  expect(screen.getByText("Why It Matters")).toBeTruthy();
   expect(screen.getAllByText(/Samaritans of Singapore/).length).toBeGreaterThan(0);
 });
 
