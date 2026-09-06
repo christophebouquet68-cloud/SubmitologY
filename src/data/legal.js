@@ -29,15 +29,19 @@
 // these pages stays translated.
 
 export const BUSINESS = {
-  legalName: "{{Registered business name — e.g. SubmitologY Pte. Ltd.}}",
-  uen:       "{{UEN / business registration number}}",
-  address:   "{{Registered address, including postcode}}",
+  legalName: "Registered business name — to be announced",
+  uen:       "to be announced",
+  address:   "to be announced",
   general:   "submitology@proton.me",
   privacy:   "submitology@proton.me",
-  instagram: "{{@submitology}}",
+  instagram:    "@submitology.sg",
+  instagramUrl: "https://www.instagram.com/submitology.sg/",
+  // Generated from instagramUrl (not uploaded artwork) — regenerate if the
+  // handle ever changes. Verified to decode back to the URL above.
+  instagramQr:  `${process.env.PUBLIC_URL}/social/instagram-qr.png`,
 };
 
-export const LAST_UPDATED = "{{Date you publish this — e.g. 1 August 2026}}";
+export const LAST_UPDATED = "6 September 2026";
 
 /* Block types the Legal page knows how to render:
      { h: "Heading" }
@@ -57,7 +61,7 @@ export const DOCS = {
       { dl: [
         ["General & wholesale", BUSINESS.general],
         ["Privacy & data requests", BUSINESS.privacy],
-        ["Instagram", BUSINESS.instagram],
+        ["Instagram", BUSINESS.instagram, BUSINESS.instagramQr],
       ]},
       { p: "We aim to reply within {{2}} working days. We're in Singapore (GMT+8), so replies land on your morning if you're in Europe or the Americas." },
 

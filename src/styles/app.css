@@ -1161,7 +1161,23 @@ a { color: var(--accent-soft); }
    plain mailto: link, so the row is just a title, a line of body copy and a
    .btn — no form-specific styling needed any more. */
 .signup { margin-top: 1.25rem; }
-.signup .btn { margin-top: 0.5rem; }
+
+/* Email and Instagram: an icon + text link, styled as a matched pair
+   rather than one being a filled button and the other an afterthought.
+   Neither is an icon-only control, so each one's accessible name is its
+   own visible text (address / handle), not a translated aria-label. */
+.footer__contact-links {
+  display: flex; flex-direction: column; gap: 0.875rem;
+  margin-top: 0.75rem;
+}
+.footer__contact-link {
+  display: inline-flex; align-items: center; gap: 0.625rem;
+  min-height: var(--tap);
+  color: var(--accent); font-size: 0.9375rem; font-weight: 600;
+  text-decoration: none; transition: color 0.15s;
+}
+.footer__contact-link:hover { color: var(--accent-soft); }
+.footer__contact-icon { width: 22px; height: 22px; flex-shrink: 0; }
 
 .footer__bottom {
   display: flex; justify-content: space-between; align-items: center;
@@ -1207,6 +1223,15 @@ a { color: var(--accent-soft); }
   color: var(--text-dim); padding-top: 0.2rem;
 }
 .legal__dl dd { margin: 0; color: var(--text); }
+
+/* Instagram row: handle text plus a small QR code, side by side. The QR
+   keeps its own white backdrop and quiet zone (baked into the PNG) since
+   it must stay high-contrast to scan reliably regardless of theme. */
+.legal__dl-value { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.legal__qr {
+  width: 72px; height: 72px; border-radius: var(--radius-sm);
+  background: #fff; padding: 4px; flex-shrink: 0;
+}
 
 /* Callout for the things a reader must not skim past — the training risk
    warning and the crisis numbers. */

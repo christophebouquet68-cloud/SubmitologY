@@ -39,15 +39,46 @@ export default function Footer({ lang, navigate }) {
               <p className="footer__tagline" style={{ fontSize: "0.8125rem" }}>
                 {t(T.ui.footer.contactBody, lang)}
               </p>
-              {/* A plain mailto: link. It opens the visitor's own mail app, so
-                  nothing about the message passes through this site or any
-                  third-party form service — no provider to configure, and
-                  nothing for this site to collect or store. See legal.js
-                  ("If you email us") for how the privacy policy describes
-                  this. */}
-              <a className="btn btn--primary" href={`mailto:${BUSINESS.general}`}>
-                {BUSINESS.general}
-              </a>
+
+              {/* Email and Instagram share one look — an icon plus the
+                  address/handle as visible text, in the brand orange — so
+                  the two ways to reach us read as a matched pair rather
+                  than one looking like the "real" option and the other an
+                  afterthought. */}
+              <div className="footer__contact-links">
+                {/* A plain mailto: link. It opens the visitor's own mail
+                    app, so nothing about the message passes through this
+                    site or any third-party form service — no provider to
+                    configure, and nothing for this site to collect or
+                    store. See legal.js ("If you email us") for how the
+                    privacy policy describes this. */}
+                <a className="footer__contact-link" href={`mailto:${BUSINESS.general}`}>
+                  <svg className="footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                    <path d="M3.5 6 12 13 20.5 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span>{BUSINESS.general}</span>
+                </a>
+
+                {/* Instagram is the only social channel live pre-launch.
+                    Plain link to the profile — no embedded widget or
+                    script, which would be a third-party request the
+                    privacy policy would have to start disclosing. */}
+                <a
+                  className="footer__contact-link"
+                  href={BUSINESS.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg className="footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                    <circle cx="12" cy="12" r="4.4" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                    <circle cx="17.35" cy="6.65" r="1.15" fill="currentColor" />
+                  </svg>
+                  <span>{BUSINESS.instagram}</span>
+                  <span className="sr-only"> ({t(T.ui.footer.instagramNewTab, lang)})</span>
+                </a>
+              </div>
             </div>
           </div>
 

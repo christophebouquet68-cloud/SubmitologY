@@ -29,10 +29,27 @@ function Block({ block }) {
   );
   if (block.dl) return (
     <dl className="legal__dl">
-      {block.dl.map(([term, value], i) => (
+      {/* A dl row is normally [term, value]. A third element is an image
+          shown small beside the value — currently only the Instagram QR
+          code (see data/legal.js, BUSINESS.instagramQr). */}
+      {block.dl.map(([term, value, img], i) => (
         <Fragment key={i}>
           <dt>{withBlanks(term)}</dt>
-          <dd>{withBlanks(value)}</dd>
+          <dd className={img ? "legal__dl-value" : undefined}>
+            {img ? (
+              <>
+                <span>{withBlanks(value)}</span>
+                <img
+                  className="legal__qr"
+                  src={img}
+                  alt={`QR code linking to ${value} on Instagram`}
+                  width="72"
+                  height="72"
+                  loading="lazy"
+                />
+              </>
+            ) : withBlanks(value)}
+          </dd>
         </Fragment>
       ))}
     </dl>
