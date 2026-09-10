@@ -277,6 +277,11 @@ a { color: var(--accent-soft); }
 }
 .eyebrow--accent  { color: var(--accent-soft); }
 .eyebrow--mission { color: var(--mission); }
+.eyebrow--gold    { color: var(--gold); }
+
+/* Hero-only: a touch more weight and breathing room than a stock eyebrow,
+   since this one carries a full phrase rather than a category label. */
+.hero__kicker { font-size: 0.75rem; margin: -0.25rem 0 0.75rem; }
 
 .card {
   background: var(--surface);

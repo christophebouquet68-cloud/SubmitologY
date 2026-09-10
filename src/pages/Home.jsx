@@ -54,6 +54,10 @@ export default function Home({ lang, navigate }) {
             <span className="hero__line1">{t(T.overview.titleLine1, lang)}</span>
             <span className="hero__line2">{t(T.overview.titleLine2, lang)}</span>
           </h1>
+          {/* The line already on the crest behind this section, now typed
+              rather than only photographed. Gold, not white — it echoes the
+              crest's seam instead of competing with the title above it. */}
+          <p className="eyebrow eyebrow--gold hero__kicker">{t(T.overview.heroKicker, lang)}</p>
           <p className="hero__body">{t(T.overview.heroBody, lang)}</p>
           <div className="hero__ctas">
             <button className="btn btn--onphoto btn--lg" onClick={() => navigate(ROUTES.map)}>
