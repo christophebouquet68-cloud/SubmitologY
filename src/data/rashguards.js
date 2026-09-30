@@ -22,6 +22,10 @@ export const RASHGUARDS = [
   {
     id: "rashguard-long",
     cutKey: "cutLs",
+    // Set 2026-09-30: the first physical long-sleeve pieces exist and are out
+    // with testers. Shop.jsx prints T.merch.rgSamplingNote on the card while
+    // this is true — drop the flag once sampling ends.
+    sampling: true,
     price: "60 – 80",
     blurb: {
       en: "The kintsugi seam runs corner to corner across the body in gold, over an oversized S ghosted into the black. The wordmark runs down both sleeves; 金継ぎ sits at the back hem.",

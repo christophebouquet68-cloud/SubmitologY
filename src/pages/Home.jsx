@@ -67,6 +67,17 @@ export default function Home({ lang, navigate }) {
               {t(T.overview.merchCta, lang)}
             </button>
           </div>
+          {/* Trial-phase banner, 2026-09-30. Under the CTAs rather than above
+              them: it is news, not the site's thesis, so it shouldn't push the
+              two buttons down the hero. An opaque dark panel (like the shop's
+              .tee__badge) so its contrast holds over any part of the photo.
+              Not a link — "Shop the gear" is right above it — and the copy
+              says outright that nothing is on sale. Remove it when the trial
+              ends. */}
+          <p className="hero__trial">
+            <span className="hero__trial-tag">{t(T.overview.trialTag, lang)}</span>
+            <span className="hero__trial-body">{t(T.overview.trialBody, lang)}</span>
+          </p>
         </div>
       </section>
 
@@ -229,7 +240,7 @@ export default function Home({ lang, navigate }) {
           No new copy: the eyebrow, title and button are strings that already
           exist and are already translated into all five languages. Nothing
           here implies anything can be bought — the shop it links to is still
-          labelled "Target Price" and "Coming Q1 2027", and there is still no
+          labelled "Target Price" and "Coming Q1/Q2 2027", and there is still no
           cart anywhere on the site. Deliberately no email field: promoting
           the footer signup into a full-width orange band is the kind of
           conversion pressure a brand with nothing to sell has not earned. */}

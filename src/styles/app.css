@@ -2428,3 +2428,71 @@ a { color: var(--accent-soft); }
   .brand__name { font-size: 0.9375rem; }
   .header { gap: 0.25rem; }
 }
+
+
+/* ── 2026-09-30: trial phase, sampling note, tester feedback ──────────────── */
+
+/* Home hero banner under the CTAs. Opaque ink panel with a gold hairline —
+   the .tee__badge treatment at paragraph size — so the ratio is stated once
+   and holds wherever it lands on the photograph: --text-muted on ~#08080a. */
+.hero__trial {
+  display: flex; gap: 0.75rem; align-items: baseline; flex-wrap: wrap;
+  max-width: min(38rem, 54vw);
+  margin: 1.5rem 0 0;
+  padding: 0.875rem 1.125rem;
+  background: rgba(8, 8, 10, 0.9);
+  border: 1px solid var(--gold-edge);
+  border-left: 3px solid var(--gold);
+  border-radius: 6px;
+  font-size: 0.875rem; line-height: 1.5;
+}
+.hero__trial-tag {
+  flex: none;
+  font-family: var(--font-util); font-size: 0.6875rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold);
+}
+.hero__trial-body { color: var(--text-muted); flex: 1 1 16rem; }
+@media (max-width: 720px) {
+  .hero__trial { max-width: none; }
+}
+
+/* Sampling status on a shop card — a second fact beside the date badge. */
+.tee__note {
+  display: flex; gap: 0.5rem; align-items: flex-start;
+  margin: 0.125rem 0 0;
+  font-size: 0.8125rem; font-weight: 600; color: var(--gold);
+}
+.tee__note .dot {
+  flex: none; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); margin-top: 0.45rem;
+}
+
+/* Tester feedback. Words, not stars (see data/reviews.js). */
+.reviews__empty {
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text-dim);
+  padding: 1rem 1.125rem; margin: 0;
+  border: 1px dashed var(--line); border-radius: 6px;
+}
+.reviews-grid {
+  display: grid; gap: 0.875rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+}
+.review { display: flex; flex-direction: column; gap: 0.75rem; margin: 0; }
+.review__product {
+  font-family: var(--font-util); font-size: 0.6875rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--gold); margin: 0;
+}
+.review__quote { margin: 0; padding-left: 0.875rem; border-left: 2px solid var(--gold-edge); }
+.review__quote p { margin: 0; font-size: 0.9375rem; line-height: 1.6; }
+.review__who {
+  display: flex; flex-direction: column; gap: 0.125rem;
+  margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--line);
+}
+.review__name { font-weight: 700; font-size: 0.875rem; }
+.review__detail, .review__gifted {
+  font-family: var(--font-util); font-size: var(--fs-util); color: var(--text-dim);
+}
+.review__gifted { font-style: italic; }

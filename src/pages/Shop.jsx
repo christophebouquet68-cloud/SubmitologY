@@ -4,6 +4,7 @@ import { RASHGUARDS, RASHGUARD_DESIGN, rashguardImage } from "../data/rashguards
 import { SHORTS, shortsImage } from "../data/shorts";
 import { GI_COLOURWAYS, GI_DESIGN, giImage } from "../data/gis";
 import { BELT_NAME, BELT_PRICE, BELT_BLURB, beltImage } from "../data/belt";
+import { REVIEWS } from "../data/reviews";
 import {
   DEFAULT_COLOURWAY,
   TEE_COLOURWAYS,
@@ -13,7 +14,8 @@ import {
 
 /** The shop is entirely the first drop now — rashguards, shorts, the gi,
  *  t-shirts, then the belt. Everything here has artwork, a price and a
- *  quarter (Q1 2027); there is no more undated "rest of the range" grid
+ *  quarter (Q1 2027, except the gi — Q2 2027 since 2026-09-30); there is no
+ *  more undated "rest of the range" grid
  *  underneath, which is why merch.js no longer exists.
  *
  *  Rashguards lead, 2026-08-23. They were in that undated grid until artwork
@@ -110,6 +112,16 @@ export default function Shop({ lang }) {
                   {RASHGUARD_DESIGN} — {t(T.merch[rg.cutKey], lang)}
                 </h3>
                 <p className="tee__blurb">{t(rg.blurb, lang)}</p>
+                {/* Sampling status sits under the blurb, not in the corner
+                    badge: the badge is the drop date, and this is a second,
+                    separate fact — the garment exists, and still can't be
+                    bought. */}
+                {rg.sampling && (
+                  <p className="tee__note">
+                    <span className="dot" aria-hidden="true" />
+                    {t(T.merch.rgSamplingNote, lang)}
+                  </p>
+                )}
                 <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
 
                 <div className="tee__foot">
@@ -146,6 +158,40 @@ export default function Shop({ lang }) {
             <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
           </div>
         </dl>
+      </section>
+
+      {/* ── Tester feedback ──────────────────────────────────────────────
+          Sits right under the rashguards because they are what is being
+          tested; if later garments go out for trial, their reviews land here
+          too (each card names its product). Data-driven from reviews.js — an
+          empty list shows one honest line rather than a hidden section, and
+          there are deliberately no stars: see the header of reviews.js. */}
+      <section aria-labelledby="reviews-heading">
+        <h2 id="reviews-heading" className="section-title">{t(T.merch.reviewsTitle, lang)}</h2>
+        <p className="page-sub" style={{ marginBottom: "1.25rem" }}>{t(T.merch.reviewsIntro, lang)}</p>
+
+        {REVIEWS.length === 0 ? (
+          <p className="reviews__empty">{t(T.merch.reviewsEmpty, lang)}</p>
+        ) : (
+          <div className="reviews-grid">
+            {REVIEWS.map((r) => (
+              <figure className="card review" key={r.id}>
+                <p className="review__product">{r.product}</p>
+                <blockquote className="review__quote" lang={r.lang}>
+                  <p>{r.quote}</p>
+                </blockquote>
+                <figcaption className="review__who">
+                  <span className="review__name">{r.name}</span>
+                  {r.detail && <span className="review__detail">{r.detail}</span>}
+                  <time className="review__detail" dateTime={r.date}>
+                    {new Intl.DateTimeFormat(lang === "pt" ? "pt-BR" : lang, { dateStyle: "medium" }).format(new Date(r.date))}
+                  </time>
+                  {r.gifted && <span className="review__gifted">{t(T.merch.reviewsGifted, lang)}</span>}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ── Shorts ───────────────────────────────────────────────────────
@@ -213,7 +259,10 @@ export default function Shop({ lang }) {
           One design, four colourways — all shown at once, same as the
           rashguards above and for the same reason: there's one design here,
           not several, so a picker would only hide three of the four
-          photographs someone came to see. */}
+          photographs someone came to see.
+
+          Its date is its own (giComingSoon / giAvailVal, Q2 2027) rather than
+          the drop-wide Q1 strings every other section uses. */}
       <section aria-labelledby="gi-heading">
         <h2 id="gi-heading" className="section-title">{t(T.merch.giSection, lang)}</h2>
 
@@ -230,7 +279,7 @@ export default function Shop({ lang }) {
                   loading="lazy"
                   decoding="async"
                 />
-                <span className="tee__badge">{t(T.merch.comingSoon, lang)}</span>
+                <span className="tee__badge">{t(T.merch.giComingSoon, lang)}</span>
               </div>
 
               <div className="tee__body">
@@ -270,7 +319,7 @@ export default function Shop({ lang }) {
           </div>
           <div className="spec-strip__cell">
             <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
-            <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
+            <dd className="spec-strip__val">{t(T.merch.giAvailVal, lang)}</dd>
           </div>
         </dl>
       </section>
