@@ -165,6 +165,16 @@ export const T = {
     // item exists and is being tried, and in the same breath that it still
     // can't be bought.
     rgSamplingNote: { en: "First items available for sampling (not for sale yet)", fr: "Premières pièces disponibles pour des essais (pas encore en vente)", ja: "最初のサンプルを試用中（まだ販売していません）", pt: "Primeiras peças disponíveis para teste (ainda não estão à venda)", ro: "Primele piese disponibile pentru testare (încă nu sunt de vânzare)" },
+    // Size chart under the rashguard spec strip — see RASHGUARD_SIZES_LONG in
+    // data/rashguards.js. The numbers are the garment laid flat, so the two
+    // "how" lines describe the garment, not a body measurement.
+    rgSizeTitle:  { en: "Size chart", fr: "Guide des tailles", ja: "サイズ表", pt: "Tabela de medidas", ro: "Tabel de mărimi" },
+    rgSizeCol:    { en: "Size", fr: "Taille", ja: "サイズ", pt: "Tamanho", ro: "Mărime" },
+    rgSizeLength: { en: "A · Body length", fr: "A · Longueur du corps", ja: "A · 着丈", pt: "A · Comprimento do corpo", ro: "A · Lungimea corpului" },
+    rgSizeChest:  { en: "B · ½ chest width", fr: "B · ½ largeur de poitrine", ja: "B · 身幅", pt: "B · ½ largura do peito", ro: "B · ½ lățime piept" },
+    rgSizeNote:   { en: "Garment measurements in centimetres, taken flat. They are approximate — expect small variations from piece to piece, and personal fit preference counts too.", fr: "Mesures du vêtement en centimètres, prises à plat. Elles sont approximatives — de légères variations d'une pièce à l'autre sont possibles, et la préférence personnelle d'ajustement compte aussi.", ja: "製品を平置きで測った寸法（cm）です。あくまで目安で、個体差が多少あります。お好みのフィット感も考慮してお選びください。", pt: "Medidas da peça em centímetros, tiradas com a peça sobre uma superfície plana. São aproximadas — pode haver pequenas variações de uma peça para outra, e a preferência pessoal de ajuste também conta.", ro: "Dimensiunile produsului în centimetri, măsurate pe plat. Sunt aproximative — pot exista mici variații de la o piesă la alta, iar preferința personală de croială contează și ea." },
+    rgSizeHowA:   { en: "A — Body length: from the highest point of the shoulder down to the hem.", fr: "A — Longueur du corps : du point le plus haut de l'épaule jusqu'à l'ourlet.", ja: "A — 着丈：肩の最も高い位置から裾まで。", pt: "A — Comprimento do corpo: do ponto mais alto do ombro até a barra.", ro: "A — Lungimea corpului: din punctul cel mai înalt al umărului până la tiv." },
+    rgSizeHowB:   { en: "B — ½ chest width: straight across the chest, from armpit to armpit.", fr: "B — ½ largeur de poitrine : en ligne droite sur la poitrine, d'une aisselle à l'autre.", ja: "B — 身幅：脇の下から脇の下までの直線距離。", pt: "B — ½ largura do peito: em linha reta no peito, de axila a axila.", ro: "B — ½ lățime piept: în linie dreaptă peste piept, de la o axilă la cealaltă." },
     // Tester feedback — the chrome around reviews. The quotes themselves live
     // in data/reviews.js and stay in the language the tester wrote them in.
     reviewsTitle:  { en: "From the Mat — Tester Feedback", fr: "Depuis le tatami — Retours des testeurs", ja: "マットから — テスターの声", pt: "Do Tatame — Opinião dos Testadores", ro: "De pe saltea — Părerile testerilor" },

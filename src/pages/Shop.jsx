@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { T, t } from "../i18n";
-import { RASHGUARDS, RASHGUARD_DESIGN, rashguardImage } from "../data/rashguards";
+import { RASHGUARDS, RASHGUARD_DESIGN, RASHGUARD_SIZES_LONG, rashguardImage } from "../data/rashguards";
 import { SHORTS, shortsImage } from "../data/shorts";
 import { GI_COLOURWAYS, GI_DESIGN, giImage } from "../data/gis";
 import { BELT_NAME, BELT_PRICE, BELT_BLURB, beltImage } from "../data/belt";
@@ -158,6 +158,41 @@ export default function Shop({ lang }) {
             <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
           </div>
         </dl>
+
+        {/* ── Size chart ───────────────────────────────────────────────
+            Long sleeve only: that is the cut the maker's sizing sheet covers.
+            A real <table> with the sizes down the side, so it reads on a
+            phone without sideways scrolling. Numbers live in
+            data/rashguards.js and are printed in the reader's locale
+            (64.5 in English, 64,5 in French). */}
+        <div className="size-chart">
+          <table className="size-chart__table">
+            <caption className="size-chart__title">
+              {t(T.merch.rgSizeTitle, lang)} — {t(T.merch.cutLs, lang)} · cm
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">{t(T.merch.rgSizeCol, lang)}</th>
+                <th scope="col">{t(T.merch.rgSizeLength, lang)}</th>
+                <th scope="col">{t(T.merch.rgSizeChest, lang)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {RASHGUARD_SIZES_LONG.map((row) => (
+                <tr key={row.size}>
+                  <th scope="row">{row.size}</th>
+                  <td>{row.length.toLocaleString(lang === "pt" ? "pt-BR" : lang)}</td>
+                  <td>{row.halfChest.toLocaleString(lang === "pt" ? "pt-BR" : lang)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="size-chart__notes">
+            <p>{t(T.merch.rgSizeNote, lang)}</p>
+            <p>{t(T.merch.rgSizeHowA, lang)}</p>
+            <p>{t(T.merch.rgSizeHowB, lang)}</p>
+          </div>
+        </div>
       </section>
 
       {/* ── Tester feedback ──────────────────────────────────────────────
