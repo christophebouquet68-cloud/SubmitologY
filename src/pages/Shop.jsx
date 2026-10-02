@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { T, t } from "../i18n";
-import { RASHGUARDS, RASHGUARD_DESIGN, RASHGUARD_SIZES_LONG, rashguardImage } from "../data/rashguards";
+import { RASHGUARDS, RASHGUARD_DESIGN, RASHGUARD_SIZES_LONG, RASHGUARD_SIZE_DIAGRAM, rashguardImage } from "../data/rashguards";
 import { SHORTS, shortsImage } from "../data/shorts";
 import { GI_COLOURWAYS, GI_DESIGN, giImage } from "../data/gis";
 import { BELT_NAME, BELT_PRICE, BELT_BLURB, beltImage } from "../data/belt";
@@ -187,10 +187,23 @@ export default function Shop({ lang }) {
               ))}
             </tbody>
           </table>
-          <div className="size-chart__notes">
-            <p>{t(T.merch.rgSizeNote, lang)}</p>
-            <p>{t(T.merch.rgSizeHowA, lang)}</p>
-            <p>{t(T.merch.rgSizeHowB, lang)}</p>
+          {/* The maker's own diagram (Risepect, our supplier) beside its
+              notes: A and B on the picture are the A and B columns. */}
+          <div className="size-chart__how">
+            <img
+              className="size-chart__diagram"
+              src={RASHGUARD_SIZE_DIAGRAM}
+              alt={t(T.merch.rgSizeDiagramAlt, lang)}
+              width="640"
+              height="712"
+              loading="lazy"
+              decoding="async"
+            />
+            <div className="size-chart__notes">
+              <p>{t(T.merch.rgSizeHowA, lang)}</p>
+              <p>{t(T.merch.rgSizeHowB, lang)}</p>
+              <p>{t(T.merch.rgSizeNote, lang)}</p>
+            </div>
           </div>
         </div>
       </section>

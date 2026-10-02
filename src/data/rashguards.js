@@ -50,10 +50,11 @@ export const RASHGUARDS = [
 ];
 
 /** Size chart for the long sleeve, from the maker's sizing sheet (added
- *  2026-10-02). Garment measurements in centimetres, taken flat: `length` is
- *  shoulder point to hem, `halfChest` is armpit to armpit. Held as data
- *  rather than as the maker's chart image, which carries another brand's
- *  artwork and cannot be translated. The short sleeve has no sheet yet —
+ *  2026-10-02). Centimetres. The sheet describes both as measured on the
+ *  body: `length` is shoulder to waist, and `halfChest` is headed "1/2 chest"
+ *  above an instruction to measure around the chest. Held as data rather than
+ *  as the whole sheet so the table can be translated and read on a phone; the
+ *  sheet's diagram is shown beside it. The short sleeve has no sheet yet —
  *  don't assume it shares these numbers. */
 export const RASHGUARD_SIZES_LONG = [
   { size: "XS",  length: 64.5, halfChest: 40.5 },
@@ -66,6 +67,11 @@ export const RASHGUARD_SIZES_LONG = [
   { size: "4XL", length: 82,   halfChest: 58 },
   { size: "5XL", length: 84.5, halfChest: 60.5 },
 ];
+
+/** The measuring diagram from that same sheet (Risepect, our supplier),
+ *  cropped to the garment: its A and B are the table's A and B columns.
+ *  640×712, white ground as supplied. */
+export const RASHGUARD_SIZE_DIAGRAM = `${process.env.PUBLIC_URL}/shop/tshirts/rashguard-size-guide.jpg`;
 
 /** Same contract as teeImage(): the id is the filename, so a rename here
  *  silently changes which garment appears under which name. */

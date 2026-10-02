@@ -2539,3 +2539,16 @@ a { color: var(--accent-soft); }
 @media (max-width: 720px) {
   .size-chart { grid-template-columns: 1fr; }
 }
+
+/* The maker's measuring diagram and its notes: side by side when the column
+   is wide enough, diagram above the notes when it isn't. The picture keeps
+   its white ground — it is the supplier's sheet, shown as supplied. */
+.size-chart__how {
+  display: flex; flex-wrap: wrap; align-items: flex-start;
+  gap: 1rem 1.5rem;
+}
+.size-chart__diagram {
+  flex: 0 1 17rem; width: 17rem; max-width: 100%; height: auto;
+  border-radius: var(--radius-sm); background: #fff;
+}
+.size-chart__how .size-chart__notes { flex: 1 1 14rem; }
