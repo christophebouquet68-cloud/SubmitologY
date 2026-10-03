@@ -37,6 +37,10 @@ definitions before this script was written:
     *-kintsugi   back reads KINTSUGI / crest / MIND AND BODY
     *-team       back reads SUBMITOLOGY / crest / BJJ TEAM
 
+(Only crest-team is in the shop since 2026-10-03; the other three definitions
+are kept here because they are what the names mean if those designs return.
+crest-team-tank is the same print on a tank top.)
+
 ONE ASPECT RATIO
 ────────────────
 The sources arrive at three different shapes (1.0, 1.25, 1.39) because they
@@ -67,19 +71,21 @@ WIDTH = 1200      # card renders at ~560 CSS px, so this covers 2x comfortably
 QUALITY = 80
 
 # (output name, source file, vertical anchor 0=top 1=bottom)
+#
+# 2026-10-03: the range is the Team Crest only for the time being — the
+# Kintsugi Crest and both Wordmark designs were taken out of the shop, and
+# their nine sources and nine outputs deleted with them rather than left to
+# rot (they are in git history if the designs come back). A tank top in the
+# same print joined instead. Its white source is a mockup like the tees; its
+# navy and black sources are recolours of that mockup, made by
+# tools/tank-colourways.py — see that file for why and how.
 TEES = [
-    ("crest-kintsugi-black",    "crest-kintsugi-black.jpg",    0.14),
-    ("crest-kintsugi-navy",     "crest-kintsugi-navy.jpg",     0.14),
-    ("crest-kintsugi-white",    "crest-kintsugi-white.jpg",    0.14),
     ("crest-team-black",        "crest-team-black.jpg",        0.14),
     ("crest-team-navy",         "crest-team-navy.jpg",         0.10),
     ("crest-team-white",        "crest-team-white.jpg",        0.10),
-    ("wordmark-kintsugi-black", "wordmark-kintsugi-black.jpg", 0.06),
-    ("wordmark-kintsugi-navy",  "wordmark-kintsugi-navy.jpg",  0.06),
-    ("wordmark-kintsugi-white", "wordmark-kintsugi-white.jpg", 0.06),
-    ("wordmark-team-black",     "wordmark-team-black.jpg",     0.06),
-    ("wordmark-team-navy",      "wordmark-team-navy.jpg",      0.06),
-    ("wordmark-team-white",     "wordmark-team-white.jpg",     0.06),
+    ("crest-team-tank-black",   "crest-team-tank-black.jpg",   0.10),
+    ("crest-team-tank-navy",    "crest-team-tank-navy.jpg",    0.10),
+    ("crest-team-tank-white",   "crest-team-tank-white.jpg",   0.10),
 ]
 
 
@@ -95,8 +101,13 @@ TEES = [
 # the caption and keep a sliver of it.
 RG_CAPTION_TOP = 0.845     # everything below this is the slate
 
+# rashguard-long is deliberately NOT rebuilt here any more. The image in
+# public/ was replaced by hand after this script was written (commits
+# "Update rashguard-long.jpg", "updated long sleeves in shop") and no longer
+# matches tee-src/rashguard-long.jpg — running the old list silently put the
+# superseded render back. Found on 2026-10-03 while rebuilding the tees. To
+# bring it back under the script, replace the source in tee-src/ first.
 RASHGUARDS = [
-    ("rashguard-long",  "rashguard-long.jpg"),
     ("rashguard-short", "rashguard-short.jpg"),
 ]
 
@@ -117,7 +128,7 @@ def crop_to(img, ratio, anchor=0.5):
 def main():
     if not os.path.isdir(SRC):
         sys.exit(f"mockups not found: {SRC}\n"
-                 f"Put the twelve files there, named as in TEES above.")
+                 f"Put the files there, named as in TEES above.")
     os.makedirs(DST, exist_ok=True)
 
     missing = [s for _, s, _ in TEES if not os.path.exists(os.path.join(SRC, s))]
@@ -145,8 +156,10 @@ def main():
               f"{os.path.getsize(path) // 1024} KB")
 
     total = sum(os.path.getsize(os.path.join(DST, n + ".jpg")) for n, _, _ in TEES)
-    print(f"\n  12 files, {total // 1024} KB total "
-          f"({total // 1024 // 12} KB each, 4 loaded per colourway)")
+    per = len(TEES) // 3                                    # three colourways
+    print()
+    print(f"  {len(TEES)} files, {total // 1024} KB total "
+          f"({total // 1024 // len(TEES)} KB each, {per} loaded per colourway)")
 
 
 if __name__ == "__main__":

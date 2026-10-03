@@ -92,11 +92,15 @@ No new dependencies were added.
 
 The page is now two tiers rather than one flat grid.
 
-**The first drop — t-shirts.** Four designs, each in white, dark blue and jet
-black, defined in `data/tshirts.js`. Artwork lives in `public/shop/tshirts/` as
-`<design>-<colour>.png`, so the ids in that file *are* the filename parts:
-adding a colourway means dropping twelve more files in and adding one line.
-Nothing in `Shop.jsx` changes.
+**The first drop — t-shirt and tank top.** One print, the Team Crest, on two
+garments, each in white, dark blue and jet black, defined in `data/tshirts.js`.
+(Four t-shirt designs until 2026-10-03; the other three are out of the shop for
+the time being and live in git history.) Artwork lives in
+`public/shop/tshirts/` as `<design>-<colour>.jpg`, so the ids in that file
+*are* the filename parts: adding a design means dropping three files in and
+adding one entry. Nothing in `Shop.jsx` changes. `tools/tees.py` builds the
+images from `tools/tee-src/`; the tank top's dark blue and jet black sources
+are recolours of its white mockup, made by `tools/tank-colourways.py`.
 
 A colour row at the top switches the whole collection at once — the point of
 three colourways is to see them as a set — and the swatches on each card

@@ -12,8 +12,8 @@ import {
   teeImage,
 } from "../data/tshirts";
 
-/** The shop is entirely the first drop now — rashguards, shorts, the gi,
- *  t-shirts, then the belt. Everything here has artwork, a price and a
+/** The shop is entirely the first drop now — rashguards, shorts, the
+ *  t-shirt and tank top, the gi, then the belt. Everything here has artwork, a price and a
  *  quarter (Q1 2027, except the gi — Q2 2027 since 2026-09-30); there is no
  *  more undated "rest of the range" grid
  *  underneath, which is why merch.js no longer exists.
@@ -25,10 +25,14 @@ import {
  *  Shorts, the gi and the belt followed the same way on 2026-08-30, once
  *  photography existed for all three. Order on the page follows what each
  *  garment is, not the order artwork arrived in: shorts sit under the
- *  rashguards (both are something worn to train in, not a shirt), the gi
- *  follows, then the tees, then the belt last — it's the one piece nobody
- *  buys without already training, so it closes the list rather than
- *  competing for attention at the top. */
+ *  rashguards (both are something worn to train in, not a shirt), then the
+ *  t-shirt and tank top, then the gi, then the belt last — it's the one piece
+ *  nobody buys without already training, so it closes the list rather than
+ *  competing for attention at the top.
+ *
+ *  The tees moved above the gi on 2026-10-03 (they used to follow it). That
+ *  puts everything dated Q1 2027 together and leaves the gi, the one Q2
+ *  piece, after them instead of in the middle. */
 export default function Shop({ lang }) {
   /* One colourway drives the whole rail: the point of the picker is to see the
      collection *as a collection* in white, then in dark blue, then in black.
@@ -46,7 +50,7 @@ export default function Shop({ lang }) {
   /* Warm the colourways that aren't on screen shortly after the page settles.
      Without this the first switch shows an empty plate on a slow connection,
      which reads as a broken control rather than a loading image. Deferred so
-     it never competes with the four images actually being looked at. */
+     it never competes with the images actually being looked at. */
   useEffect(() => {
     const timer = window.setTimeout(() => {
       for (const design of TEE_DESIGNS) {
@@ -303,6 +307,114 @@ export default function Shop({ lang }) {
         </dl>
       </section>
 
+      {/* ── T-shirts ─────────────────────────────────────────────────────
+          The colour picker belongs to this grid alone: the rashguards come in
+          one colourway, so a shared control at the top of the page would have
+          been half-dead the moment it was pressed.
+
+          One print on two garments since 2026-10-03 — the Team Crest t-shirt
+          and tank top. Both are entries in TEE_DESIGNS, so the picker, the
+          swatches and the preload treat the tank exactly like a tee. */}
+      <section aria-labelledby="tees-heading">
+        <h2 id="tees-heading" className="section-title">{t(T.merch.teesSection, lang)}</h2>
+        <div className="tee-toolbar">
+          <span className="field-label" id="colourway-label">
+            {t(T.merch.colourLbl, lang)}
+          </span>
+          <div className="pill-row" role="group" aria-labelledby="colourway-label">
+            {TEE_COLOURWAYS.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                className="pill tee-pill"
+                aria-pressed={colourway === c.id}
+                title={t(T.merch.colourAll, lang)}
+                onClick={() => pickAll(c.id)}
+              >
+                <span className="tee-pill__dot" style={{ background: c.swatch }} aria-hidden="true" />
+                {colourName(c.id)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="tee-grid">
+          {TEE_DESIGNS.map((design) => {
+            const active = colourOf(design.id);
+            return (
+              <article className="card tee" key={design.id}>
+                <div className="tee__media">
+                  <img
+                    className="tee__img"
+                    src={teeImage(design.id, active)}
+                    /* A middle dot rather than a full stop: the Japanese copy
+                       ends its own sentences with 。 and a Latin period read
+                       as a stray character between the two. */
+                    alt={`${design.name} — ${colourName(active)} · ${t(T.merch.frontBack, lang)}`}
+                    width="1200"
+                    height="857"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="tee__badge">{t(T.merch.comingSoon, lang)}</span>
+                </div>
+
+                <div className="tee__body">
+                  <h3 className="tee__name">{design.name}</h3>
+                  <p className="tee__blurb">{t(design.blurb, lang)}</p>
+                  <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+
+                  <div className="tee__foot">
+                    {/* Each card's swatches are a radio group in behaviour, but
+                        they're buttons: aria-pressed keeps the state audible
+                        without the arrow-key semantics a radio group promises
+                        and this row doesn't implement. */}
+                    <div className="swatches" role="group"
+                         aria-label={`${t(T.merch.colourLbl, lang)} — ${design.name}`}>
+                      {TEE_COLOURWAYS.map((c) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          className="swatch"
+                          aria-pressed={active === c.id}
+                          aria-label={colourName(c.id)}
+                          title={colourName(c.id)}
+                          onClick={() => pickOne(design.id, c.id)}
+                        >
+                          <span className="swatch__dot" style={{ background: c.swatch }} />
+                        </button>
+                      ))}
+                    </div>
+                    <span className="tee__price">{t(T.merch.teePrice, lang)}</span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {/* ── Spec strip ───────────────────────────────────────────────── */}
+        <h2 className="section-title">{t(T.merch.specsTitle, lang)}</h2>
+        <dl className="spec-strip">
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.fabricLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.fabricVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.rangeLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.rangeVal, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</dt>
+            <dd className="spec-strip__val spec-strip__val--accent">{t(T.merch.teePrice, lang)}</dd>
+          </div>
+          <div className="spec-strip__cell">
+            <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
+            <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
+          </div>
+        </dl>
+      </section>
+
       {/* ── Gi ───────────────────────────────────────────────────────────
           One design, four colourways — all shown at once, same as the
           rashguards above and for the same reason: there's one design here,
@@ -368,110 +480,6 @@ export default function Shop({ lang }) {
           <div className="spec-strip__cell">
             <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
             <dd className="spec-strip__val">{t(T.merch.giAvailVal, lang)}</dd>
-          </div>
-        </dl>
-      </section>
-
-      {/* ── T-shirts ─────────────────────────────────────────────────────
-          The colour picker belongs to this grid alone: the rashguards come in
-          one colourway, so a shared control at the top of the page would have
-          been half-dead the moment it was pressed. */}
-      <section aria-labelledby="tees-heading">
-        <h2 id="tees-heading" className="section-title">{t(T.merch.teesSection, lang)}</h2>
-        <div className="tee-toolbar">
-          <span className="field-label" id="colourway-label">
-            {t(T.merch.colourLbl, lang)}
-          </span>
-          <div className="pill-row" role="group" aria-labelledby="colourway-label">
-            {TEE_COLOURWAYS.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                className="pill tee-pill"
-                aria-pressed={colourway === c.id}
-                title={t(T.merch.colourAll, lang)}
-                onClick={() => pickAll(c.id)}
-              >
-                <span className="tee-pill__dot" style={{ background: c.swatch }} aria-hidden="true" />
-                {colourName(c.id)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="tee-grid">
-          {TEE_DESIGNS.map((design) => {
-            const active = colourOf(design.id);
-            return (
-              <article className="card tee" key={design.id}>
-                <div className="tee__media">
-                  <img
-                    className="tee__img"
-                    src={teeImage(design.id, active)}
-                    /* A middle dot rather than a full stop: the Japanese copy
-                       ends its own sentences with 。 and a Latin period read
-                       as a stray character between the two. */
-                    alt={`${design.name} — ${colourName(active)} · ${t(T.merch.frontBack, lang)}`}
-                    width="1412"
-                    height="740"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="tee__badge">{t(T.merch.comingSoon, lang)}</span>
-                </div>
-
-                <div className="tee__body">
-                  <h3 className="tee__name">{design.name}</h3>
-                  <p className="tee__blurb">{t(design.blurb, lang)}</p>
-                  <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
-
-                  <div className="tee__foot">
-                    {/* Each card's swatches are a radio group in behaviour, but
-                        they're buttons: aria-pressed keeps the state audible
-                        without the arrow-key semantics a radio group promises
-                        and this row doesn't implement. */}
-                    <div className="swatches" role="group"
-                         aria-label={`${t(T.merch.colourLbl, lang)} — ${design.name}`}>
-                      {TEE_COLOURWAYS.map((c) => (
-                        <button
-                          key={c.id}
-                          type="button"
-                          className="swatch"
-                          aria-pressed={active === c.id}
-                          aria-label={colourName(c.id)}
-                          title={colourName(c.id)}
-                          onClick={() => pickOne(design.id, c.id)}
-                        >
-                          <span className="swatch__dot" style={{ background: c.swatch }} />
-                        </button>
-                      ))}
-                    </div>
-                    <span className="tee__price">{t(T.merch.teePrice, lang)}</span>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        {/* ── Spec strip ───────────────────────────────────────────────── */}
-        <h2 className="section-title">{t(T.merch.specsTitle, lang)}</h2>
-        <dl className="spec-strip">
-          <div className="spec-strip__cell">
-            <dt className="merch__spec-lbl">{t(T.merch.fabricLbl, lang)}</dt>
-            <dd className="spec-strip__val">{t(T.merch.fabricVal, lang)}</dd>
-          </div>
-          <div className="spec-strip__cell">
-            <dt className="merch__spec-lbl">{t(T.merch.rangeLbl, lang)}</dt>
-            <dd className="spec-strip__val">{t(T.merch.rangeVal, lang)}</dd>
-          </div>
-          <div className="spec-strip__cell">
-            <dt className="merch__spec-lbl">{t(T.merch.priceLbl, lang)}</dt>
-            <dd className="spec-strip__val spec-strip__val--accent">{t(T.merch.teePrice, lang)}</dd>
-          </div>
-          <div className="spec-strip__cell">
-            <dt className="merch__spec-lbl">{t(T.merch.availLbl, lang)}</dt>
-            <dd className="spec-strip__val">{t(T.merch.availVal, lang)}</dd>
           </div>
         </dl>
       </section>
