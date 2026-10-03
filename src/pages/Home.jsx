@@ -5,6 +5,7 @@ import HeroGraph from "../components/HeroGraph";
 import { TECHMAP_NODES, TECH_TYPE_COLOR } from "../data/techmap";
 import { AGE_RANGES, LEVELS, PROGRAM_TYPES } from "../data/program";
 import { EX_FIGURES } from "../data/exercise-figures";
+import { UPDATES, formatDate } from "../data/updates";
 
 // Derived, never typed. A hardcoded count is a claim that rots the moment
 // someone adds a technique or a language.
@@ -26,7 +27,16 @@ const TYPE_COUNTS = TYPES.reduce((acc, ty) => {
 const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
 
 // Groups in reading order for the "everything on the site" index.
-const GROUP_ORDER = ["train", "shop", "mission", "about"];
+const GROUP_ORDER = ["train", "shop", "mission", "news", "about"];
+
+// What the "From the mat" insert shows: the newest story with photographs,
+// and beside it the two newest entries that are not about the website —
+// someone on the home page wants to know what is new with the brand, not
+// that a menu moved. Derived from the data, so publishing a story in
+// data/updates.js updates the home page with nothing to edit here.
+const LEAD = UPDATES.find((u) => u.story);
+const LEAD_PATH = LEAD ? `${ROUTES.whatsNew}/${LEAD.slug}` : ROUTES.whatsNew;
+const RECENT = UPDATES.filter((u) => u !== LEAD && u.kind !== "site").slice(0, 2);
 
 export default function Home({ lang, navigate }) {
   return (
@@ -71,13 +81,15 @@ export default function Home({ lang, navigate }) {
               them: it is news, not the site's thesis, so it shouldn't push the
               two buttons down the hero. An opaque dark panel (like the shop's
               .tee__badge) so its contrast holds over any part of the photo.
-              Not a link — "Shop the gear" is right above it — and the copy
+              A link since 2026-10-03, to the story with the photographs — the copy
               says outright that nothing is on sale. Remove it when the trial
               ends. */}
-          <p className="hero__trial">
+          <a className="hero__trial" href={"#" + LEAD_PATH}
+             onClick={(e) => { e.preventDefault(); navigate(LEAD_PATH); }}>
             <span className="hero__trial-tag">{t(T.overview.trialTag, lang)}</span>
             <span className="hero__trial-body">{t(T.overview.trialBody, lang)}</span>
-          </p>
+            <span className="hero__trial-cta">{t(T.whatsNew.seePhotos, lang)} →</span>
+          </a>
         </div>
       </section>
 
@@ -97,6 +109,69 @@ export default function Home({ lang, navigate }) {
           <div><dt>{FIGURE_COUNT}</dt><dd>{t(T.overview.statExercises, lang)}</dd></div>
         </dl>
       </div>
+
+      {/* ── From the mat ─────────────────────────────────────────────────
+          The entry point to What's New, 2026-10-03. Directly under the
+          numbers and above the first photograph band: high enough to be
+          seen without hunting, and below the hero so the site still opens
+          on what it is rather than on what happened this week.
+
+          One story with its photograph, then two lines for whatever else
+          is recent. The photograph is a link for the mouse and the button
+          is the link for the keyboard, as on the What's New page. */}
+      {LEAD && (
+        <section className="latest" aria-labelledby="latest-heading">
+          <div className="latest__head">
+            <div>
+              <p className="eyebrow eyebrow--gold">{t(T.ui.sections.whatsNew.name, lang)}</p>
+              <h2 className="latest__title" id="latest-heading">{t(T.whatsNew.kinds.mat, lang)}</h2>
+            </div>
+            <a className="latest__all" href={"#" + ROUTES.whatsNew}
+               onClick={(e) => { e.preventDefault(); navigate(ROUTES.whatsNew); }}>
+              {t(T.whatsNew.allUpdates, lang)} →
+            </a>
+          </div>
+
+          <div className="latest__grid">
+            <a className="latest__media" href={"#" + LEAD_PATH} tabIndex={-1}
+               onClick={(e) => { e.preventDefault(); navigate(LEAD_PATH); }}>
+              <img src={LEAD.image} alt={t(LEAD.imageAlt, lang)} width="1366" height="870"
+                   loading="lazy" decoding="async" />
+              {LEAD.trial && <span className="news-badge">{t(T.whatsNew.trialBadge, lang)}</span>}
+              <span className="latest__count">
+                {t(T.whatsNew.photoCount, lang).replace("{n}", LEAD.story.gallery.length + 1)}
+              </span>
+            </a>
+
+            <div className="latest__body">
+              <p className="eyebrow">
+                <time dateTime={LEAD.date}>{formatDate(LEAD.date, lang)}</time> · {t(T.whatsNew.kinds.mat, lang)}
+              </p>
+              <h3 className="latest__story-title">{t(LEAD.title, lang)}</h3>
+              <p className="latest__standfirst">{t(LEAD.standfirst, lang)}</p>
+              <a className="btn btn--onphoto latest__cta" href={"#" + LEAD_PATH}
+                 onClick={(e) => { e.preventDefault(); navigate(LEAD_PATH); }}>
+                {t(T.whatsNew.readUpdate, lang)} →
+              </a>
+
+              <div className="latest__rows">
+                {RECENT.map((u) => (
+                  <a key={u.id} className="latest__row" href={"#" + ROUTES.whatsNew}
+                     onClick={(e) => { e.preventDefault(); navigate(ROUTES.whatsNew); }}>
+                    <span className="latest__row-text">
+                      <span className="latest__row-meta">
+                        <time dateTime={u.date}>{formatDate(u.date, lang)}</time> · {t(T.whatsNew.kinds[u.kind], lang)}
+                      </span>
+                      <span className="latest__row-title">{t(u.title, lang)}</span>
+                    </span>
+                    <span className="latest__row-arrow" aria-hidden="true">→</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── Photographic seam ────────────────────────────────────────────
           Frame 03 cropped to 32:9 and duotoned. It carries no type, so it
@@ -200,7 +275,7 @@ export default function Home({ lang, navigate }) {
       </section>
 
       {/* ── Everything on the site ───────────────────────────────────────
-          The nav groups seven sections under four headings, which keeps the
+          The nav groups seven sections under five headings, which keeps the
           header short but hides two of them behind a dropdown. This block is
           the counterweight: every destination, visible, with a line saying
           what it's for. */}

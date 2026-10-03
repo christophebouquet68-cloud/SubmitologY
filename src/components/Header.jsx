@@ -6,10 +6,10 @@ import SoundToggle from "./SoundToggle";
 
 const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
 
-// The four top-level categories. Groups with a single destination render as a
+// The five top-level categories. Groups with a single destination render as a
 // plain link rather than a one-item dropdown — a menu that opens to reveal one
 // choice is a wasted click.
-const GROUP_ORDER = ["train", "shop", "mission", "about"];
+const GROUP_ORDER = ["train", "shop", "mission", "news", "about"];
 
 function groupDestinations(group) {
   return DESTINATIONS.filter((d) => d.group === group);
@@ -66,6 +66,7 @@ export default function Header({ lang, setLang, path, navigate, onOpenSearch, ha
                    aria-current={isActive(path, d.path) ? "page" : undefined}
                    onClick={(e) => { e.preventDefault(); go(d.path); }}>
                   {t(T.ui.groups[group], lang)}
+                  {d.key === "whatsNew" && hasUnread && <span className="dot dot--live" aria-hidden="true" />}
                 </a>
               );
             }
@@ -81,7 +82,6 @@ export default function Header({ lang, setLang, path, navigate, onOpenSearch, ha
                   onClick={() => setOpenGroup(expanded ? null : group)}
                 >
                   {t(T.ui.groups[group], lang)}
-                  {group === "about" && hasUnread && <span className="dot dot--live" aria-hidden="true" />}
                   <span className="nav__chev" aria-hidden="true">▾</span>
                 </button>
 

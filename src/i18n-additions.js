@@ -54,6 +54,10 @@ export const UI = {
     train:   { en: "Train",   fr: "S'entraîner", ja: "練習",     pt: "Treinar",  ro: "Antrenament" },
     shop:    { en: "Shop",    fr: "Boutique",    ja: "ショップ", pt: "Loja",     ro: "Magazin" },
     mission: { en: "Mission", fr: "Mission",     ja: "ミッション", pt: "Missão", ro: "Misiune" },
+    // Its own group since 2026-10-03, so it is a link in the header rather
+    // than the second item of a dropdown. A group of one renders as a plain
+    // link, and this label is that link's text.
+    news:    { en: "What's New", fr: "Nouveautés", ja: "更新情報", pt: "Novidades", ro: "Noutăți" },
     about:   { en: "Brand",   fr: "La Marque",   ja: "ブランド", pt: "A Marca",  ro: "Brandul" },
   },
 
@@ -89,7 +93,7 @@ export const UI = {
     },
     whatsNew: {
       name: { en: "What's New", fr: "Nouveautés", ja: "更新情報", pt: "Novidades", ro: "Noutăți" },
-      desc: { en: "Recent changes to the site", fr: "Derniers changements du site", ja: "サイトの最近の更新", pt: "Mudanças recentes no site", ro: "Modificări recente pe site" },
+      desc: { en: "News from the mats, the range and the site", fr: "Nouvelles du tatami, de la gamme et du site", ja: "マット、ラインナップ、サイトの最新情報", pt: "Notícias do tatame, da linha e do site", ro: "Vești de pe saltea, din gamă și de pe site" },
     },
   },
 
@@ -124,7 +128,7 @@ export const UI = {
   // ── Home page additions ────────────────────────────────────────────────
   home: {
     everythingTitle: { en: "Everything on the site", fr: "Tout le site", ja: "サイトの全コンテンツ", pt: "Tudo no site", ro: "Tot ce e pe site" },
-    everythingSub:   { en: "Four areas, seven sections. Each one is also in the menu at the top.", fr: "Quatre domaines, sept sections. Chacune est aussi dans le menu en haut.", ja: "4つの領域、7つのセクション。すべて上部メニューからもアクセスできます。", pt: "Quatro áreas, sete seções. Cada uma também está no menu no topo.", ro: "Patru zone, șapte secțiuni. Fiecare se află și în meniul de sus." },
+    everythingSub:   { en: "Five areas, seven sections. Each one is also in the menu at the top.", fr: "Cinq domaines, sept sections. Chacune est aussi dans le menu en haut.", ja: "5つの領域、7つのセクション。すべて上部メニューからもアクセスできます。", pt: "Cinco áreas, sete seções. Cada uma também está no menu no topo.", ro: "Cinci zone, șapte secțiuni. Fiecare se află și în meniul de sus." },
   },
 
   // ── Technique map additions ────────────────────────────────────────────

@@ -37,7 +37,10 @@ export const DESTINATIONS = [
   { key: "shop",     path: ROUTES.shop,     group: "shop",    titleKey: "shop" },
   { key: "mission",  path: ROUTES.mission,  group: "mission", titleKey: "mission" },
   { key: "story",    path: ROUTES.story,    group: "about",   titleKey: "story" },
-  { key: "whatsNew", path: ROUTES.whatsNew, group: "about",   titleKey: "whatsNew" },
+  /* A group of its own since 2026-10-03. It was the second item under
+     Brand, which was the right place for a changelog and the wrong one for
+     news; alone in a group it becomes a plain link in the header. */
+  { key: "whatsNew", path: ROUTES.whatsNew, group: "news",    titleKey: "whatsNew" },
 ];
 
 /** Contact and the legal pages, deliberately kept out of DESTINATIONS.

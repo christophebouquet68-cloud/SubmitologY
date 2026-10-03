@@ -16,13 +16,18 @@ import Strength from "./pages/Strength";
 import Mission from "./pages/Mission";
 import Shop from "./pages/Shop";
 import Story from "./pages/Story";
-import WhatsNew, { RELEASES } from "./pages/WhatsNew";
+import WhatsNew from "./pages/WhatsNew";
+import WhatsNewStory from "./pages/WhatsNewStory";
+import { UPDATES } from "./data/updates";
 import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
 
 import "./styles/app.css";
 
-const LATEST_RELEASE = RELEASES[0]?.date ?? null;
+// The id, not the date: two entries can share a day, and the dot should
+// light for the second one too. Entries from before the news page use their
+// date as their id, so browsers that had already seen those stay "read".
+const LATEST_RELEASE = UPDATES[0]?.id ?? null;
 
 /** Guess a starting language from the browser, falling back to English.
  *  Only used on a first visit — after that the stored choice wins. */
@@ -111,7 +116,9 @@ export default function App() {
       case ROUTES.mission:  return <Mission lang={lang} />;
       case ROUTES.shop:     return <Shop lang={lang} />;
       case ROUTES.story:    return <Story lang={lang} navigate={navigate} />;
-      case ROUTES.whatsNew: return <WhatsNew lang={lang} />;
+      case ROUTES.whatsNew: return tail
+        ? <WhatsNewStory lang={lang} slug={tail} navigate={navigate} />
+        : <WhatsNew lang={lang} navigate={navigate} />;
       case ROUTES.contact:  return <Legal lang={lang} doc="contact" />;
       case ROUTES.privacy:  return <Legal lang={lang} doc="privacy" />;
       case ROUTES.terms:    return <Legal lang={lang} doc="terms" />;

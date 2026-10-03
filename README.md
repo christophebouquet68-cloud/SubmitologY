@@ -88,6 +88,27 @@ No new dependencies were added.
 - Body copy stays Georgia. Buttons, pills and eyebrows stay on the mono
   utility face — they were already right.
 
+### What's New
+
+The site's news page since 2026-10-03; before that, a changelog of the website
+only. Every entry lives in `data/updates.js` and has a `kind`:
+
+- **mat** — news from training, with photographs. Has a `slug` and a `story`,
+  and its own page at `/whats-new/<slug>` (`pages/WhatsNewStory.jsx`).
+- **range** — a change to what the shop shows. A card with the garment on it.
+- **site** — a change to this website. A one-line log row with the detail
+  behind a disclosure.
+
+`pages/WhatsNew.jsx` is the feed, with a filter by kind. The home page shows
+the newest story under the stat strip, and the trial banner in the hero links
+to it. Publishing a story means adding an entry to `data/updates.js`; the feed,
+the home insert and the unread dot all follow from the data.
+
+The trial photographs in `public/whats-new/` have every face blurred. They are
+built by `tools/trial-photos.py` from originals that are **not** in this
+repository, because it is public — the script takes their folder as an
+argument and recognises each original by its SHA-256.
+
 ### Shop
 
 The page is now two tiers rather than one flat grid.

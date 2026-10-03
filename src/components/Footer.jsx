@@ -11,6 +11,7 @@ export default function Footer({ lang, navigate }) {
   const brandItems = [
     ...DESTINATIONS.filter((d) => d.group === "shop"),
     ...DESTINATIONS.filter((d) => d.group === "mission"),
+    ...DESTINATIONS.filter((d) => d.group === "news"),
     ...DESTINATIONS.filter((d) => d.group === "about"),
   ];
 

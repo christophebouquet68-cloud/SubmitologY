@@ -401,6 +401,39 @@ export const T = {
   whatsNew: {
     pageTag:   { en: "Updates", fr: "Mises à jour", ja: "更新情報", pt: "Atualizações", ro: "Actualizări" },
     pageTitle: { en: "What's New?", fr: "Nouveautés", ja: "更新情報", pt: "Novidades", ro: "Noutăți" },
+    // ── News page, 2026-10-03 ───────────────────────────────────────────
+    // What's New stopped being only a site changelog: see data/updates.js.
+    pageSub:   { en: "News from the mats, changes to the range, and updates to this site. Newest first.", fr: "Les nouvelles du tatami, les changements de gamme et les mises à jour du site. Du plus récent au plus ancien.", ja: "マットからのニュース、ラインナップの変更、サイトの更新。新しい順に掲載しています。", pt: "Notícias do tatame, mudanças na linha e atualizações deste site. Das mais recentes às mais antigas.", ro: "Vești de pe saltea, schimbări în gamă și actualizări ale site-ului. Cele mai noi primele." },
+    filterLbl: { en: "Filter updates", fr: "Filtrer les nouveautés", ja: "更新を絞り込む", pt: "Filtrar novidades", ro: "Filtrează noutățile" },
+    kinds: {
+      all:   { en: "All", fr: "Tout", ja: "すべて", pt: "Tudo", ro: "Toate" },
+      mat:   { en: "From the mat", fr: "Depuis le tatami", ja: "マットから", pt: "Do tatame", ro: "De pe saltea" },
+      range: { en: "The range", fr: "La gamme", ja: "ラインナップ", pt: "A linha", ro: "Gama" },
+      site:  { en: "The site", fr: "Le site", ja: "サイト", pt: "O site", ro: "Site-ul" },
+    },
+    siteNote:   { en: "What changed on this website, kept as a plain log.", fr: "Ce qui a changé sur ce site, tenu comme un simple journal.", ja: "このサイトの変更点を、シンプルな記録として残しています。", pt: "O que mudou neste site, mantido como um registro simples.", ro: "Ce s-a schimbat pe acest site, păstrat ca un jurnal simplu." },
+    readUpdate: { en: "Read the update", fr: "Lire l'actualité", ja: "記事を読む", pt: "Ler a notícia", ro: "Citește știrea" },
+    allUpdates: { en: "All updates", fr: "Toutes les nouveautés", ja: "すべての更新", pt: "Todas as novidades", ro: "Toate noutățile" },
+    details:    { en: "Details", fr: "Détails", ja: "詳細", pt: "Detalhes", ro: "Detalii" },
+    // "Not for sale" is on the photograph itself, not only in the text
+    // beside it: a picture of someone wearing a garment is the strongest
+    // "you can buy this" signal on the site, and nothing can be bought.
+    trialBadge: { en: "Trial phase · Not for sale", fr: "Phase d'essai · Pas en vente", ja: "試用フェーズ · 未販売", pt: "Fase de testes · Não está à venda", ro: "Fază de testare · Nu este de vânzare" },
+    // {n} is replaced with the number. Japanese puts it mid-phrase, which
+    // is why this is a pattern and not a number followed by a word.
+    photoCount: { en: "{n} photographs", fr: "{n} photographies", ja: "写真{n}枚", pt: "{n} fotografias", ro: "{n} fotografii" },
+    morePhotos: { en: "+ {n} more", fr: "+ {n} autres", ja: "他{n}枚", pt: "+ {n} mais", ro: "+ încă {n}" },
+    seePhotos:  { en: "See the photos", fr: "Voir les photos", ja: "写真を見る", pt: "Ver as fotos", ro: "Vezi fotografiile" },
+    glanceTitle:      { en: "At a glance", fr: "En bref", ja: "概要", pt: "Em resumo", ro: "Pe scurt" },
+    glanceGarment:    { en: "Garment", fr: "Pièce", ja: "アイテム", pt: "Peça", ro: "Articol" },
+    glanceStatus:     { en: "Status", fr: "Statut", ja: "状況", pt: "Status", ro: "Stare" },
+    glanceStatusVal:  { en: "Trial samples, worn and tested", fr: "Échantillons d'essai, portés et testés", ja: "試用サンプル（着用・テスト中）", pt: "Amostras de teste, vestidas e testadas", ro: "Mostre de test, purtate și testate" },
+    glanceForSale:    { en: "For sale", fr: "En vente", ja: "販売", pt: "À venda", ro: "De vânzare" },
+    glanceForSaleVal: { en: "Not yet", fr: "Pas encore", ja: "まだ販売していません", pt: "Ainda não", ro: "Nu încă" },
+    glanceDrop:       { en: "First drop", fr: "Première collection", ja: "ファーストドロップ", pt: "Primeira coleção", ro: "Prima colecție" },
+    galleryTitle: { en: "From the sessions", fr: "Pendant les séances", ja: "練習の様子", pt: "Dos treinos", ro: "De la antrenamente" },
+    facesNote:    { en: "Faces are blurred on purpose. The people in these photographs are training, not modelling.", fr: "Les visages sont floutés volontairement. Les personnes sur ces photographies s'entraînent, elles ne posent pas.", ja: "顔は意図的にぼかしています。写っているのはモデルではなく、練習している人たちです。", pt: "Os rostos foram desfocados de propósito. As pessoas nestas fotografias estão treinando, não posando.", ro: "Fețele sunt estompate intenționat. Oamenii din aceste fotografii se antrenează, nu pozează." },
+    seeRashguard: { en: "See the rashguard in the shop", fr: "Voir le rashguard dans la boutique", ja: "ショップでラッシュガードを見る", pt: "Ver o rashguard na loja", ro: "Vezi rashguard-ul în magazin" },
   },
 
   // Strings added by the 2026-07 revamp — see i18n-additions.js
