@@ -40,6 +40,17 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-04",
+    date: "2026-10-04",
+    kind: "range",
+    image: SHOP + "crest-team-tank-white.jpg",
+    title: { en: "A new picture for the Team Crest tank top", fr: "Une nouvelle image pour le débardeur Team Crest", ja: "Team Crestタンクトップの画像を新しくしました", pt: "Uma nova imagem para a regata Team Crest", ro: "O imagine nouă pentru maioul Team Crest" },
+    items: [
+      { en: "The Team Crest tank top has a new picture on the shop page, in all three colours", fr: "Le débardeur Team Crest a une nouvelle image sur la page boutique, dans les trois coloris", ja: "ショップページのTeam Crestタンクトップの画像を、3色すべて新しくしました", pt: "A regata Team Crest tem uma nova imagem na página da loja, nas três cores", ro: "Maioul Team Crest are o imagine nouă pe pagina magazinului, în toate cele trei culori" },
+      { en: "As before, only the white one is its own mockup; the dark blue and jet black pictures are that image recoloured to match the t-shirts", fr: "Comme avant, seul le blanc dispose de sa propre maquette ; les images en bleu foncé et en noir intense sont cette image recolorée pour s'accorder aux t-shirts", ja: "これまでと同じく、専用のモックアップがあるのはホワイトのみです。ダークブルーとジェットブラックの画像は、その画像をTシャツに合わせて色変換したものです", pt: "Como antes, só a branca tem seu próprio mockup; as imagens em azul-escuro e preto são essa imagem recolorida para combinar com as camisetas", ro: "Ca și înainte, doar cel alb are propria machetă; imaginile în albastru închis și negru intens sunt acea imagine recolorată pentru a se potrivi cu tricourile" },
+    ],
+  },
+  {
     id: "2026-10-03-first-rashguards-on-the-mats",
     date: "2026-10-03",
     kind: "mat",

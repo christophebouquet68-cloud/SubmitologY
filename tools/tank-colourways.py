@@ -9,7 +9,8 @@ Run:  python3 tools/tank-colourways.py
 
 WHY THIS EXISTS
 ───────────────
-The tank top arrived on 2026-10-03 as a single white mockup. The t-shirt it
+The tank top arrived on 2026-10-03 as a single white mockup (replaced by a
+new white mockup on 2026-10-04 — still the only one). The t-shirt it
 sits beside comes in three colourways, and one colour picker drives both
 cards — a tank that only existed in white would have left that picker
 showing a broken image on two of its three settings. So the two missing
@@ -95,19 +96,39 @@ def garment_mask(rgb):
     # which the ceiling lights and the divider rule do not.
     # They sit in the arm's shadow, so they are looked for with a lower
     # brightness floor than the lit cloth — still far above the gym behind.
+    #
+    # Reworked 2026-10-04, when the white mockup was replaced by a new one and
+    # the old rule made a mess of it: a skin highlight on the shoulder is as
+    # pale as shadowed cotton and was dyed too.
+    S, V = hsv[..., 1], hsv[..., 2]
+    # Cloth, lit or shadowed. A bright pixel must be nearly colourless to
+    # count; a bright pixel with any colour in it is skin catching the light.
+    cloth = ((S < 18) & (V > 100)) | ((S < 55) & (V > 100) & (V <= 150))
     near = cv2.dilate(mask, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (61, 61))).astype(bool)
-    dim = ((hsv[..., 1] < 55) & (hsv[..., 2] > 100) & (mask == 0)).astype(np.uint8)
+    dim = (cloth & (mask == 0)).astype(np.uint8)
     n, labels, stats, _ = cv2.connectedComponentsWithStats(dim, connectivity=8)
+    scraps = np.zeros_like(mask)
     for i in range(1, n):
         if stats[i, cv2.CC_STAT_AREA] < 12:
             continue
         piece = labels == i
         tall_rule = stats[i, cv2.CC_STAT_HEIGHT] > 0.5 * rgb.shape[0]
         if not tall_rule and (piece & near).sum() > 0.6 * piece.sum():
-            # with its dim, slightly warm fringe — anything beside it that
-            # is not skin (skin is far more saturated than shadowed cotton)
-            grown = cv2.dilate(piece.astype(np.uint8), np.ones((7, 7), np.uint8)).astype(bool)
-            mask[grown & (hsv[..., 1] < 85) & (hsv[..., 2] > 50)] = 1
+            mask[piece] = 1
+            if stats[i, cv2.CC_STAT_AREA] >= 40:
+                scraps[piece] = 1
+    # A real scrap is taken with its fringe: the cloth around it that sits
+    # deeper in the arm's shadow, too dark for the rule above. Anything
+    # beside it that is not skin (far more saturated than shadowed cotton)
+    # and not the black of the room behind. Only round scraps — done round
+    # the whole garment, this draws a dark line along every edge.
+    fringe = cv2.dilate(scraps, np.ones((15, 15), np.uint8)).astype(bool) & (mask == 0)
+    mask[fringe & ((S < 18) | ((S < 95) & (V <= 150))) & (V > 60)] = 1
+    # Then the rim: the antialiased edge of the garment, two pixels of it,
+    # taken evenly all the way round.
+    for _ in range(2):
+        ring = cv2.dilate(mask, np.ones((3, 3), np.uint8)).astype(bool) & (mask == 0)
+        mask[ring & cloth] = 1
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
     def fill(m):
         # Fill holes: the print is enclosed by cloth; the neck is not (it runs
@@ -252,6 +273,29 @@ def recolour(src, mask, main, lut, plan):
     m = cv2.dilate(mask.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(np.float32)
     m = cv2.GaussianBlur(m, (0, 0), 0.8)[..., None]
     res = src.astype(np.float32) * (1 - m) + out * m
+
+    # The lit edge against skin needs more than a feather (2026-10-04). Along
+    # a slanted armhole the antialiasing leaves a few pixels that are part
+    # white cloth, part skin; left alone they show as a pale dashed line down
+    # a dark garment. So for the bright pixels just outside the mask, the
+    # cloth's share is read off the saturation — skin is strongly coloured,
+    # white cloth is not — and that share of white is swapped for the dyed
+    # cloth beside it. The skin's own share is left untouched.
+    mk = mask.astype(np.float32)[..., None]
+    wsum = cv2.GaussianBlur(mk, (0, 0), 2.0)
+    wsum = np.maximum(wsum if wsum.ndim == 3 else wsum[..., None], 0.000001)
+    def beside(img):
+        v = cv2.GaussianBlur(img * mk, (0, 0), 2.0)
+        return (v if v.ndim == 3 else v[..., None]) / wsum
+    dyed, undyed = beside(out), beside(src.astype(np.float32))
+    ring = cv2.dilate(mask.astype(np.uint8), np.ones((7, 7), np.uint8)).astype(bool) & ~mask
+    lit = ring & (hsv[..., 2] > 150)
+    share = np.clip(1 - hsv[..., 1].astype(np.float32) / 110.0, 0, 1)[..., None]
+    # A pixel brighter than the cloth beside it is all cloth, whatever the
+    # average says — the binding catches the light where the panel does not.
+    white = np.maximum(undyed, src.astype(np.float32))
+    unmixed = src.astype(np.float32) + share * (dyed - white)
+    res = np.where(lit[..., None], unmixed, res)
     return np.clip(res + 0.5, 0, 255).astype(np.uint8)
 
 
