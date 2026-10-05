@@ -33,6 +33,8 @@ export const TEE_DESIGNS = [
   {
     id: "crest-team",
     name: "Team Crest T-Shirt",
+    // The chart in data/sizes.js that the "Size guide" button opens.
+    sizeGuide: "tee",
     blurb: {
       en: "The full crest across the back, set between SUBMITOLOGY and BJJ TEAM, with the small crest on the chest. Plain enough to wear anywhere.",
       fr: "Le blason complet dans le dos, entre SUBMITOLOGY et BJJ TEAM, avec le petit blason sur la poitrine. Assez sobre pour se porter partout.",
@@ -51,6 +53,8 @@ export const TEE_DESIGNS = [
     // so it reads them from the same strings the tee does.
     id: "crest-team-tank",
     name: "Team Crest Tank Top",
+    // Its own chart: the tank shares the tee's price and fabric, not its cut.
+    sizeGuide: "tank",
     blurb: {
       en: "The same Team Crest print, front and back, on a sleeveless cut. For hot days, the weights room and the walk home.",
       fr: "Le même imprimé Team Crest, devant et dans le dos, sur une coupe sans manches. Pour les journées chaudes, la salle de musculation et le retour à la maison.",

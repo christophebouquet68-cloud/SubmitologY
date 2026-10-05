@@ -40,6 +40,19 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-05",
+    date: "2026-10-05",
+    kind: "range",
+    image: SHOP + "rashguard-long.jpg",
+    title: { en: "Size guides for the rashguards, shorts, t-shirt and tank top", fr: "Des guides des tailles pour les rashguards, les shorts, le t-shirt et le débardeur", ja: "ラッシュガード、ショーツ、Tシャツ、タンクトップにサイズガイドを追加", pt: "Guias de medidas para os rashguards, os shorts, a camiseta e a regata", ro: "Ghiduri de mărimi pentru rashguard-uri, pantaloni scurți, tricou și maiou" },
+    items: [
+      { en: "On the shop page, each rashguard, each pair of shorts, the t-shirt and the tank top now has a Size guide button that opens the size chart for that garment", fr: "Sur la page boutique, chaque rashguard, chaque short, le t-shirt et le débardeur ont désormais un bouton Guide des tailles qui ouvre le tableau des tailles de la pièce", ja: "ショップページのラッシュガード、ショーツ、Tシャツ、タンクトップの各カードに「サイズガイド」ボタンを追加しました。押すと、その製品のサイズ表が開きます", pt: "Na página da loja, cada rashguard, cada short, a camiseta e a regata agora têm um botão Guia de medidas que abre a tabela de medidas da peça", ro: "Pe pagina magazinului, fiecare rashguard, fiecare pereche de pantaloni scurți, tricoul și maioul au acum un buton Ghid de mărimi care deschide tabelul de mărimi al piesei" },
+      { en: "The measurements are in centimetres and approximate. The long-sleeve and short-sleeve rashguards share one chart; the two shorts have one each", fr: "Les mesures sont en centimètres et approximatives. Les rashguards à manches longues et à manches courtes partagent un même tableau ; les deux shorts ont chacun le leur", ja: "寸法はcm表記の目安です。長袖と半袖のラッシュガードは共通のサイズ表、2種類のショーツはそれぞれ別のサイズ表です", pt: "As medidas estão em centímetros e são aproximadas. Os rashguards de manga longa e de manga curta usam a mesma tabela; os dois shorts têm cada um a sua", ro: "Măsurătorile sunt în centimetri și sunt aproximative. Rashguard-urile cu mânecă lungă și cu mânecă scurtă folosesc același tabel; cei doi pantaloni scurți au fiecare tabelul lui" },
+      { en: "The long-sleeve chart that used to sit open on the page has moved into its size guide, with a redrawn measuring diagram", fr: "Le tableau des manches longues, auparavant affiché directement sur la page, se trouve désormais dans son guide des tailles, avec un schéma de mesure redessiné", ja: "これまでページ上に表示していた長袖のサイズ表は、採寸図を描き直したうえでサイズガイド内に移しました", pt: "A tabela da manga longa, que ficava aberta na página, passou para o seu guia de medidas, com um diagrama de medidas redesenhado", ro: "Tabelul pentru mânecă lungă, care stătea deschis pe pagină, s-a mutat în ghidul lui de mărimi, cu o schemă de măsurare redesenată" },
+      { en: "The gi and the belt have no size chart yet", fr: "Le kimono et la ceinture n'ont pas encore de tableau des tailles", ja: "柔術衣と帯のサイズ表はまだありません", pt: "O kimono e a faixa ainda não têm tabela de medidas", ro: "Kimonoul și centura nu au încă un tabel de mărimi" },
+    ],
+  },
+  {
     id: "2026-10-04",
     date: "2026-10-04",
     kind: "range",

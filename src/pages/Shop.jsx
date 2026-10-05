@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { T, t } from "../i18n";
-import { RASHGUARDS, RASHGUARD_DESIGN, RASHGUARD_SIZES_LONG, RASHGUARD_SIZE_DIAGRAM, rashguardImage } from "../data/rashguards";
+import { RASHGUARDS, RASHGUARD_DESIGN, rashguardImage } from "../data/rashguards";
 import { SHORTS, shortsImage } from "../data/shorts";
 import { GI_COLOURWAYS, GI_DESIGN, giImage } from "../data/gis";
 import { BELT_NAME, BELT_PRICE, BELT_BLURB, beltImage } from "../data/belt";
@@ -11,6 +11,27 @@ import {
   TEE_DESIGNS,
   teeImage,
 } from "../data/tshirts";
+import SizeGuideDialog from "../components/SizeGuideDialog";
+
+/** The "Size guide" button on a card. A garment gets one when its entry in
+ *  the data file names a chart (`sizeGuide`), so adding a chart to another
+ *  garment is a line of data and nothing here changes.
+ *
+ *  It is a button, not a link: it opens a dialog and goes nowhere. The visible
+ *  words are the same on every card, so the accessible name adds the garment
+ *  — six buttons all called "Size guide" are no use in a list of controls.
+ *  The little ruler is decoration. */
+function SizeGuideButton({ lang, name, onOpen }) {
+  return (
+    <button type="button" className="size-link" aria-haspopup="dialog"
+            aria-label={`${t(T.merch.sizeGuide, lang)} — ${name}`} onClick={onOpen}>
+      <svg className="size-link__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+        <path d="M2 7h16v6H2z M6 7v3 M10 7v4 M14 7v3" />
+      </svg>
+      {t(T.merch.sizeGuide, lang)}
+    </button>
+  );
+}
 
 /** The shop is entirely the first drop now — rashguards, shorts, the
  *  t-shirt and tank top, the gi, then the belt. Everything here has artwork, a price and a
@@ -32,7 +53,12 @@ import {
  *
  *  The tees moved above the gi on 2026-10-03 (they used to follow it). That
  *  puts everything dated Q1 2027 together and leaves the gi, the one Q2
- *  piece, after them instead of in the middle. */
+ *  piece, after them instead of in the middle.
+ *
+ *  Size guides, 2026-10-05. The rashguards, both shorts, the t-shirt and the
+ *  tank top each carry a "Size guide" button that opens that garment's chart
+ *  in a dialog. The long-sleeve chart used to sit open on the page; with five
+ *  charts that would have buried the garments, so none of them does now. */
 export default function Shop({ lang }) {
   /* One colourway drives the whole rail: the point of the picker is to see the
      collection *as a collection* in white, then in dark blue, then in black.
@@ -65,6 +91,13 @@ export default function Shop({ lang }) {
   }, []);
 
   const colourName = (id) => t(T.merch.colours[id], lang);
+
+  /* The size guide that is open, if any: which chart, which drawing, and the
+     garment's name for the heading. One dialog for the whole page rather than
+     one per card. `closeSizeGuide` is stable so the dialog's focus trap is
+     not torn down and rebuilt each time this page re-renders. */
+  const [sizeGuide, setSizeGuide] = useState(null);
+  const closeSizeGuide = useCallback(() => setSizeGuide(null), []);
 
   return (
     <div>
@@ -126,7 +159,20 @@ export default function Shop({ lang }) {
                     {t(T.merch.rgSamplingNote, lang)}
                   </p>
                 )}
-                <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+                <div className="tee__meta">
+                  <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+                  {rg.sizeGuide && (
+                    <SizeGuideButton
+                      lang={lang}
+                      name={`${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)}`}
+                      onOpen={() => setSizeGuide({
+                        guide: rg.sizeGuide,
+                        diagram: rg.sizeDiagram,
+                        title: `${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)}`,
+                      })}
+                    />
+                  )}
+                </div>
 
                 <div className="tee__foot">
                   {/* "Target Price" rather than the cut, which the card's own
@@ -163,53 +209,6 @@ export default function Shop({ lang }) {
           </div>
         </dl>
 
-        {/* ── Size chart ───────────────────────────────────────────────
-            Long sleeve only: that is the cut the maker's sizing sheet covers.
-            A real <table> with the sizes down the side, so it reads on a
-            phone without sideways scrolling. Numbers live in
-            data/rashguards.js and are printed in the reader's locale
-            (64.5 in English, 64,5 in French). */}
-        <div className="size-chart">
-          <table className="size-chart__table">
-            <caption className="size-chart__title">
-              {t(T.merch.rgSizeTitle, lang)} — {t(T.merch.cutLs, lang)} · cm
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">{t(T.merch.rgSizeCol, lang)}</th>
-                <th scope="col">{t(T.merch.rgSizeLength, lang)}</th>
-                <th scope="col">{t(T.merch.rgSizeChest, lang)}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RASHGUARD_SIZES_LONG.map((row) => (
-                <tr key={row.size}>
-                  <th scope="row">{row.size}</th>
-                  <td>{row.length.toLocaleString(lang === "pt" ? "pt-BR" : lang)}</td>
-                  <td>{row.halfChest.toLocaleString(lang === "pt" ? "pt-BR" : lang)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {/* The maker's own diagram (Risepect, our supplier) beside its
-              notes: A and B on the picture are the A and B columns. */}
-          <div className="size-chart__how">
-            <img
-              className="size-chart__diagram"
-              src={RASHGUARD_SIZE_DIAGRAM}
-              alt={t(T.merch.rgSizeDiagramAlt, lang)}
-              width="640"
-              height="712"
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="size-chart__notes">
-              <p>{t(T.merch.rgSizeHowA, lang)}</p>
-              <p>{t(T.merch.rgSizeHowB, lang)}</p>
-              <p>{t(T.merch.rgSizeNote, lang)}</p>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* ── Tester feedback ──────────────────────────────────────────────
@@ -274,7 +273,16 @@ export default function Shop({ lang }) {
               <div className="tee__body">
                 <h3 className="tee__name">{s.name}</h3>
                 <p className="tee__blurb">{t(s.blurb, lang)}</p>
-                <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+                <div className="tee__meta">
+                  <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+                  {s.sizeGuide && (
+                    <SizeGuideButton
+                      lang={lang}
+                      name={s.name}
+                      onOpen={() => setSizeGuide({ guide: s.sizeGuide, title: s.name })}
+                    />
+                  )}
+                </div>
 
                 <div className="tee__foot">
                   <span className="tee__caption">{t(T.merch.priceLbl, lang)}</span>
@@ -362,7 +370,16 @@ export default function Shop({ lang }) {
                 <div className="tee__body">
                   <h3 className="tee__name">{design.name}</h3>
                   <p className="tee__blurb">{t(design.blurb, lang)}</p>
-                  <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+                  <div className="tee__meta">
+                    <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
+                    {design.sizeGuide && (
+                      <SizeGuideButton
+                        lang={lang}
+                        name={design.name}
+                        onOpen={() => setSizeGuide({ guide: design.sizeGuide, title: design.name })}
+                      />
+                    )}
+                  </div>
 
                   <div className="tee__foot">
                     {/* Each card's swatches are a radio group in behaviour, but
@@ -553,6 +570,16 @@ export default function Shop({ lang }) {
           </article>
         ))}
       </div>
+
+      {sizeGuide && (
+        <SizeGuideDialog
+          lang={lang}
+          guide={sizeGuide.guide}
+          diagram={sizeGuide.diagram}
+          title={sizeGuide.title}
+          onClose={closeSizeGuide}
+        />
+      )}
     </div>
   );
 }

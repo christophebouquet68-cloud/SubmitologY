@@ -14,6 +14,9 @@
 export const SHORTS = [
   {
     id: "shorts-2in1",
+    // The chart in data/sizes.js. The two shorts are different garments with
+    // different measurements, so each has its own.
+    sizeGuide: "shorts-2in1",
     name: "Kintsugi NoGi Shorts",
     price: "65 – 85",
     blurb: {
@@ -26,6 +29,7 @@ export const SHORTS = [
   },
   {
     id: "shorts-compression",
+    sizeGuide: "shorts-compression",
     name: "Kintsugi NoGi Compression Shorts",
     price: "60 – 75",
     blurb: {

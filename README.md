@@ -316,5 +316,5 @@ targets and correct behaviour in clusters.
   real photography — on a body, in daylight — before the shirts go on sale.
 - The gear below the shirts still has no imagery and quotes price *ranges*.
   That is now the largest remaining gap on the page.
-- No size chart yet. It needs the actual garment measurements, so it is
-  blocked on the first sample rather than on the site.
+- The gi and the belt have no size chart yet. The other garments' charts are
+  in `src/data/sizes.js`, retyped from the maker's size sheets.

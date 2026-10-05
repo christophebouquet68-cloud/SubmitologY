@@ -2497,19 +2497,89 @@ a { color: var(--accent-soft); }
 }
 .review__gifted { font-style: italic; }
 
-/* ── 2026-10-02: rashguard size chart ─────────────────────────────────────── */
+/* ── Size guides ─────────────────────────────────────────────────────────────
+   2026-10-02: one chart, the long-sleeve rashguard's, open on the page.
+   2026-10-05: five charts, each in a dialog opened from its own card
+   (components/SizeGuideDialog.jsx). */
 
-/* Sits under the rashguard spec strip and borrows its panel. Table beside the
-   how-to-measure notes on a wide screen, stacked on a phone; sizes run down
-   the side so nothing scrolls sideways at 320px. */
-.size-chart {
-  display: grid; gap: 1rem clamp(1.25rem, 4vw, 2.5rem);
-  grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
-  align-items: start;
-  margin: 0 0 0.875rem;
-  background: var(--surface); border: 1px solid var(--line);
-  border-radius: var(--radius); padding: clamp(1rem, 3vw, 1.375rem);
+/* The row that holds a card's caption and its "Size guide" button. */
+.tee__meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.25rem 0.75rem; flex-wrap: wrap;
 }
+
+/* The button reads as a link — underlined text — because it opens something
+   to read rather than doing something. Not orange: orange is commerce, and
+   this buys nothing. The negative margin gives it a 44px target without the
+   card growing by 44px; nothing it overlaps can be pressed. */
+.size-link {
+  display: inline-flex; align-items: center; gap: 0.4375rem;
+  min-height: var(--tap); margin: -0.625rem 0; padding: 0 0.125rem;
+  background: none; border: 0; cursor: pointer;
+  font-family: var(--font-util); font-size: var(--fs-util);
+  color: var(--text);
+  text-decoration: underline; text-decoration-color: var(--text-dim);
+  text-underline-offset: 0.3em;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.size-link:hover { text-decoration-color: var(--gold); }
+.size-link__icon {
+  flex: none; width: 18px; height: 18px;
+  fill: none; stroke: var(--gold); stroke-width: 1.4;
+  stroke-linejoin: round; stroke-linecap: round;
+}
+
+/* The dialog: the search dialog's scrim and panel, centred, wider and taller.
+   The head stays put and the body scrolls, so the close button never leaves. */
+.dialog-scrim--guide { align-items: center; padding: 1rem; }
+.size-guide { max-width: 44rem; max-height: min(92dvh, 46rem); }
+.size-guide__head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+  padding: 1rem 1rem 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.size-guide__eyebrow { margin: 0 0 0.3125rem; }
+.size-guide__title { margin: 0; font-size: 1.1875rem; line-height: 1.25; }
+.size-guide__close {
+  flex: none; width: var(--tap); height: var(--tap); border-radius: 50%;
+  border: 1px solid var(--line-strong); background: var(--surface);
+  color: var(--text-muted); cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.size-guide__close:hover { color: var(--text); border-color: var(--text-dim); }
+.size-guide__body {
+  overflow-y: auto;
+  display: grid; grid-template-columns: 13.5rem minmax(0, 1fr);
+  gap: 1.125rem 1.5rem; align-items: start;
+  padding: 1.125rem 1.25rem 1.375rem;
+}
+.size-guide__figure {
+  display: grid; place-items: center; padding: 0.75rem;
+  background: var(--surface-sunk); border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.size-guide__body .size-chart__notes { grid-column: 1 / -1; }
+
+/* The measuring diagrams (components/SizeDiagram.jsx). Garment in the muted
+   text colour, the two measurements in gold — the seam-and-hairline token. */
+.size-diagram { display: block; width: 100%; height: auto; max-height: 16rem; }
+.size-diagram__garment {
+  fill: var(--surface-2); stroke: var(--text-muted);
+  stroke-width: 1.6; stroke-linejoin: round;
+}
+.size-diagram__detail {
+  fill: none; stroke: var(--text-dim); stroke-width: 1.1; stroke-linecap: round;
+}
+.size-diagram__measure line,
+.size-diagram__measure ellipse { fill: none; stroke: var(--gold); stroke-width: 1.5; }
+.size-diagram__end { fill: var(--gold); }
+.size-diagram__mark circle { fill: var(--surface-sunk); stroke: var(--gold); stroke-width: 1.2; }
+.size-diagram__mark text {
+  fill: var(--gold-soft); font-family: var(--font-util);
+  font-size: 10px; font-weight: 500;
+}
+
+/* The table. Sizes run down the side so nothing scrolls sideways at 320px. */
 .size-chart__table {
   width: 100%; border-collapse: collapse;
   font-variant-numeric: tabular-nums;
@@ -2532,26 +2602,30 @@ a { color: var(--accent-soft); }
 }
 .size-chart__table tbody th { font-weight: 700; width: 4.5rem; }
 .size-chart__table tbody tr:last-child > * { border-bottom: 0; }
+/* The inch figure beside a waist in centimetres: there, but second. */
+.size-chart__alt { font-size: 0.8125rem; color: var(--text-dim); white-space: nowrap; }
 .size-chart__notes { display: flex; flex-direction: column; gap: 0.5rem; }
 .size-chart__notes p {
   margin: 0; font-size: 0.8125rem; line-height: 1.55; color: var(--text-muted);
 }
-@media (max-width: 720px) {
-  .size-chart { grid-template-columns: 1fr; }
-}
+.size-chart__notes .size-chart__shared { color: var(--text); font-weight: 600; }
 
-/* The maker's measuring diagram and its notes: side by side when the column
-   is wide enough, diagram above the notes when it isn't. The picture keeps
-   its white ground — it is the supplier's sheet, shown as supplied. */
-.size-chart__how {
-  display: flex; flex-wrap: wrap; align-items: flex-start;
-  gap: 1rem 1.5rem;
+/* Phone: a sheet from the bottom edge, like the technique map's detail panel,
+   so the thumb that opened it can close it. One column; the drawing shrinks
+   to leave the table on the first screen. */
+@media (max-width: 640px) {
+  .dialog-scrim--guide { align-items: flex-end; padding: 0; }
+  .size-guide {
+    max-width: none; max-height: 92dvh;
+    border-radius: var(--radius) var(--radius) 0 0; border-bottom: 0;
+  }
+  .size-guide__body {
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: calc(1.375rem + env(safe-area-inset-bottom));
+  }
+  .size-guide__figure { padding: 0.5rem; }
+  .size-diagram { max-height: 11.5rem; }
 }
-.size-chart__diagram {
-  flex: 0 1 17rem; width: 17rem; max-width: 100%; height: auto;
-  border-radius: var(--radius-sm); background: #fff;
-}
-.size-chart__how .size-chart__notes { flex: 1 1 14rem; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    What's New as a news page — 2026-10-03
