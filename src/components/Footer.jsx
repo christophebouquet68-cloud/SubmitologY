@@ -12,6 +12,7 @@ export default function Footer({ lang, navigate }) {
     ...DESTINATIONS.filter((d) => d.group === "shop"),
     ...DESTINATIONS.filter((d) => d.group === "mission"),
     ...DESTINATIONS.filter((d) => d.group === "news"),
+    ...DESTINATIONS.filter((d) => d.group === "freebies"),
     ...DESTINATIONS.filter((d) => d.group === "about"),
   ];
 
@@ -104,7 +105,7 @@ export default function Footer({ lang, navigate }) {
 
           {/* Contact and the legal pages live here rather than in the nav —
               it's where people look for them, and putting them in the header
-              would dilute seven real sections with three utility ones. */}
+              would dilute eight real sections with three utility ones. */}
           <nav className="footer__legal" aria-label={t(T.ui.legal.terms, lang)}>
             {LEGAL_LINKS.map((l) => (
               <a key={l.key} className="footer__legal-link" href={"#" + l.path}

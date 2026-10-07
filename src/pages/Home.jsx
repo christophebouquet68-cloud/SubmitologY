@@ -27,7 +27,7 @@ const TYPE_COUNTS = TYPES.reduce((acc, ty) => {
 const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
 
 // Groups in reading order for the "everything on the site" index.
-const GROUP_ORDER = ["train", "shop", "mission", "news", "about"];
+const GROUP_ORDER = ["train", "shop", "mission", "news", "freebies", "about"];
 
 // What the "From the mat" insert shows: the newest story with photographs,
 // and beside it the two newest entries that are not about the website —
@@ -275,8 +275,8 @@ export default function Home({ lang, navigate }) {
       </section>
 
       {/* ── Everything on the site ───────────────────────────────────────
-          The nav groups seven sections under five headings, which keeps the
-          header short but hides two of them behind a dropdown. This block is
+          The nav groups eight sections under six headings, which keeps the
+          header short but hides some of them behind a dropdown. This block is
           the counterweight: every destination, visible, with a line saying
           what it's for. */}
       <section>

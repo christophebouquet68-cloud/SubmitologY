@@ -17,6 +17,7 @@ export const ROUTES = {
   shop:     "/shop",
   story:    "/story",
   whatsNew: "/whats-new",
+  freebies: "/freebies",
   contact:  "/contact",
   privacy:  "/privacy",
   terms:    "/terms",
@@ -41,11 +42,15 @@ export const DESTINATIONS = [
      Brand, which was the right place for a changelog and the wrong one for
      news; alone in a group it becomes a plain link in the header. */
   { key: "whatsNew", path: ROUTES.whatsNew, group: "news",    titleKey: "whatsNew" },
+  /* Free downloads, added 2026-10-07. Its own group for the same reason as
+     What's New: a single page, so it is a plain link in the header and a
+     tile of its own on the home page. */
+  { key: "freebies", path: ROUTES.freebies, group: "freebies", titleKey: "freebies" },
 ];
 
 /** Contact and the legal pages, deliberately kept out of DESTINATIONS.
  *  Everything in DESTINATIONS appears in the header, the drawer, search and
- *  the home-page index — which is right for the seven sections and wrong for
+ *  the home-page index — which is right for the eight sections and wrong for
  *  these three. Convention puts them in the footer, and people look there. */
 export const LEGAL_LINKS = [
   { key: "contact", path: ROUTES.contact, doc: "contact" },

@@ -6,10 +6,10 @@ import SoundToggle from "./SoundToggle";
 
 const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
 
-// The five top-level categories. Groups with a single destination render as a
+// The six top-level categories. Groups with a single destination render as a
 // plain link rather than a one-item dropdown — a menu that opens to reveal one
 // choice is a wasted click.
-const GROUP_ORDER = ["train", "shop", "mission", "news", "about"];
+const GROUP_ORDER = ["train", "shop", "mission", "news", "freebies", "about"];
 
 function groupDestinations(group) {
   return DESTINATIONS.filter((d) => d.group === group);
@@ -141,9 +141,9 @@ export default function Header({ lang, setLang, path, navigate, onOpenSearch, ha
 }
 
 /* ── Mobile drawer ─────────────────────────────────────────────────────────
-   On a phone the four groups become four labelled sections with every
+   On a phone the six groups become six labelled sections with every
    destination listed flat. Nothing is hidden behind a second tap: a person
-   opening the menu sees all seven sections at once, each with a one-line
+   opening the menu sees all eight sections at once, each with a one-line
    description of what's in it. */
 function Drawer({ lang, path, onNavigate, onClose, hasUnread }) {
   const panelRef = useRef(null);

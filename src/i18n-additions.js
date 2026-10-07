@@ -49,6 +49,27 @@ export const UI = {
     },
   ],
 
+  // ── Freebies page (added 2026-10-07) ───────────────────────────────────
+  // The page chrome. The text of each download lives with it in
+  // data/freebies.js, so adding a file does not touch this block.
+  freebiesPage: {
+    tag:         { en: "Sharing is caring", fr: "Partager, c'est prendre soin", ja: "分かち合いは思いやり", pt: "Compartilhar é cuidar", ro: "A împărți înseamnă a purta de grijă" },
+    sub:         { en: "Things we made for the mat and are happy to give away. Download them, print them, pass them on. No sign-up, no email address.", fr: "Des choses que nous avons créées pour le tatami et que nous offrons volontiers. Téléchargez-les, imprimez-les, faites-les circuler. Sans inscription, sans adresse e-mail.", ja: "マットのためにつくったものを、無料でお配りします。ダウンロードして、印刷して、まわりの人にも渡してください。登録もメールアドレスも必要ありません。", pt: "Coisas que fizemos para o tatame e que damos de bom grado. Baixe, imprima, passe adiante. Sem cadastro, sem e-mail.", ro: "Lucruri făcute de noi pentru saltea, pe care le oferim cu drag. Descarcă-le, tipărește-le, dă-le mai departe. Fără înregistrare, fără adresă de e-mail." },
+    kidsTitle:     { en: "For kids", fr: "Pour les enfants", ja: "子ども向け", pt: "Para crianças", ro: "Pentru copii" },
+    kidsLead:      { en: "For young students on the mat, and for the coaches and parents helping them along.", fr: "Pour les jeunes élèves sur le tatami, et pour les coachs et les parents qui les accompagnent.", ja: "マットに立つ小さな生徒たちと、それを支えるコーチや保護者のために。", pt: "Para os jovens alunos no tatame, e para os professores e pais que os acompanham.", ro: "Pentru micii elevi de pe saltea și pentru antrenorii și părinții care îi însoțesc." },
+    everyoneTitle: { en: "For everyone", fr: "Pour tout le monde", ja: "みんなのために", pt: "Para todos", ro: "Pentru toți" },
+    everyoneLead:  { en: "For anyone who trains, and for academies that want something for the wall.", fr: "Pour toute personne qui s'entraîne, et pour les académies qui veulent quelque chose à afficher au mur.", ja: "練習するすべての人と、壁に貼れるものを探している道場のために。", pt: "Para quem treina, e para as academias que querem algo para pôr na parede.", ro: "Pentru oricine se antrenează și pentru academiile care vor ceva de pus pe perete." },
+    free:        { en: "Free", fr: "Gratuit", ja: "無料", pt: "Grátis", ro: "Gratuit" },
+    inEnglish:   { en: "In English", fr: "En anglais", ja: "英語版", pt: "Em inglês", ro: "În engleză" },
+    // {n} is replaced with the page count. No plural forms: both files have
+    // more than one page, and the languages here have no case that differs
+    // between 3 and 12.
+    pages:       { en: "{n} pages", fr: "{n} pages", ja: "{n}ページ", pt: "{n} páginas", ro: "{n} pagini" },
+    inside:      { en: "What is inside", fr: "Au programme", ja: "内容", pt: "O que tem dentro", ro: "Ce găsești înăuntru" },
+    closeTitle:  { en: "Print it, pin it up, pass it on", fr: "Imprimez, affichez, partagez", ja: "印刷して、貼って、まわりに伝えて", pt: "Imprima, pendure, passe adiante", ro: "Tipărește, afișează, dă mai departe" },
+    closeBody:   { en: "Using one at your academy? Tell us how it went. We would like to hear.", fr: "Vous en utilisez un dans votre académie ? Dites-nous comment cela s'est passé. Nous serions heureux de le savoir.", ja: "道場で使っていただけましたか？ ご感想をぜひお聞かせください。", pt: "Está usando na sua academia? Conte como foi. Queremos saber.", ro: "Îl folosești la academia ta? Spune-ne cum a mers. Ne-ar plăcea să aflăm." },
+  },
+
   // ── Navigation groups (the four top-level categories) ──────────────────
   groups: {
     train:   { en: "Train",   fr: "S'entraîner", ja: "練習",     pt: "Treinar",  ro: "Antrenament" },
@@ -58,6 +79,9 @@ export const UI = {
     // than the second item of a dropdown. A group of one renders as a plain
     // link, and this label is that link's text.
     news:    { en: "What's New", fr: "Nouveautés", ja: "更新情報", pt: "Novidades", ro: "Noutăți" },
+    // Its own group since 2026-10-07, for the same reason as What's New: it
+    // is a single page, so it shows in the header as a plain link.
+    freebies: { en: "Freebies", fr: "Cadeaux", ja: "無料配布", pt: "Brindes", ro: "Cadouri" },
     about:   { en: "Brand",   fr: "La Marque",   ja: "ブランド", pt: "A Marca",  ro: "Brandul" },
   },
 
@@ -95,6 +119,10 @@ export const UI = {
       name: { en: "What's New", fr: "Nouveautés", ja: "更新情報", pt: "Novidades", ro: "Noutăți" },
       desc: { en: "News from the mats, the range and the site", fr: "Nouvelles du tatami, de la gamme et du site", ja: "マット、ラインナップ、サイトの最新情報", pt: "Notícias do tatame, da linha e do site", ro: "Vești de pe saltea, din gamă și de pe site" },
     },
+    freebies: {
+      name: { en: "Freebies", fr: "Cadeaux", ja: "無料配布", pt: "Brindes", ro: "Cadouri" },
+      desc: { en: "Free to download, print and share", fr: "À télécharger, imprimer et partager, gratuitement", ja: "無料でダウンロード、印刷、共有できます", pt: "Grátis para baixar, imprimir e compartilhar", ro: "Gratuit de descărcat, tipărit și distribuit" },
+    },
   },
 
   // ── Chrome ─────────────────────────────────────────────────────────────
@@ -128,7 +156,7 @@ export const UI = {
   // ── Home page additions ────────────────────────────────────────────────
   home: {
     everythingTitle: { en: "Everything on the site", fr: "Tout le site", ja: "サイトの全コンテンツ", pt: "Tudo no site", ro: "Tot ce e pe site" },
-    everythingSub:   { en: "Five areas, seven sections. Each one is also in the menu at the top.", fr: "Cinq domaines, sept sections. Chacune est aussi dans le menu en haut.", ja: "5つの領域、7つのセクション。すべて上部メニューからもアクセスできます。", pt: "Cinco áreas, sete seções. Cada uma também está no menu no topo.", ro: "Cinci zone, șapte secțiuni. Fiecare se află și în meniul de sus." },
+    everythingSub:   { en: "Six areas, eight sections. Each one is also in the menu at the top.", fr: "Six domaines, huit sections. Chacune est aussi dans le menu en haut.", ja: "6つの領域、8つのセクション。すべて上部メニューからもアクセスできます。", pt: "Seis áreas, oito seções. Cada uma também está no menu no topo.", ro: "Șase zone, opt secțiuni. Fiecare se află și în meniul de sus." },
   },
 
   // ── Technique map additions ────────────────────────────────────────────

@@ -18,6 +18,7 @@ import Shop from "./pages/Shop";
 import Story from "./pages/Story";
 import WhatsNew from "./pages/WhatsNew";
 import WhatsNewStory from "./pages/WhatsNewStory";
+import Freebies from "./pages/Freebies";
 import { UPDATES } from "./data/updates";
 import Legal from "./pages/Legal";
 import NotFound from "./pages/NotFound";
@@ -67,6 +68,7 @@ export default function App() {
       [ROUTES.shop]:     t(T.ui.sections.shop.name, lang),
       [ROUTES.story]:    t(T.ui.sections.story.name, lang),
       [ROUTES.whatsNew]: t(T.ui.sections.whatsNew.name, lang),
+      [ROUTES.freebies]: t(T.ui.sections.freebies.name, lang),
       [ROUTES.contact]:  t(T.ui.legal.contact, lang),
       [ROUTES.privacy]:  t(T.ui.legal.privacy, lang),
       [ROUTES.terms]:    t(T.ui.legal.terms, lang),
@@ -119,6 +121,7 @@ export default function App() {
       case ROUTES.whatsNew: return tail
         ? <WhatsNewStory lang={lang} slug={tail} navigate={navigate} />
         : <WhatsNew lang={lang} navigate={navigate} />;
+      case ROUTES.freebies: return <Freebies lang={lang} navigate={navigate} />;
       case ROUTES.contact:  return <Legal lang={lang} doc="contact" />;
       case ROUTES.privacy:  return <Legal lang={lang} doc="privacy" />;
       case ROUTES.terms:    return <Legal lang={lang} doc="terms" />;
