@@ -40,6 +40,17 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-07",
+    date: "2026-10-07",
+    kind: "range",
+    image: SHOP + "rashguard-short.jpg",
+    title: { en: "A new picture for the short-sleeve rashguard", fr: "Une nouvelle image pour le rashguard à manches courtes", ja: "半袖ラッシュガードの画像を新しくしました", pt: "Uma nova imagem para o rashguard de manga curta", ro: "O imagine nouă pentru rashguard-ul cu mânecă scurtă" },
+    items: [
+      { en: "The Kintsugi Fighter short-sleeve rashguard has a new picture on the shop page: front and back, worn, in the same setting as the long sleeve", fr: "Le rashguard Kintsugi Fighter à manches courtes a une nouvelle image sur la page boutique : devant et dos, porté, dans le même décor que le modèle à manches longues", ja: "ショップページのKintsugi Fighter半袖ラッシュガードの画像を新しくしました。長袖と同じ背景で、着用した状態の前面と背面を掲載しています", pt: "O rashguard Kintsugi Fighter de manga curta tem uma nova imagem na página da loja: frente e costas, vestido, no mesmo cenário da manga longa", ro: "Rashguard-ul Kintsugi Fighter cu mânecă scurtă are o imagine nouă pe pagina magazinului: față și spate, purtat, în același decor ca modelul cu mânecă lungă" },
+      { en: "Like the picture it replaces, it is a mockup rather than a photograph of a made garment", fr: "Comme l'image qu'elle remplace, c'est une maquette et non la photographie d'une pièce fabriquée", ja: "これまでの画像と同じく、実際に製造した製品の写真ではなくモックアップです", pt: "Como a imagem que substitui, é um mockup, e não a fotografia de uma peça fabricada", ro: "Ca și imaginea pe care o înlocuiește, este o machetă, nu fotografia unei piese fabricate" },
+    ],
+  },
+  {
     id: "2026-10-05",
     date: "2026-10-05",
     kind: "range",

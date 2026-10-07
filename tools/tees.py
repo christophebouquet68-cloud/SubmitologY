@@ -89,17 +89,21 @@ TEES = [
 ]
 
 
-# The two rashguards, which arrive as presentation sheets rather than plain
-# mockups: a caption band reading "KINTSUGI FIGHTER / SUBMITOLOGY | KINTSUGI FOR
-# THE MIND | BJJ APPAREL" runs across the bottom ~15% of the frame. That text
-# is a designer's slate, not part of the garment, and leaving it in would put a
-# second product name on a card that already has one.
+# The short-sleeve rashguard. Since 2026-10-07 its source is an on-model
+# mockup, front and back, at 3:2 — the same kind of picture as the long
+# sleeve's. (Before that it was a presentation sheet with a caption band
+# across the bottom, which this script cut off.)
 #
-# So the caption is cut first, and only then is the remainder squared to 7:5 —
-# which at this point has to come off the sides, because the surviving frame is
-# already wider than 7:5. Doing it in the other order would crop to ratio around
-# the caption and keep a sliver of it.
-RG_CAPTION_TOP = 0.845     # everything below this is the slate
+# 3:2 is wider than the card's 7:5, and this frame cannot lose its sides: the
+# crest on one sleeve and the KINTSUGI BJJ label on the other sit within a few
+# pixels of the edges. So the whole frame is kept and scaled to the card's
+# width, and the rows left over underneath are a flat band.
+#
+# That is exactly what the long-sleeve image in public/ does — it was made by
+# hand, and is a 1200x800 photograph over a band of this colour — so the two
+# rashguard cards are framed alike, side by side. If the long sleeve is ever
+# rebuilt without its band, drop this one too.
+RG_BAND = (39, 38, 43)
 
 # rashguard-long is deliberately NOT rebuilt here any more. The image in
 # public/ was replaced by hand after this script was written (commits
@@ -147,9 +151,14 @@ def main():
 
     for name, src in RASHGUARDS:
         im = Image.open(os.path.join(SRC, src)).convert("RGB")
-        im = im.crop((0, 0, im.width, int(im.height * RG_CAPTION_TOP)))
-        out = crop_to(im, RATIO, 0.5)
-        out = out.resize((WIDTH, int(WIDTH / RATIO)), Image.LANCZOS)
+        size = (WIDTH, int(WIDTH / RATIO))
+        if im.width / im.height > RATIO:
+            # Wider than the card: keep it all, band underneath (see RG_BAND).
+            photo = im.resize((WIDTH, round(WIDTH * im.height / im.width)), Image.LANCZOS)
+            out = Image.new("RGB", size, RG_BAND)
+            out.paste(photo, (0, 0))
+        else:
+            out = crop_to(im, RATIO, 0.5).resize(size, Image.LANCZOS)
         path = os.path.join(DST, name + ".jpg")
         out.save(path, quality=QUALITY, optimize=True, progressive=True)
         print(f"  {name + '.jpg':28} {out.size[0]}x{out.size[1]}  "
