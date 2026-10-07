@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { T, t } from "../i18n";
-import { RASHGUARDS, RASHGUARD_DESIGN, rashguardImage } from "../data/rashguards";
+import { RASHGUARDS, RASHGUARD_FITS, RASHGUARD_DESIGN, rashguardImage } from "../data/rashguards";
 import { SHORTS, shortsImage } from "../data/shorts";
 import { GI_COLOURWAYS, GI_DESIGN, giImage } from "../data/gis";
 import { BELT_NAME, BELT_PRICE, BELT_BLURB, beltImage } from "../data/belt";
@@ -99,6 +99,12 @@ export default function Shop({ lang }) {
   const [sizeGuide, setSizeGuide] = useState(null);
   const closeSizeGuide = useCallback(() => setSizeGuide(null), []);
 
+  /* Which fit of the rashguard is showing. The page opens on the men's,
+     which is where the trial samples are; the women's cut is one press away.
+     Two cards at a time rather than four keeps the section the length it
+     was, and the size guide a card opens is always the one for its fit. */
+  const [rgFit, setRgFit] = useState("men");
+
   return (
     <div>
       <div className="page-header">
@@ -128,14 +134,27 @@ export default function Shop({ lang }) {
           {t(T.merch.rgSection, lang)}
         </h2>
 
+        {/* Men / Women. A pair of toggle pills, not tabs: nothing here is a
+            panel to switch to, it is the same two cards in another cut. The
+            pressed one is announced with aria-pressed, as on the colour
+            picker below. */}
+        <div className="pill-row fit-toggle" role="group" aria-label={t(T.merch.fitGroup, lang)}>
+          {RASHGUARD_FITS.map((f) => (
+            <button key={f} type="button" className="pill"
+                    aria-pressed={rgFit === f} onClick={() => setRgFit(f)}>
+              {t(T.merch[f === "men" ? "fitMen" : "fitWomen"], lang)}
+            </button>
+          ))}
+        </div>
+
         <div className="tee-grid">
-          {RASHGUARDS.map((rg) => (
+          {RASHGUARDS.filter((rg) => rg.fit === rgFit).map((rg) => (
             <article className="card tee" key={rg.id}>
               <div className="tee__media">
                 <img
                   className="tee__img"
                   src={rashguardImage(rg.id)}
-                  alt={`${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)} · ${t(T.merch.frontBack, lang)}`}
+                  alt={`${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)}, ${t(T.merch[rg.fit === "men" ? "fitMen" : "fitWomen"], lang)} · ${t(T.merch.frontBack, lang)}`}
                   width="1200"
                   height="857"
                   loading="lazy"
@@ -153,10 +172,10 @@ export default function Shop({ lang }) {
                     badge: the badge is the drop date, and this is a second,
                     separate fact — the garment exists, and still can't be
                     bought. */}
-                {rg.sampling && (
+                {(rg.sampling || rg.samplingMenOnly) && (
                   <p className="tee__note">
                     <span className="dot" aria-hidden="true" />
-                    {t(T.merch.rgSamplingNote, lang)}
+                    {t(rg.sampling ? T.merch.rgSamplingNote : T.merch.rgSamplingMenOnly, lang)}
                   </p>
                 )}
                 <div className="tee__meta">
@@ -164,11 +183,11 @@ export default function Shop({ lang }) {
                   {rg.sizeGuide && (
                     <SizeGuideButton
                       lang={lang}
-                      name={`${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)}`}
+                      name={`${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)} · ${t(T.merch[rg.fit === "men" ? "fitMen" : "fitWomen"], lang)}`}
                       onOpen={() => setSizeGuide({
                         guide: rg.sizeGuide,
                         diagram: rg.sizeDiagram,
-                        title: `${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)}`,
+                        title: `${RASHGUARD_DESIGN} — ${t(T.merch[rg.cutKey], lang)} · ${t(T.merch[rg.fit === "men" ? "fitMen" : "fitWomen"], lang)}`,
                       })}
                     />
                   )}

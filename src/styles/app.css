@@ -2471,6 +2471,12 @@ a { color: var(--accent-soft); }
   .hero__trial { max-width: none; }
 }
 
+/* Men / Women toggle above the rashguard cards. Pills are 36px by default;
+   this is the only control in the section, so it gets the full touch size. */
+.fit-toggle { margin-bottom: 0.875rem; }
+.fit-toggle .pill { min-height: var(--tap); padding-inline: 1.125rem; }
+.fit-toggle .pill[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
+
 /* Sampling status on a shop card — a second fact beside the date badge. */
 .tee__note {
   display: flex; gap: 0.5rem; align-items: flex-start;

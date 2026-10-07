@@ -116,7 +116,9 @@ test("Freebies is a destination, so the header, the footer and search all carry 
 });
 
 test("the release is announced in What's New", () => {
-  expect(UPDATES[0].id).toBe("2026-10-07-freebies");
-  expect(UPDATES[0].kind).toBe("site");
+  // Found by id rather than taken as UPDATES[0]: later entries sit above it.
+  const entry = UPDATES.find((u) => u.id === "2026-10-07-freebies");
+  expect(entry).toBeDefined();
+  expect(entry.kind).toBe("site");
   expect(new Set(UPDATES.map((u) => u.id)).size).toBe(UPDATES.length);
 });

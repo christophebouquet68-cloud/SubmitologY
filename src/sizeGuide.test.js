@@ -16,8 +16,9 @@ const GARMENTS = [...RASHGUARDS, ...SHORTS, ...TEE_DESIGNS];
 
 test("every garment that names a size chart names one that exists", () => {
   const named = GARMENTS.filter((g) => g.sizeGuide);
-  // Two rashguards, two shorts, the t-shirt and the tank top.
-  expect(named.length).toBe(6);
+  // Four rashguards (two cuts, men's and women's), two shorts, the t-shirt
+  // and the tank top.
+  expect(named.length).toBe(8);
   named.forEach((g) => {
     expect(SIZE_GUIDES[g.sizeGuide]).toBeDefined();
     if (g.sizeDiagram) expect(DIAGRAM_KINDS).toContain(g.sizeDiagram);
@@ -53,7 +54,8 @@ test("no chart is open on the page until a Size guide button is pressed", () => 
   render(<Shop lang="en" />);
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(screen.queryByRole("table")).toBeNull();
-  // One button per garment with a chart; the gi and the belt have none.
+  // One button per garment with a chart that is on show; the gi and the belt
+  // have none, and the rashguard section shows one fit (two cards) at a time.
   expect(screen.getAllByRole("button", { name: /^Size guide — / }).length).toBe(6);
 });
 
@@ -81,7 +83,7 @@ test("a Size guide button opens that garment's chart, and Escape closes it", () 
 test("the two rashguard cuts open the same chart, and it says so", () => {
   render(<Shop lang="en" />);
   ["Long sleeve", "Short sleeve"].forEach((cut) => {
-    fireEvent.click(screen.getByRole("button", { name: `Size guide — Kintsugi Fighter — ${cut}` }));
+    fireEvent.click(screen.getByRole("button", { name: `Size guide — Kintsugi Fighter — ${cut} · Men` }));
     const dialog = screen.getByRole("dialog");
     expect(within(dialog).getByText("The long sleeve and the short sleeve share this chart.")).toBeTruthy();
     expect(within(dialog).getByRole("row", { name: /^M 69.5 45.5$/ })).toBeTruthy();
@@ -102,7 +104,47 @@ test("the 2-in-1 shorts show the maker's inch figure beside the waist; the compr
 
 test("numbers are printed the way the reader's language writes them", () => {
   render(<Shop lang="fr" />);
-  fireEvent.click(screen.getByRole("button", { name: /^Guide des tailles — Kintsugi Fighter — Manches longues$/ }));
+  fireEvent.click(screen.getByRole("button", { name: /^Guide des tailles — Kintsugi Fighter — Manches longues · Hommes$/ }));
   // 64.5 in English is 64,5 in French.
   expect(within(screen.getByRole("dialog")).getByText("64,5")).toBeTruthy();
+});
+
+test("the rashguards open on the men's cut, and the toggle swaps in the women's", () => {
+  render(<Shop lang="en" />);
+  const men = screen.getByRole("button", { name: "Men" });
+  const women = screen.getByRole("button", { name: "Women" });
+  expect(men.getAttribute("aria-pressed")).toBe("true");
+  expect(women.getAttribute("aria-pressed")).toBe("false");
+  expect(screen.queryByRole("button", { name: /Kintsugi Fighter — Long sleeve · Women$/ })).toBeNull();
+  // The trial-sample note belongs to the men's long sleeve.
+  expect(screen.getAllByText(/available for sampling/).length).toBe(1);
+
+  fireEvent.click(women);
+  expect(women.getAttribute("aria-pressed")).toBe("true");
+  expect(screen.queryByRole("button", { name: /Kintsugi Fighter — Long sleeve · Men$/ })).toBeNull();
+  expect(screen.queryAllByText(/available for sampling/).length).toBe(0);
+  expect(screen.getByText(/no women's cut is out for testing yet/)).toBeTruthy();
+  expect(screen.getAllByRole("img", { name: /Kintsugi Fighter — (Long|Short) sleeve, Women/ }).length).toBe(2);
+});
+
+test("the women's cuts open the women's chart, which both sleeve lengths share", () => {
+  render(<Shop lang="en" />);
+  fireEvent.click(screen.getByRole("button", { name: "Women" }));
+  ["Long sleeve", "Short sleeve"].forEach((cut) => {
+    fireEvent.click(screen.getByRole("button", { name: `Size guide — Kintsugi Fighter — ${cut} · Women` }));
+    const dialog = screen.getByRole("dialog");
+    // Header row plus XS to 3XL.
+    expect(within(dialog).getAllByRole("row").length).toBe(8);
+    expect(within(dialog).getByRole("row", { name: /^M 65 42$/ })).toBeTruthy();
+    expect(within(dialog).getByRole("row", { name: /^3XL 74.5 49$/ })).toBeTruthy();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close" }));
+  });
+});
+
+test("the fit toggle strings exist in all five languages", () => {
+  ["fitMen", "fitWomen", "fitGroup", "rgSamplingMenOnly"].forEach((key) => {
+    ["en", "fr", "ja", "pt", "ro"].forEach((lang) => {
+      expect(T.merch[key][lang]).toBeTruthy();
+    });
+  });
 });

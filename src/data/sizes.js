@@ -1,5 +1,6 @@
 // ─── data/sizes.js — size charts ────────────────────────────────────────────
-// One chart per garment that has one: the rashguard (one chart for both cuts),
+// One chart per garment that has one: the rashguard (one chart for both cuts,
+// one for the men's fit and one for the women's),
 // the two shorts, the t-shirt and the tank top. The gi and the belt have none
 // yet — don't invent one, and don't let them borrow a chart from here.
 //
@@ -44,6 +45,26 @@ export const SIZE_GUIDES = {
       { size: "3XL", length: 79.5, halfChest: 55.5 },
       { size: "4XL", length: 82,   halfChest: 58 },
       { size: "5XL", length: 84.5, halfChest: 60.5 },
+    ],
+  },
+
+  /** The women's cut — its own chart, from the maker's women's size sheet,
+   *  copied as supplied on 2026-10-07: XS to 3XL, narrower in the chest than
+   *  the men's at every size. The sheet is the long sleeve's; as with the
+   *  men's, one chart stands for both cuts, so the short sleeve opens this
+   *  too. Confirm with the maker if the short sleeve is cut differently. */
+  "rashguard-women": {
+    type: "top",
+    diagram: "long-sleeve",
+    sharedNote: true,
+    rows: [
+      { size: "XS",  length: 60.5, halfChest: 39 },
+      { size: "S",   length: 63,   halfChest: 40.5 },
+      { size: "M",   length: 65,   halfChest: 42 },
+      { size: "L",   length: 67,   halfChest: 43 },
+      { size: "XL",  length: 69.5, halfChest: 45 },
+      { size: "2XL", length: 72,   halfChest: 47 },
+      { size: "3XL", length: 74.5, halfChest: 49 },
     ],
   },
 

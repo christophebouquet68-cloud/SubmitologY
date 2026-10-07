@@ -40,6 +40,18 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-07-rashguards-women",
+    date: "2026-10-07",
+    kind: "range",
+    image: SHOP + "rashguard-women-long.jpg",
+    title: { en: "The Kintsugi Fighter rashguard, now in a women's cut", fr: "Le rashguard Kintsugi Fighter, désormais en coupe femme", ja: "Kintsugi Fighterラッシュガードにレディースが加わりました", pt: "O rashguard Kintsugi Fighter agora também em corte feminino", ro: "Rashguard-ul Kintsugi Fighter, acum și în croi pentru femei" },
+    items: [
+      { en: "The shop now shows the Kintsugi Fighter rashguard in a women's cut, in long and short sleeve. A Men / Women switch above the rashguards shows one cut at a time", fr: "La boutique présente désormais le rashguard Kintsugi Fighter en coupe femme, en manches longues et en manches courtes. Un sélecteur Hommes / Femmes au-dessus des rashguards affiche une coupe à la fois", ja: "ショップに、Kintsugi Fighterラッシュガードのレディース（長袖・半袖）を追加しました。ラッシュガードの上にあるメンズ／レディースの切り替えで、一方ずつ表示されます", pt: "A loja agora mostra o rashguard Kintsugi Fighter em corte feminino, em manga longa e manga curta. Um seletor Masculino / Feminino acima dos rashguards mostra um corte de cada vez", ro: "Magazinul arată acum rashguard-ul Kintsugi Fighter într-un croi pentru femei, cu mânecă lungă și scurtă. Un comutator Bărbați / Femei, deasupra rashguard-urilor, arată câte un croi pe rând" },
+      { en: "The women's cut has its own size guide, XS to 3XL. As with the men's, the measurements are in centimetres and approximate, and one chart covers both sleeve lengths", fr: "La coupe femme a son propre guide des tailles, du XS au 3XL. Comme pour la coupe homme, les mesures sont en centimètres et approximatives, et un seul tableau couvre les deux longueurs de manches", ja: "レディースには専用のサイズガイド（XS〜3XL）があります。メンズと同じく、寸法はcm表記の目安で、長袖・半袖共通の1つの表です", pt: "O corte feminino tem seu próprio guia de medidas, do XS ao 3XL. Como no masculino, as medidas estão em centímetros e são aproximadas, e uma única tabela vale para as duas mangas", ro: "Croiul pentru femei are propriul ghid de mărimi, de la XS la 3XL. Ca la cel pentru bărbați, măsurile sunt în centimetri și aproximative, iar un singur tabel acoperă ambele lungimi de mânecă" },
+      { en: "The pictures are mockups rather than photographs of made garments. The trial samples so far are the men's long sleeve only; no women's cut is out for testing yet, and nothing is for sale. The women's cuts carry the same target prices and the same Q1 2027 date as the men's", fr: "Les images sont des maquettes et non des photographies de pièces fabriquées. Les pièces d'essai se limitent pour l'instant au modèle homme à manches longues ; aucune coupe femme n'est encore en test, et rien n'est en vente. Les coupes femme affichent les mêmes prix cibles et la même date, T1 2027, que les coupes homme", ja: "画像は、実際に製造した製品の写真ではなくモックアップです。これまでの試用サンプルはメンズの長袖のみで、レディースはまだ試用に出ておらず、販売もしていません。レディースの目標価格と発売時期（2027年第1四半期）は、メンズと同じです", pt: "As imagens são mockups, e não fotografias de peças fabricadas. As amostras de teste até agora são só a manga longa masculina; nenhum corte feminino está em teste ainda, e nada está à venda. Os cortes femininos têm os mesmos preços-alvo e a mesma data, T1 2027, dos masculinos", ro: "Imaginile sunt machete, nu fotografii ale unor piese fabricate. Mostrele de testare sunt deocamdată doar mâneca lungă pentru bărbați; niciun croi pentru femei nu este încă în testare și nimic nu este de vânzare. Croiurile pentru femei au aceleași prețuri țintă și aceeași dată, T1 2027, ca cele pentru bărbați" },
+    ],
+  },
+  {
     id: "2026-10-07-freebies",
     date: "2026-10-07",
     kind: "site",

@@ -111,8 +111,14 @@ RG_BAND = (39, 38, 43)
 # matches tee-src/rashguard-long.jpg — running the old list silently put the
 # superseded render back. Found on 2026-10-03 while rebuilding the tees. To
 # bring it back under the script, replace the source in tee-src/ first.
+#
+# 2026-10-07: the women's long and short sleeve, from on-model mockups of the
+# same kind and the same 3:2 shape, so they get the same band treatment and
+# the four rashguard cards line up whichever fit the shop is showing.
 RASHGUARDS = [
     ("rashguard-short", "rashguard-short.jpg"),
+    ("rashguard-women-long", "rashguard-women-long.jpg"),
+    ("rashguard-women-short", "rashguard-women-short.jpg"),
 ]
 
 

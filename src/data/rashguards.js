@@ -18,9 +18,36 @@
  *  The cut label and the blurb are translated. */
 export const RASHGUARD_DESIGN = "Kintsugi Fighter";
 
+const LONG_BLURB = {
+  en: "The kintsugi seam runs corner to corner across the body in gold, over an oversized S ghosted into the black. The wordmark runs down both sleeves; 金継ぎ sits at the back hem.",
+  fr: "La couture kintsugi traverse le corps en diagonale, en or, par-dessus un S surdimensionné fondu dans le noir. Le logotype descend le long des deux manches ; 金継ぎ figure en bas du dos.",
+  ja: "金継ぎの継ぎ目が、黒に沈めた大きなSの上を、金色で斜めに走ります。両袖にはワードマークを縦に配し、背面の裾には金継ぎの文字を入れています。",
+  pt: "A emenda kintsugi atravessa o corpo na diagonal, em dourado, sobre um S superdimensionado esbatido no preto. O logotipo desce pelas duas mangas; 金継ぎ fica na barra das costas.",
+  ro: "Cusătura kintsugi traversează corpul dintr-un colț în altul, în auriu, peste un S supradimensionat topit în negru. Logotipul coboară pe ambele mâneci; 金継ぎ stă la tivul din spate.",
+};
+
+const SHORT_BLURB = {
+  en: "The same design cut short in the sleeve, with the crest moved onto the cap. For warmer rooms, and for anyone who trains no-gi in the same shirt they warmed up in.",
+  fr: "Le même design en manches courtes, le blason déplacé sur l'épaule. Pour les salles plus chaudes, et pour qui s'entraîne en no-gi avec le maillot de l'échauffement.",
+  ja: "同じデザインの半袖仕様で、クレストは袖口に移しています。気温の高い道場向けに、そしてウォームアップのままノーギの練習に入る人のために。",
+  pt: "O mesmo design em manga curta, com o brasão deslocado para a cava. Para salas mais quentes, e para quem treina no-gi com a mesma peça do aquecimento.",
+  ro: "Același model cu mâneca scurtă, cu emblema mutată pe umăr. Pentru săli mai calde și pentru cine se antrenează no-gi în aceeași bluză cu care s-a încălzit.",
+};
+
+/** Men's and women's cuts of the same design. The shop page shows one fit at a
+ *  time behind a toggle, so the section stays two cards long however many fits
+ *  there are. `fit` picks the toggle; the women's cards have their own pictures
+ *  (`<id>.jpg`, the id is the filename) and their own size chart.
+ *
+ *  Prices: the women's cuts carry the men's target price for the same sleeve.
+ *  That is an assumption (2026-10-07), not a figure the owner gave — change it
+ *  here, and the spec strip's line (T.merch.rgPriceBoth), if it differs. */
+export const RASHGUARD_FITS = ["men", "women"];
+
 export const RASHGUARDS = [
   {
     id: "rashguard-long",
+    fit: "men",
     cutKey: "cutLs",
     // Which chart in data/sizes.js the "Size guide" button opens. Both cuts
     // share one chart; the short sleeve only swaps the drawing beside it.
@@ -30,27 +57,37 @@ export const RASHGUARDS = [
     // this is true — drop the flag once sampling ends.
     sampling: true,
     price: "60 – 80",
-    blurb: {
-      en: "The kintsugi seam runs corner to corner across the body in gold, over an oversized S ghosted into the black. The wordmark runs down both sleeves; 金継ぎ sits at the back hem.",
-      fr: "La couture kintsugi traverse le corps en diagonale, en or, par-dessus un S surdimensionné fondu dans le noir. Le logotype descend le long des deux manches ; 金継ぎ figure en bas du dos.",
-      ja: "金継ぎの継ぎ目が、黒に沈めた大きなSの上を、金色で斜めに走ります。両袖にはワードマークを縦に配し、背面の裾には金継ぎの文字を入れています。",
-      pt: "A emenda kintsugi atravessa o corpo na diagonal, em dourado, sobre um S superdimensionado esbatido no preto. O logotipo desce pelas duas mangas; 金継ぎ fica na barra das costas.",
-      ro: "Cusătura kintsugi traversează corpul dintr-un colț în altul, în auriu, peste un S supradimensionat topit în negru. Logotipul coboară pe ambele mâneci; 金継ぎ stă la tivul din spate.",
-    },
+    blurb: LONG_BLURB,
   },
   {
     id: "rashguard-short",
+    fit: "men",
     cutKey: "cutSs",
     sizeGuide: "rashguard",
     sizeDiagram: "short-sleeve",
     price: "55 – 75",
-    blurb: {
-      en: "The same design cut short in the sleeve, with the crest moved onto the cap. For warmer rooms, and for anyone who trains no-gi in the same shirt they warmed up in.",
-      fr: "Le même design en manches courtes, le blason déplacé sur l'épaule. Pour les salles plus chaudes, et pour qui s'entraîne en no-gi avec le maillot de l'échauffement.",
-      ja: "同じデザインの半袖仕様で、クレストは袖口に移しています。気温の高い道場向けに、そしてウォームアップのままノーギの練習に入る人のために。",
-      pt: "O mesmo design em manga curta, com o brasão deslocado para a cava. Para salas mais quentes, e para quem treina no-gi com a mesma peça do aquecimento.",
-      ro: "Același model cu mâneca scurtă, cu emblema mutată pe umăr. Pentru săli mai calde și pentru cine se antrenează no-gi în aceeași bluză cu care s-a încălzit.",
-    },
+    blurb: SHORT_BLURB,
+  },
+  {
+    id: "rashguard-women-long",
+    fit: "women",
+    cutKey: "cutLs",
+    sizeGuide: "rashguard-women",
+    // Trial samples exist for the men's long sleeve only. Shop.jsx says so on
+    // this card rather than leaving the men's "available for sampling" to be
+    // read as covering both.
+    samplingMenOnly: true,
+    price: "60 – 80",
+    blurb: LONG_BLURB,
+  },
+  {
+    id: "rashguard-women-short",
+    fit: "women",
+    cutKey: "cutSs",
+    sizeGuide: "rashguard-women",
+    sizeDiagram: "short-sleeve",
+    price: "55 – 75",
+    blurb: SHORT_BLURB,
   },
 ];
 
