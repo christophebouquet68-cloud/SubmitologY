@@ -114,6 +114,26 @@ export const SIZE_GUIDES = {
     ],
   },
 
+  /** Women's 2-in-1, from the maker's women's sheet, copied as supplied on
+   *  2026-10-12. Both measurements run smaller than the men's chart's (M waist
+   *  64.4 against 78, length 24.1 against 34.5) — that is how the sheet has
+   *  them, so they are shown as supplied. No inch figures: the sheet gives
+   *  none. The size guide dialog offers this chart next to the men's
+   *  (`sizeGuideWomen` in data/shorts.js). */
+  "shorts-2in1-women": {
+    type: "bottom",
+    diagram: "shorts",
+    rows: [
+      { size: "XS",  waist: 55.2, length: 21.6 },
+      { size: "S",   waist: 60.2, length: 22.9 },
+      { size: "M",   waist: 64.4, length: 24.1 },
+      { size: "L",   waist: 70.4, length: 25.4 },
+      { size: "XL",  waist: 75.6, length: 26.7 },
+      { size: "2XL", waist: 80.6, length: 28 },
+      { size: "3XL", waist: 85.7, length: 29.2 },
+    ],
+  },
+
   /** The waist figures here are far smaller than the 2-in-1's (M is 63 against
    *  78). That is how the maker's sheet has them — presumably the compression
    *  fabric measured unstretched — and they are shown as supplied. If the
@@ -130,6 +150,21 @@ export const SIZE_GUIDES = {
       { size: "XL",  waist: 73, length: 43.5 },
       { size: "2XL", waist: 78, length: 45.25 },
       { size: "3XL", waist: 83, length: 47 },
+    ],
+  },
+
+  /** Women's compression shorts, as supplied on 2026-10-12: XS to 2XL — the
+   *  men's goes to 3XL, this sheet stops a size sooner. */
+  "shorts-compression-women": {
+    type: "bottom",
+    diagram: "compression-shorts",
+    rows: [
+      { size: "XS",  waist: 55, length: 33 },
+      { size: "S",   waist: 60, length: 34.5 },
+      { size: "M",   waist: 65, length: 36 },
+      { size: "L",   waist: 70, length: 37.5 },
+      { size: "XL",  waist: 75, length: 39 },
+      { size: "2XL", waist: 80, length: 40.5 },
     ],
   },
 };

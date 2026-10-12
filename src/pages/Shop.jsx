@@ -298,7 +298,7 @@ export default function Shop({ lang }) {
                     <SizeGuideButton
                       lang={lang}
                       name={s.name}
-                      onOpen={() => setSizeGuide({ guide: s.sizeGuide, title: s.name })}
+                      onOpen={() => setSizeGuide({ guide: s.sizeGuide, guideWomen: s.sizeGuideWomen, title: s.name })}
                     />
                   )}
                 </div>
@@ -594,6 +594,7 @@ export default function Shop({ lang }) {
         <SizeGuideDialog
           lang={lang}
           guide={sizeGuide.guide}
+          guideWomen={sizeGuide.guideWomen}
           diagram={sizeGuide.diagram}
           title={sizeGuide.title}
           onClose={closeSizeGuide}

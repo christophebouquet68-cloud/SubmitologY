@@ -148,3 +148,33 @@ test("the fit toggle strings exist in all five languages", () => {
     });
   });
 });
+
+test("each shorts' size guide has a Men / Women switch that opens on the men's chart", () => {
+  render(<Shop lang="en" />);
+
+  fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Shorts" }));
+  let dialog = screen.getByRole("dialog");
+  expect(within(dialog).getByRole("button", { name: "Men" }).getAttribute("aria-pressed")).toBe("true");
+  expect(within(dialog).getByRole("row", { name: /^M 78 · 31 in 34.5$/ })).toBeTruthy();
+  fireEvent.click(within(dialog).getByRole("button", { name: "Women" }));
+  // Women's 2-in-1: XS to 3XL, no inch figures on the maker's sheet.
+  expect(within(dialog).getAllByRole("row").length).toBe(8);
+  expect(within(dialog).getByRole("row", { name: /^M 64.4 24.1$/ })).toBeTruthy();
+  expect(within(dialog).getByRole("row", { name: /^3XL 85.7 29.2$/ })).toBeTruthy();
+  fireEvent.keyDown(document, { key: "Escape" });
+
+  fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Compression Shorts" }));
+  dialog = screen.getByRole("dialog");
+  // Reopened: back on the men's chart, not the last choice.
+  expect(within(dialog).getByRole("button", { name: "Men" }).getAttribute("aria-pressed")).toBe("true");
+  fireEvent.click(within(dialog).getByRole("button", { name: "Women" }));
+  // Women's compression shorts stop at 2XL.
+  expect(within(dialog).getAllByRole("row").length).toBe(7);
+  expect(within(dialog).getByRole("row", { name: /^2XL 80 40.5$/ })).toBeTruthy();
+});
+
+test("garments with their own card per fit, or one chart only, show no switch in the dialog", () => {
+  render(<Shop lang="en" />);
+  fireEvent.click(screen.getByRole("button", { name: "Size guide — Team Crest Tank Top" }));
+  expect(within(screen.getByRole("dialog")).queryByRole("button", { name: "Women" })).toBeNull();
+});

@@ -17,6 +17,9 @@ export const SHORTS = [
     // The chart in data/sizes.js. The two shorts are different garments with
     // different measurements, so each has its own.
     sizeGuide: "shorts-2in1",
+    // The women's chart for the same garment. Not a second product: the
+    // dialog shows a Men / Women switch when this is set.
+    sizeGuideWomen: "shorts-2in1-women",
     name: "Kintsugi NoGi Shorts",
     price: "65 – 85",
     blurb: {
@@ -30,6 +33,7 @@ export const SHORTS = [
   {
     id: "shorts-compression",
     sizeGuide: "shorts-compression",
+    sizeGuideWomen: "shorts-compression-women",
     name: "Kintsugi NoGi Compression Shorts",
     price: "60 – 75",
     blurb: {

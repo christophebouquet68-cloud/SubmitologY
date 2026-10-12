@@ -2560,6 +2560,10 @@ a { color: var(--accent-soft); }
 }
 .size-guide__eyebrow { margin: 0 0 0.3125rem; }
 .size-guide__title { margin: 0; font-size: 1.1875rem; line-height: 1.25; }
+/* Men / Women switch under the title, for garments with both charts. */
+.size-guide__fit { margin-top: 0.75rem; }
+.size-guide__fit .pill { min-height: var(--tap); padding-inline: 1.125rem; }
+.size-guide__fit .pill[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
 .size-guide__close {
   flex: none; width: var(--tap); height: var(--tap); border-radius: 50%;
   border: 1px solid var(--line-strong); background: var(--surface);

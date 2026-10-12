@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { T, t } from "../i18n";
 import { SIZE_GUIDES } from "../data/sizes";
@@ -32,11 +32,17 @@ import SizeDiagram from "./SizeDiagram";
  *  that goes anywhere but shut. A size chart is the strongest hint on the
  *  page that something can be ordered, and nothing can be yet.
  */
-export default function SizeGuideDialog({ lang, guide, diagram, title, onClose }) {
+export default function SizeGuideDialog({ lang, guide, guideWomen, diagram, title, onClose }) {
   const panelRef = useRef(null);
   useFocusTrap(panelRef, { active: true, onClose });
 
-  const chart = SIZE_GUIDES[guide];
+  /* A garment with a women's chart (`guideWomen`) gets a Men / Women switch
+     in the dialog. It opens on the men's. The dialog mounts fresh each time
+     it is opened, so it never remembers the last choice. Garments that have
+     their own card per fit (the rashguards) pass only `guide` and see no
+     switch. */
+  const [fit, setFit] = useState("men");
+  const chart = SIZE_GUIDES[fit === "women" && guideWomen ? guideWomen : guide];
   if (!chart) return null;
 
   const locale = lang === "pt" ? "pt-BR" : lang;
@@ -52,6 +58,16 @@ export default function SizeGuideDialog({ lang, guide, diagram, title, onClose }
           <div>
             <p className="eyebrow eyebrow--gold size-guide__eyebrow">{t(T.merch.sizeGuide, lang)}</p>
             <h2 className="size-guide__title" id="size-guide-title">{title}</h2>
+            {guideWomen && (
+              <div className="pill-row size-guide__fit" role="group" aria-label={t(T.merch.fitGroup, lang)}>
+                {["men", "women"].map((f) => (
+                  <button key={f} type="button" className="pill"
+                          aria-pressed={fit === f} onClick={() => setFit(f)}>
+                    {t(T.merch[f === "men" ? "fitMen" : "fitWomen"], lang)}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <button type="button" className="size-guide__close" onClick={onClose}
                   aria-label={t(T.ui.chrome.close, lang)}>✕</button>

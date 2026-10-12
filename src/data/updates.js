@@ -40,6 +40,18 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-12-shorts-sizes-women",
+    date: "2026-10-12",
+    kind: "range",
+    image: SHOP + "shorts-2in1.jpg",
+    title: { en: "Women's size charts for the shorts", fr: "Des tableaux de tailles femme pour les shorts", ja: "ショーツにレディースのサイズ表を追加しました", pt: "Tabelas de medidas femininas para os shorts", ro: "Tabele de mărimi pentru femei, la pantalonii scurți" },
+    items: [
+      { en: "The Size guide of both shorts — the NoGi Shorts and the Compression Shorts — now has a Men / Women switch, so the women's measurements are one press away. It opens on the men's chart", fr: "Le guide des tailles des deux shorts — le short NoGi et le short de compression — a désormais un sélecteur Hommes / Femmes : les mesures femme sont à un clic. Il s'ouvre sur le tableau homme", ja: "2種類のショーツ（NoGiショーツとコンプレッションショーツ）のサイズガイドに、メンズ／レディースの切り替えを追加しました。レディースの寸法もワンタップで見られます。開いたときはメンズの表が表示されます", pt: "O Guia de medidas dos dois shorts — o Short NoGi e o Short de Compressão — agora tem um seletor Masculino / Feminino, e as medidas femininas ficam a um toque. Ele abre na tabela masculina", ro: "Ghidul de mărimi al ambilor pantaloni scurți — cel NoGi și cel de compresie — are acum un comutator Bărbați / Femei, iar măsurile pentru femei sunt la o apăsare distanță. Se deschide pe tabelul pentru bărbați" },
+      { en: "The women's NoGi Shorts chart runs XS to 3XL and the women's Compression Shorts chart XS to 2XL. As always, the measurements are in centimetres and approximate", fr: "Le tableau femme du short NoGi va du XS au 3XL et celui du short de compression du XS au 2XL. Comme toujours, les mesures sont en centimètres et approximatives", ja: "レディースのNoGiショーツの表はXS〜3XL、コンプレッションショーツの表はXS〜2XLです。これまでと同じく、寸法はcm表記の目安です", pt: "A tabela feminina do Short NoGi vai do XS ao 3XL e a do Short de Compressão do XS ao 2XL. Como sempre, as medidas estão em centímetros e são aproximadas", ro: "Tabelul pentru femei al pantalonilor NoGi merge de la XS la 3XL, iar cel al pantalonilor de compresie de la XS la 2XL. Ca întotdeauna, măsurile sunt în centimetri și aproximative" },
+      { en: "These are size charts only: the shorts in the shop are still shown in one cut, and nothing is for sale", fr: "Il ne s'agit que de tableaux de tailles : les shorts de la boutique restent présentés dans une seule coupe, et rien n'est en vente", ja: "追加したのはサイズ表のみです。ショップに掲載しているショーツは引き続き1種類のカットで、販売はしていません", pt: "São apenas tabelas de medidas: os shorts da loja continuam sendo mostrados em um único corte, e nada está à venda", ro: "Sunt doar tabele de mărimi: pantalonii scurți din magazin sunt prezentați în continuare într-un singur croi, iar nimic nu este de vânzare" },
+    ],
+  },
+  {
     id: "2026-10-07-rashguards-women",
     date: "2026-10-07",
     kind: "range",
