@@ -40,6 +40,28 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-17-kintsugi-explained",
+    date: "2026-10-17",
+    kind: "site",
+    title: { en: "What is kintsugi? A new section on the Mission page", fr: "Qu'est-ce que le kintsugi ? Une nouvelle section sur la page Mission", ja: "金継ぎとは？ ミッションのページに新しいセクションを追加しました", pt: "O que é o kintsugi? Uma nova seção na página Missão", ro: "Ce este kintsugi? O secțiune nouă pe pagina Misiune" },
+    items: [
+      { en: "The Mission page now explains kintsugi, the Japanese craft of mending ceramics with gold-dusted lacquer, and why it is our name for the mind", fr: "La page Mission explique désormais le kintsugi, l'art japonais de réparer la céramique avec de la laque saupoudrée d'or, et pourquoi c'est notre nom pour l'esprit", ja: "ミッションのページで、割れた陶磁器を金粉をまいた漆で直す日本の技法「金継ぎ」と、それが私たちの「心」の名前である理由を説明しました", pt: "A página Missão agora explica o kintsugi, a arte japonesa de reparar cerâmica com laca polvilhada de ouro, e por que ele é o nosso nome para a mente", ro: "Pagina Misiune explică acum kintsugi, meșteșugul japonez de reparare a ceramicii cu lac presărat cu aur, și de ce este numele nostru pentru minte" },
+      { en: "It is illustrated with two museum pieces from the Walters Art Museum in Baltimore, both released into the public domain (CC0). The credit is printed under each picture", fr: "Elle est illustrée par deux pièces du Walters Art Museum de Baltimore, toutes deux versées dans le domaine public (CC0). Le crédit figure sous chaque image", ja: "ボルチモアのウォルターズ美術館が所蔵する2点の作品の写真を掲載しています。いずれもパブリックドメイン（CC0）で公開されているもので、クレジットは各写真の下に記載しています", pt: "Ela é ilustrada com duas peças do Walters Art Museum, em Baltimore, ambas liberadas em domínio público (CC0). O crédito aparece sob cada imagem", ro: "Este ilustrată cu două piese de la Walters Art Museum din Baltimore, ambele eliberate în domeniul public (CC0). Creditul apare sub fiecare imagine" },
+      { en: "The section also says plainly what we are not claiming: training is not a treatment, and nothing on this site replaces professional help", fr: "La section précise aussi ce que nous ne prétendons pas : l'entraînement n'est pas un traitement, et rien sur ce site ne remplace une aide professionnelle", ja: "また、私たちが主張していないことも明記しました。練習は治療ではなく、このサイトの内容は専門的な支援の代わりにはなりません", pt: "A seção também diz com clareza o que não afirmamos: treinar não é tratamento, e nada neste site substitui ajuda profissional", ro: "Secțiunea spune și limpede ce nu pretindem: antrenamentul nu este un tratament, iar nimic de pe acest site nu înlocuiește ajutorul specializat" },
+    ],
+  },
+  {
+    id: "2026-10-17-sampling-notes",
+    date: "2026-10-17",
+    kind: "range",
+    image: SHOP + "shorts-2in1.jpg",
+    title: { en: "Sampling and size-guide notes in the shop", fr: "Des notes sur les essais et le guide des tailles dans la boutique", ja: "ショップに、試用とサイズガイドに関する注記を追加しました", pt: "Notas sobre testes e guia de tamanhos na loja", ro: "Note despre testare și ghidul de mărimi în magazin" },
+    items: [
+      { en: "The short-sleeve rashguards (men's and women's) and the NoGi 2-in-1 Shorts now say they have been pre-ordered for early sampling. They are not for sale yet", fr: "Les rashguards à manches courtes (homme et femme) et le short NoGi 2-en-1 indiquent désormais qu'ils ont été précommandés pour des essais anticipés. Ils ne sont pas encore en vente", ja: "半袖ラッシュガード（メンズ・レディース）とNoGi 2-in-1ショーツに、先行テスト用にプレオーダー済みである旨を表示しました。まだ販売はしていません", pt: "Os rashguards de manga curta (masculino e feminino) e o short NoGi 2 em 1 agora informam que foram pré-encomendados para testes iniciais. Ainda não estão à venda", ro: "Rashguard-urile cu mânecă scurtă (pentru bărbați și femei) și pantalonii scurți NoGi 2-în-1 spun acum că au fost precomandați pentru testare timpurie. Încă nu sunt de vânzare" },
+      { en: "The size guide for the Compression Shorts is under review with the supplier and will be updated once they confirm. The shop says so on the card and inside the guide", fr: "Le guide des tailles du short de compression est en cours de vérification auprès du fournisseur et sera mis à jour dès sa confirmation. La boutique l'indique sur la fiche et dans le guide", ja: "コンプレッションショーツのサイズガイドはサプライヤーに確認中で、確認でき次第更新します。ショップのカードとガイド内にその旨を表示しています", pt: "O guia de tamanhos do short de compressão está em revisão com o fornecedor e será atualizado assim que ele confirmar. A loja informa isso no cartão e dentro do guia", ro: "Ghidul de mărimi al pantalonilor scurți de compresie este în curs de verificare la furnizor și va fi actualizat după confirmare. Magazinul spune acest lucru pe card și în ghid" },
+    ],
+  },
+  {
     id: "2026-10-12-shorts-sizes-women",
     date: "2026-10-12",
     kind: "range",

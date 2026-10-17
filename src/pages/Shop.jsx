@@ -172,10 +172,10 @@ export default function Shop({ lang }) {
                     badge: the badge is the drop date, and this is a second,
                     separate fact — the garment exists, and still can't be
                     bought. */}
-                {(rg.sampling || rg.samplingMenOnly) && (
+                {(rg.sampling || rg.samplingMenOnly || rg.preorderSampling) && (
                   <p className="tee__note">
                     <span className="dot" aria-hidden="true" />
-                    {t(rg.sampling ? T.merch.rgSamplingNote : T.merch.rgSamplingMenOnly, lang)}
+                    {t(rg.sampling ? T.merch.rgSamplingNote : rg.preorderSampling ? T.merch.preorderSamplingNote : T.merch.rgSamplingMenOnly, lang)}
                   </p>
                 )}
                 <div className="tee__meta">
@@ -292,13 +292,19 @@ export default function Shop({ lang }) {
               <div className="tee__body">
                 <h3 className="tee__name">{s.name}</h3>
                 <p className="tee__blurb">{t(s.blurb, lang)}</p>
+                {(s.preorderSampling || s.sizeGuideReview) && (
+                  <p className="tee__note">
+                    <span className="dot" aria-hidden="true" />
+                    {t(s.preorderSampling ? T.merch.preorderSamplingNote : T.merch.compressionGuideReview, lang)}
+                  </p>
+                )}
                 <div className="tee__meta">
                   <p className="tee__caption">{t(T.merch.frontBack, lang)}</p>
                   {s.sizeGuide && (
                     <SizeGuideButton
                       lang={lang}
                       name={s.name}
-                      onOpen={() => setSizeGuide({ guide: s.sizeGuide, guideWomen: s.sizeGuideWomen, title: s.name })}
+                      onOpen={() => setSizeGuide({ guide: s.sizeGuide, guideWomen: s.sizeGuideWomen, review: s.sizeGuideReview, title: s.name })}
                     />
                   )}
                 </div>
@@ -595,6 +601,7 @@ export default function Shop({ lang }) {
           lang={lang}
           guide={sizeGuide.guide}
           guideWomen={sizeGuide.guideWomen}
+          review={sizeGuide.review}
           diagram={sizeGuide.diagram}
           title={sizeGuide.title}
           onClose={closeSizeGuide}

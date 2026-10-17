@@ -65,6 +65,9 @@ export const RASHGUARDS = [
     cutKey: "cutSs",
     sizeGuide: "rashguard",
     sizeDiagram: "short-sleeve",
+    // Set 2026-10-17: the short sleeve is pre-ordered for early sampling (men's and women's), not
+    // yet in testers' hands. Shop.jsx prints T.merch.preorderSamplingNote while true.
+    preorderSampling: true,
     price: "55 – 75",
     blurb: SHORT_BLURB,
   },
@@ -86,6 +89,8 @@ export const RASHGUARDS = [
     cutKey: "cutSs",
     sizeGuide: "rashguard-women",
     sizeDiagram: "short-sleeve",
+    // Set 2026-10-17: pre-ordered for early sampling, like the men's short sleeve.
+    preorderSampling: true,
     price: "55 – 75",
     blurb: SHORT_BLURB,
   },

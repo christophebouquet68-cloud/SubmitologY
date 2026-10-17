@@ -32,7 +32,7 @@ import SizeDiagram from "./SizeDiagram";
  *  that goes anywhere but shut. A size chart is the strongest hint on the
  *  page that something can be ordered, and nothing can be yet.
  */
-export default function SizeGuideDialog({ lang, guide, guideWomen, diagram, title, onClose }) {
+export default function SizeGuideDialog({ lang, guide, guideWomen, review, diagram, title, onClose }) {
   const panelRef = useRef(null);
   useFocusTrap(panelRef, { active: true, onClose });
 
@@ -119,6 +119,8 @@ export default function SizeGuideDialog({ lang, guide, guideWomen, diagram, titl
 
           <div className="size-chart__notes">
             {chart.sharedNote && <p className="size-chart__shared">{t(T.merch.sizeBothCuts, lang)}</p>}
+            {/* A chart the supplier is still checking says so, here as on the card. */}
+            {review && <p className="size-chart__shared">{t(T.merch.compressionGuideReview, lang)}</p>}
             <p>{t(top ? T.merch.sizeHowA : T.merch.sizeHowWaist, lang)}</p>
             <p>{t(top ? T.merch.sizeHowB : T.merch.sizeHowShortsLength, lang)}</p>
             <p>{t(T.merch.sizeNote, lang)}</p>

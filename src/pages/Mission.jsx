@@ -1,5 +1,8 @@
 import { T, t } from "../i18n";
 
+/** Photographs for the kintsugi section: public/mission/, served from this site. */
+const MEDIA = `${process.env.PUBLIC_URL}/mission/`;
+
 export default function Mission({ lang }) {
   return (
     <div>
@@ -45,6 +48,74 @@ export default function Mission({ lang }) {
         <p className="prose">{t(T.mh.stanceBody, lang)}</p>
         <p className="prose">{t(T.mh.stanceBody2, lang)}</p>
       </div>
+
+      {/* ── What is kintsugi? ───────────────────────────────────────────
+          Added 2026-10-17. The section sits straight after Why It Matters,
+          which ends on the word Kintsugi, so a reader who stops at the word
+          finds the answer one scroll later. The id is the anchor for
+          /mission#kintsugi.
+
+          Three parts, each with its own look: the idea (text beside a
+          photograph), why it is our name for the mind (text beside a second
+          photograph, mirrored), and what we are not saying (a purple-edged
+          panel, the colour this page uses for care). A gold hairline above
+          the whole block marks where it starts.
+
+          The photographs are objects in the Walters Art Museum, Baltimore,
+          released CC0. No credit is required; it is printed anyway. They are
+          served from public/mission/ and never hot-linked, so the privacy
+          policy's no-third-party-requests claim holds. */}
+      <section className="kintsugi" id="kintsugi" aria-labelledby="kintsugi-heading">
+        <p className="eyebrow eyebrow--gold">{t(T.mh.kintsugiTag, lang)}</p>
+        <h2 id="kintsugi-heading" className="section-title kintsugi__title">{t(T.mh.kintsugiTitle, lang)}</h2>
+
+        <div className="kintsugi__row">
+          <figure className="kfig">
+            <img
+              className="kfig__img"
+              src={MEDIA + "kintsugi-bowl.jpg"}
+              alt={t(T.mh.kintsugiAlt1, lang)}
+              width="900"
+              height="804"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption className="kfig__cap">{t(T.mh.kintsugiFig1, lang)}</figcaption>
+          </figure>
+          <div className="kintsugi__text">
+            <p className="prose">{t(T.mh.kintsugiP1, lang)}</p>
+            <p className="prose">{t(T.mh.kintsugiP2, lang)}</p>
+            <p className="prose">{t(T.mh.kintsugiP3, lang)}</p>
+          </div>
+        </div>
+
+        <div className="kintsugi__row kintsugi__row--flip">
+          <div className="kintsugi__text">
+            <h3 className="kintsugi__sub">{t(T.mh.kintsugiWhyTitle, lang)}</h3>
+            <p className="prose">{t(T.mh.kintsugiWhyP, lang)}</p>
+            <p className="prose">{t(T.mh.kintsugiWhyP2, lang)}</p>
+          </div>
+          <figure className="kfig kfig--square">
+            <img
+              className="kfig__img"
+              src={MEDIA + "kintsugi-dish.jpg"}
+              alt={t(T.mh.kintsugiAlt2, lang)}
+              width="1000"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption className="kfig__cap">{t(T.mh.kintsugiFig2, lang)}</figcaption>
+          </figure>
+        </div>
+
+        <aside className="card kintsugi__aside" aria-labelledby="kintsugi-not-heading">
+          <h3 id="kintsugi-not-heading" className="kintsugi__sub">{t(T.mh.kintsugiNotTitle, lang)}</h3>
+          <p className="prose">{t(T.mh.kintsugiNotBody, lang)}</p>
+        </aside>
+
+        <p className="kintsugi__motto">{t(T.mh.kintsugiMotto, lang)}</p>
+      </section>
 
       <h2 className="section-title">{t(T.mh.pillarsTitle, lang)}</h2>
       <div className="grid-cards">

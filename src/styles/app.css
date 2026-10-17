@@ -3004,3 +3004,74 @@ a.hero__trial:hover { border-color: var(--gold); }
 @media (prefers-reduced-motion: reduce) {
   .free__page { transition: none; }
 }
+
+
+/* ═══ Mission: what is kintsugi? (2026-10-17) ═══════════════════════════
+   One block in three parts, told apart by layout rather than by more
+   rules: a gold hairline opens the block (a seam, the site's own motif);
+   the idea is text beside a photograph; why it is our name mirrors it;
+   what we are not saying is a purple-edged panel, the colour this page
+   uses for care. White-ground photographs sit in a hairline frame, like
+   a plate in a museum catalogue. */
+.kintsugi {
+  max-width: 64rem;
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gold-edge);
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+.kintsugi__title { margin-top: 0; }
+.kintsugi__row {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(1.25rem, 4vw, 3rem);
+  align-items: center;
+  margin-top: 1.75rem;
+}
+.kintsugi__row--flip {
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  margin-top: 3rem;
+}
+.kintsugi__text .prose { margin: 0 0 1rem; }
+.kintsugi__text .prose:last-child { margin-bottom: 0; }
+.kintsugi__sub {
+  margin: 0 0 0.875rem;
+  font-size: 1.375rem; font-weight: 900; line-height: 1.05;
+  letter-spacing: -0.02em; text-transform: uppercase;
+  color: var(--text);
+}
+.kfig { margin: 0; }
+.kfig--square { max-width: 24rem; justify-self: end; width: 100%; }
+.kfig__img {
+  display: block; width: 100%; height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--gold-edge);
+  background: #fff;
+}
+.kfig__cap {
+  margin-top: 0.5rem;
+  font-family: var(--font-util); font-size: 0.75rem; line-height: 1.5;
+  color: var(--text-dim);
+}
+.kintsugi__aside {
+  margin-top: 3rem; max-width: 48rem;
+  background: var(--mission-wash); border-color: var(--mission-edge);
+}
+.kintsugi__aside .kintsugi__sub { color: var(--mission); }
+.kintsugi__aside .prose { margin: 0; }
+.kintsugi__motto {
+  margin: 1.75rem 0 0;
+  font-family: var(--font-util); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.6;
+  color: var(--gold);
+}
+@media (max-width: 760px) {
+  .kintsugi { margin-top: 2.5rem; }
+  .kintsugi__row, .kintsugi__row--flip {
+    grid-template-columns: minmax(0, 1fr); gap: 1.25rem;
+  }
+  .kintsugi__row--flip { margin-top: 2.25rem; }
+  /* Photograph first in both rows, so the page reads picture, then words. */
+  .kintsugi__row--flip .kfig { order: -1; }
+  .kfig--square { max-width: 20rem; justify-self: start; }
+}

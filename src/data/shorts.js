@@ -21,6 +21,9 @@ export const SHORTS = [
     // dialog shows a Men / Women switch when this is set.
     sizeGuideWomen: "shorts-2in1-women",
     name: "Kintsugi NoGi Shorts",
+    // Set 2026-10-17: pre-ordered for early sampling, not for sale. Shop.jsx
+    // prints T.merch.preorderSamplingNote on the card while this is true.
+    preorderSampling: true,
     price: "65 – 85",
     blurb: {
       en: "A 2-in-1 build: stretch ripstop shorts with a compression liner sewn in, so there's nothing separate to put on underneath. The kintsugi seam runs from waist to hem in gold; 金継ぎ sits on the back hem.",
@@ -35,6 +38,10 @@ export const SHORTS = [
     sizeGuide: "shorts-compression",
     sizeGuideWomen: "shorts-compression-women",
     name: "Kintsugi NoGi Compression Shorts",
+    // Set 2026-10-17: the supplier is checking these charts (the men's and the
+    // women's). Shop.jsx and SizeGuideDialog.jsx say so while this is true;
+    // drop the flag once the supplier confirms and the numbers are updated.
+    sizeGuideReview: true,
     price: "60 – 75",
     blurb: {
       en: "The compression layer on its own, for anyone who already has an outer short or trains no-gi in spats alone. Same poly-spandex build, same gold seam, same 金継ぎ at the back hem.",
