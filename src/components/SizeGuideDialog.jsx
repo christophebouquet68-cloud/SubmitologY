@@ -32,7 +32,7 @@ import SizeDiagram from "./SizeDiagram";
  *  that goes anywhere but shut. A size chart is the strongest hint on the
  *  page that something can be ordered, and nothing can be yet.
  */
-export default function SizeGuideDialog({ lang, guide, guideWomen, review, diagram, title, onClose }) {
+export default function SizeGuideDialog({ lang, guide, guideWomen, review, updated, diagram, title, onClose }) {
   const panelRef = useRef(null);
   useFocusTrap(panelRef, { active: true, onClose });
 
@@ -101,7 +101,7 @@ export default function SizeGuideDialog({ lang, guide, guideWomen, review, diagr
                   ) : (
                     <>
                       <td>
-                        {num(row.waist)}
+                        {row.waistMax != null ? `${num(row.waist)}–${num(row.waistMax)}` : num(row.waist)}
                         {/* The maker's own inch figure, where the sheet gives
                             one. "in" is the unit symbol in every language
                             here, like "cm". */}
@@ -119,8 +119,9 @@ export default function SizeGuideDialog({ lang, guide, guideWomen, review, diagr
 
           <div className="size-chart__notes">
             {chart.sharedNote && <p className="size-chart__shared">{t(T.merch.sizeBothCuts, lang)}</p>}
-            {/* A chart the supplier is still checking says so, here as on the card. */}
-            {review && <p className="size-chart__shared">{t(T.merch.compressionGuideReview, lang)}</p>}
+            {/* Per fit: the updated men chart says so; the women chart still says it is with the supplier. */}
+            {updated && fit === "men" && <p className="size-chart__shared">{t(T.merch.compressionGuideUpdated, lang)}</p>}
+            {review && fit === "women" && <p className="size-chart__shared">{t(T.merch.compressionGuideReview, lang)}</p>}
             <p>{t(top ? T.merch.sizeHowA : T.merch.sizeHowWaist, lang)}</p>
             <p>{t(top ? T.merch.sizeHowB : T.merch.sizeHowShortsLength, lang)}</p>
             <p>{t(T.merch.sizeNote, lang)}</p>

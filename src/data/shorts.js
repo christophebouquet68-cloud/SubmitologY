@@ -38,9 +38,11 @@ export const SHORTS = [
     sizeGuide: "shorts-compression",
     sizeGuideWomen: "shorts-compression-women",
     name: "Kintsugi NoGi Compression Shorts",
-    // Set 2026-10-17: the supplier is checking these charts (the men's and the
-    // women's). Shop.jsx and SizeGuideDialog.jsx say so while this is true;
-    // drop the flag once the supplier confirms and the numbers are updated.
+    // Set 2026-10-17: the supplier was checking both charts. 2026-10-31: the
+    // men's chart was updated (sizeGuideUpdated, shown on the men's side of the
+    // dialog); the women's is still with the supplier (sizeGuideReview, shown on
+    // the women's side). The card says both. Drop each flag when it is settled.
+    sizeGuideUpdated: true,
     sizeGuideReview: true,
     price: "60 – 75",
     blurb: {

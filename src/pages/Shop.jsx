@@ -295,7 +295,7 @@ export default function Shop({ lang }) {
                 {(s.preorderSampling || s.sizeGuideReview) && (
                   <p className="tee__note">
                     <span className="dot" aria-hidden="true" />
-                    {t(s.preorderSampling ? T.merch.preorderSamplingNote : T.merch.compressionGuideReview, lang)}
+                    {t(s.preorderSampling ? T.merch.preorderSamplingNote : T.merch.compressionGuideCard, lang)}
                   </p>
                 )}
                 <div className="tee__meta">
@@ -304,7 +304,7 @@ export default function Shop({ lang }) {
                     <SizeGuideButton
                       lang={lang}
                       name={s.name}
-                      onOpen={() => setSizeGuide({ guide: s.sizeGuide, guideWomen: s.sizeGuideWomen, review: s.sizeGuideReview, title: s.name })}
+                      onOpen={() => setSizeGuide({ guide: s.sizeGuide, guideWomen: s.sizeGuideWomen, review: s.sizeGuideReview, updated: s.sizeGuideUpdated, title: s.name })}
                     />
                   )}
                 </div>
@@ -602,6 +602,7 @@ export default function Shop({ lang }) {
           guide={sizeGuide.guide}
           guideWomen={sizeGuide.guideWomen}
           review={sizeGuide.review}
+          updated={sizeGuide.updated}
           diagram={sizeGuide.diagram}
           title={sizeGuide.title}
           onClose={closeSizeGuide}

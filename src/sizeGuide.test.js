@@ -99,7 +99,7 @@ test("the 2-in-1 shorts show the maker's inch figure beside the waist; the compr
   fireEvent.keyDown(document, { key: "Escape" });
 
   fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Compression Shorts" }));
-  expect(within(screen.getByRole("dialog")).getByRole("row", { name: /^S 58 38.25$/ })).toBeTruthy();
+  expect(within(screen.getByRole("dialog")).getByRole("row", { name: /^S 77–82 38.25$/ })).toBeTruthy();
 });
 
 test("numbers are printed the way the reader's language writes them", () => {
@@ -177,4 +177,20 @@ test("garments with their own card per fit, or one chart only, show no switch in
   render(<Shop lang="en" />);
   fireEvent.click(screen.getByRole("button", { name: "Size guide — Team Crest Tank Top" }));
   expect(within(screen.getByRole("dialog")).queryByRole("button", { name: "Women" })).toBeNull();
+});
+
+test("the men's compression chart gives body-waist ranges from XS to XL and says it was updated; the women's still says it is under review", () => {
+  render(<Shop lang="en" />);
+  fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Compression Shorts" }));
+  let dialog = screen.getByRole("dialog");
+  // Header row plus XS to XL.
+  expect(within(dialog).getAllByRole("row").length).toBe(6);
+  expect(within(dialog).getByRole("row", { name: /^XS 72–77 36.5$/ })).toBeTruthy();
+  expect(within(dialog).getByRole("row", { name: /^XL 92–97 43.5$/ })).toBeTruthy();
+  expect(within(dialog).queryByRole("row", { name: /^2XL/ })).toBeNull();
+  expect(within(dialog).getByText("New sizing updated")).toBeTruthy();
+  expect(within(dialog).queryByText(/under review with the supplier/)).toBeNull();
+  fireEvent.click(within(dialog).getByRole("button", { name: "Women" }));
+  expect(within(dialog).queryByText("New sizing updated")).toBeNull();
+  expect(within(dialog).getByText(/under review with the supplier/)).toBeTruthy();
 });

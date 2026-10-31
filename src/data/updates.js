@@ -40,6 +40,18 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-31-compression-sizing",
+    date: "2026-10-31",
+    kind: "range",
+    image: SHOP + "shorts-compression.jpg",
+    title: { en: "New sizing for the men's Compression Shorts", fr: "Nouvelles tailles pour le short de compression homme", ja: "メンズ・コンプレッションショーツの新しいサイズ表", pt: "Novos tamanhos para o short de compressão masculino", ro: "Mărimi noi pentru pantalonii scurți de compresie bărbați" },
+    items: [
+      { en: "The men's size guide for the Compression Shorts has been updated. The waist is now a range for your own body, from XS 72–77 cm to XL 92–97 cm, instead of the size of the unstretched garment", fr: "Le guide des tailles homme du short de compression a été mis à jour. Le tour de taille est désormais une fourchette pour votre propre corps, du XS 72–77 cm au XL 92–97 cm, et non plus la taille du vêtement non étiré", ja: "コンプレッションショーツのメンズ用サイズガイドを更新しました。ウエストは、伸ばしていない状態の商品寸法ではなく、ご自身の体に合わせた範囲で表示しています（XSは72〜77cm、XLは92〜97cm）", pt: "O guia de tamanhos masculino do short de compressão foi atualizado. A cintura agora é uma faixa para o seu próprio corpo, de XS 72–77 cm a XL 92–97 cm, e não mais o tamanho da peça sem esticar", ro: "Ghidul de mărimi pentru bărbați al pantalonilor scurți de compresie a fost actualizat. Talia este acum un interval pentru corpul tău, de la XS 72–77 cm la XL 92–97 cm, nu mărimea piesei neîntinse" },
+      { en: "The length column is unchanged. The men's chart now runs from XS to XL; 2XL and 3XL are no longer listed", fr: "La colonne de longueur est inchangée. Le tableau homme va désormais du XS au XL ; le 2XL et le 3XL ne figurent plus", ja: "丈の列は変更ありません。メンズの表はXS〜XLになり、2XLと3XLは掲載していません", pt: "A coluna de comprimento não mudou. A tabela masculina agora vai de XS a XL; 2XL e 3XL não são mais listados", ro: "Coloana de lungime nu s-a schimbat. Tabelul pentru bărbați merge acum de la XS la XL; 2XL și 3XL nu mai sunt afișate" },
+      { en: "The women's chart is unchanged and still under review with the supplier. Nothing is for sale", fr: "Le tableau femme est inchangé et toujours en cours de vérification auprès du fournisseur. Rien n'est en vente", ja: "レディースの表は変更しておらず、引き続きサプライヤーに確認中です。販売はしていません", pt: "A tabela feminina não mudou e continua em revisão com o fornecedor. Nada está à venda", ro: "Tabelul pentru femei nu s-a schimbat și este încă în curs de verificare la furnizor. Nimic nu este de vânzare" },
+    ],
+  },
+  {
     id: "2026-10-17-kintsugi-explained",
     date: "2026-10-17",
     kind: "site",

@@ -134,25 +134,24 @@ export const SIZE_GUIDES = {
     ],
   },
 
-  /** The waist figures here are far smaller than the 2-in-1's (M is 63 against
-   *  78). That is how the maker's sheet has them — presumably the compression
-   *  fabric measured unstretched — and they are shown as supplied. If the
-   *  maker confirms what the figure means, say it in the chart's notes rather
-   *  than changing the numbers. */
+  /** Men's compression shorts. Updated 2026-10-31: the waist is the range of
+   *  BODY waist each size is meant for, in cm (`waist` to `waistMax`), not the
+   *  maker's unstretched garment figure — the fabric stretches to about 1.3 to
+   *  1.4 times the relaxed waistband. The owner set the ranges after the maker
+   *  confirmed the old figures were unstretched and sent a fitting on a
+   *  89.5 cm mannequin (an M). Length is unchanged. The maker's 2XL and 3XL
+   *  rows are no longer listed: the new guideline runs XS to XL only. */
   "shorts-compression": {
     type: "bottom",
     diagram: "compression-shorts",
     rows: [
-      { size: "XS",  waist: 54, length: 36.5 },
-      { size: "S",   waist: 58, length: 38.25 },
-      { size: "M",   waist: 63, length: 40 },
-      { size: "L",   waist: 68, length: 41.75 },
-      { size: "XL",  waist: 73, length: 43.5 },
-      { size: "2XL", waist: 78, length: 45.25 },
-      { size: "3XL", waist: 83, length: 47 },
+      { size: "XS",  waist: 72, waistMax: 77, length: 36.5 },
+      { size: "S",   waist: 77, waistMax: 82, length: 38.25 },
+      { size: "M",   waist: 82, waistMax: 87, length: 40 },
+      { size: "L",   waist: 87, waistMax: 92, length: 41.75 },
+      { size: "XL",  waist: 92, waistMax: 97, length: 43.5 },
     ],
   },
-
   /** Women's compression shorts, as supplied on 2026-10-12: XS to 2XL — the
    *  men's goes to 3XL, this sheet stops a size sooner. */
   "shorts-compression-women": {
