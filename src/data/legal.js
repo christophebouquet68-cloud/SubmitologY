@@ -104,6 +104,7 @@ export const DOCS = {
       { h: "If you email us" },
       { p: `The "contact us" links in the footer and on the Contact page are plain mailto: links to ${BUSINESS.general}. Clicking one opens your own email application — nothing about that message passes through this website or any third-party form or mailing-list service, and we don't see or store anything until you actually hit send.` },
       { p: "We use whatever you send only to reply to you and to run SubmitologY. We won't sell, rent or trade your address, and we don't add it to any list — there isn't one." },
+      { p: "If you send us feedback on a garment, we publish it on the Shop page only if you say yes in your message, and only under the name you tell us to use. We never publish your email address. You can ask us to take a published comment down at any time." },
       { p: "We keep the correspondence for as long as is reasonably necessary to deal with it, or until you ask us to delete it, whichever comes first." },
       { p: "If that ever changes — if we add a signup form or a mailing list with confirmations and unsubscribe links — this page will say so before it happens." },
 

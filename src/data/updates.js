@@ -40,6 +40,17 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-10-31-share-feedback",
+    date: "2026-10-31",
+    kind: "site",
+    title: { en: "Share your feedback on the shop page", fr: "Partagez votre avis depuis la boutique", ja: "ショップページから感想を送れるようになりました", pt: "Envie seu comentário pela página da loja", ro: "Trimite-ne părerea ta de pe pagina magazinului" },
+    items: [
+      { en: "The tester feedback section on the Shop page now has a \"Share your feedback\" button. It opens an email to us with a short template: garment, size, what worked, what did not, and the name you want shown", fr: "La section des retours des testeurs de la boutique a maintenant un bouton « Partagez votre avis ». Il ouvre un e-mail vers nous avec un court modèle : vêtement, taille, ce qui a bien fonctionné, ce qui n'a pas fonctionné et le nom à afficher", ja: "ショップページのテスターの声のセクションに「感想を送る」ボタンを追加しました。押すと、ウェア、サイズ、よかった点、気になった点、掲載するお名前を書き込める短いテンプレート付きのメールが開きます", pt: "A seção de comentários dos testadores na página da loja agora tem um botão \"Envie seu comentário\". Ele abre um e-mail para nós com um modelo curto: peça, tamanho, o que funcionou, o que não funcionou e o nome a exibir", ro: "Secțiunea cu părerile testerilor de pe pagina magazinului are acum un buton „Trimite-ne părerea ta\". Deschide un e-mail către noi cu un model scurt: piesa, mărimea, ce a mers bine, ce nu și numele afișat" },
+      { en: "Nothing is posted automatically and nothing passes through this website. We read each message and publish a comment only with your yes, under the name you choose, and never with your email address. Critical feedback is welcome", fr: "Rien n'est publié automatiquement et rien ne transite par ce site. Nous lisons chaque message et ne publions un commentaire qu'avec votre accord, sous le nom que vous choisissez, et jamais avec votre adresse e-mail. Les retours critiques sont les bienvenus", ja: "自動で掲載されることはなく、このサイトを経由する情報もありません。すべてのメッセージに目を通し、ご本人の了承があった場合のみ、ご希望のお名前で掲載します。メールアドレスは掲載しません。厳しいご意見も歓迎します", pt: "Nada é publicado automaticamente e nada passa por este site. Lemos cada mensagem e só publicamos um comentário com o seu sim, sob o nome que você escolher, e nunca com o seu e-mail. Comentários críticos são bem-vindos", ro: "Nimic nu se publică automat și nimic nu trece prin acest site. Citim fiecare mesaj și publicăm un comentariu doar cu acordul tău, sub numele ales de tine și niciodată cu adresa ta de e-mail. Părerile critice sunt binevenite" },
+      { en: "The privacy policy now says this in its \"If you email us\" section. Nothing is for sale", fr: "La politique de confidentialité le précise désormais dans sa section « Si vous nous écrivez ». Rien n'est en vente", ja: "プライバシーポリシーの「メールでのお問い合わせ」の項にも、この点を追記しました。販売はしていません", pt: "A política de privacidade agora diz isso na seção \"Se você nos enviar um e-mail\". Nada está à venda", ro: "Politica de confidențialitate spune acum acest lucru în secțiunea „Dacă ne scrii prin e-mail\". Nimic nu este de vânzare" },
+    ],
+  },
+  {
     id: "2026-10-31-compression-sizing",
     date: "2026-10-31",
     kind: "range",

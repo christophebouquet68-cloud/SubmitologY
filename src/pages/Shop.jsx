@@ -12,6 +12,7 @@ import {
   teeImage,
 } from "../data/tshirts";
 import SizeGuideDialog from "../components/SizeGuideDialog";
+import { BUSINESS } from "../data/legal";
 
 /** The "Size guide" button on a card. A garment gets one when its entry in
  *  the data file names a chart (`sizeGuide`), so adding a chart to another
@@ -239,6 +240,21 @@ export default function Shop({ lang }) {
       <section aria-labelledby="reviews-heading">
         <h2 id="reviews-heading" className="section-title">{t(T.merch.reviewsTitle, lang)}</h2>
         <p className="page-sub" style={{ marginBottom: "1.25rem" }}>{t(T.merch.reviewsIntro, lang)}</p>
+
+        {/* Invitation to send feedback. A plain mailto: link, like the footer's:
+            it opens the visitor's own mail app with a short template, and nothing
+            passes through this site. Nothing is posted automatically — each
+            message is read, and a comment goes into reviews.js only with the
+            sender's yes and the name they chose. */}
+        <div className="reviews__share">
+          <a
+            className="btn btn--ghost"
+            href={`mailto:${BUSINESS.general}?subject=${encodeURIComponent(t(T.merch.reviewsMailSubject, lang))}&body=${encodeURIComponent(t(T.merch.reviewsMailBody, lang))}`}
+          >
+            {t(T.merch.reviewsShareBtn, lang)}
+          </a>
+          <p className="reviews__share-note">{t(T.merch.reviewsShareNote, lang)}</p>
+        </div>
 
         {REVIEWS.length === 0 ? (
           <p className="reviews__empty">{t(T.merch.reviewsEmpty, lang)}</p>

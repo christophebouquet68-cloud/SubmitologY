@@ -2489,6 +2489,14 @@ a { color: var(--accent-soft); }
 }
 
 /* Tester feedback. Words, not stars (see data/reviews.js). */
+.reviews__share {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.875rem 1.25rem;
+  margin: 0 0 1.25rem;
+}
+.reviews__share-note {
+  flex: 1 1 18rem; margin: 0;
+  font-family: var(--font-util); font-size: var(--fs-util); color: var(--text-dim);
+}
 .reviews__empty {
   font-family: var(--font-util); font-size: var(--fs-util);
   color: var(--text-dim);
