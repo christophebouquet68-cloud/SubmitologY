@@ -59,6 +59,29 @@ export default function WhatsNewStory({ lang, slug, navigate }) {
         </aside>
       </div>
 
+      {/* The Reel. A <video> with controls and no autoplay: it has music, and
+          nothing on this page should start making noise by itself. The text
+          beside it says what is in it, so the page does not depend on playing
+          it — and says that what it ends on is not for sale. */}
+      {s.video && (
+        <section className="story-video" aria-labelledby="story-video-title">
+          <h2 className="section-title" id="story-video-title">{t(T.whatsNew.videoTitle, lang)}</h2>
+          <div className="story-video__row">
+            <video className="story-video__player" controls playsInline preload="metadata"
+                   poster={s.video.poster} width={s.video.w} height={s.video.h}
+                   aria-label={t(T.whatsNew.videoLabel, lang)}>
+              <source src={s.video.src} type="video/mp4" />
+              {t(T.whatsNew.videoFallback, lang)}{" "}
+              <a href={s.video.src} download>{t(T.whatsNew.videoDownload, lang)}</a>
+            </video>
+            <div className="story-video__text">
+              <p>{t(T.whatsNew.videoLead, lang)}</p>
+              <p className="page-sub--note">{t(T.whatsNew.videoSound, lang)} {t(T.whatsNew.videoFaces, lang)}</p>
+            </div>
+          </div>
+        </section>
+      )}
+
       <h2 className="section-title">{t(T.whatsNew.galleryTitle, lang)}</h2>
       <div className="story-gallery">
         {s.gallery.map((g) => (

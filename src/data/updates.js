@@ -40,6 +40,17 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-11-07-trial-video",
+    date: "2026-11-07",
+    kind: "site",
+    title: { en: "A video in the rashguard trial story", fr: "Une vidéo dans l'actualité de l'essai des rashguards", ja: "ラッシュガード試用の記事に動画を追加", pt: "Um vídeo na notícia do teste dos rashguards", ro: "Un videoclip în știrea despre testarea rashguard-urilor" },
+    items: [
+      { en: "The rashguard trial story now has a 26-second animated video, set to music. It does not start on its own", fr: "L'actualité de l'essai des rashguards comporte désormais une vidéo animée de 26 secondes, avec de la musique. Elle ne démarre pas toute seule", ja: "ラッシュガード試用の記事に、音楽付きの26秒のアニメーション動画を追加しました。自動再生はされません", pt: "A notícia do teste dos rashguards agora tem um vídeo animado de 26 segundos, com música. Ele não começa sozinho", ro: "Știrea despre testarea rashguard-urilor are acum un videoclip animat de 26 de secunde, cu muzică. Nu pornește singur" },
+      { en: "It ends with the short-sleeve rashguard, the 2-in-1 shorts and the compression shorts, shown as design previews and expected to go on trial in December 2026. Nothing is for sale", fr: "Il se termine par le rashguard à manches courtes, le short 2-en-1 et le short de compression, présentés comme des aperçus de design et dont l'essai devrait débuter en décembre 2026. Rien n'est en vente", ja: "動画の最後に、ショートスリーブのラッシュガード、2-in-1ショーツ、コンプレッションショーツが、デザインのプレビューとして登場します。試用は2026年12月に始まる予定で、販売はしていません", pt: "Ele termina com o rashguard de manga curta, o short 2 em 1 e o short de compressão, mostrados como prévias de design e com previsão de entrar em teste em dezembro de 2026. Nada está à venda", ro: "Se încheie cu rashguard-ul cu mânecă scurtă, șortul 2-în-1 și șortul de compresie, prezentate ca previzualizări de design, a căror testare ar trebui să înceapă în decembrie 2026. Nimic nu este de vânzare" },
+      { en: "In the video the people appear as illustrations rather than blurred photographs. The video is a file on this site, so playing it does not contact anyone else", fr: "Dans la vidéo, les personnes apparaissent sous forme d'illustrations plutôt que de photographies floutées. La vidéo est un fichier de ce site : la lire ne contacte personne d'autre", ja: "動画では、ぼかした写真ではなく、イラストとして人物を表現しています。動画はこのサイト内のファイルなので、再生しても外部のサービスには接続しません", pt: "No vídeo, as pessoas aparecem como ilustrações, e não como fotografias desfocadas. O vídeo é um arquivo deste site, então reproduzi-lo não contata mais ninguém", ro: "În videoclip, persoanele apar ca ilustrații, nu ca fotografii estompate. Videoclipul este un fișier al acestui site, deci redarea lui nu contactează pe nimeni altcineva" },
+    ],
+  },
+  {
     id: "2026-10-31-share-feedback",
     date: "2026-10-31",
     kind: "site",
@@ -173,6 +184,9 @@ export const UPDATES = [
         src: NEWS + "trial-team.jpg", w: 1800, h: 639,
         alt: { en: "Five people arm in arm after training, each in the long-sleeve rashguard with a gold seam across the front", fr: "Cinq personnes bras dessus bras dessous après l'entraînement, chacune en rashguard à manches longues traversé d'une couture dorée", ja: "練習後に肩を組む5人。全員が、前面に金の継ぎ目が走る長袖ラッシュガードを着用", pt: "Cinco pessoas abraçadas depois do treino, todas com o rashguard de manga longa e a emenda dourada na frente", ro: "Cinci persoane cu brațele pe după umeri după antrenament, fiecare în rashguard-ul cu mânecă lungă și cusătura aurie pe față" },
       },
+      // The Reel, as a file on this site (see the strings under
+      // T.whatsNew.video*). Portrait, 720 × 1280, 26 s; never autoplays.
+      video: { src: NEWS + "trial-reel.mp4", poster: NEWS + "trial-reel-poster.jpg", w: 720, h: 1280 },
       // Three paragraphs, each a thing that is true today. What exactly is
       // being tested is not written here because it has not been said yet —
       // add it as a paragraph when it has, rather than guessing at it.

@@ -471,6 +471,23 @@ export const T = {
     glanceDrop:       { en: "First drop", fr: "Première collection", ja: "ファーストドロップ", pt: "Primeira coleção", ro: "Prima colecție" },
     galleryTitle: { en: "From the sessions", fr: "Pendant les séances", ja: "練習の様子", pt: "Dos treinos", ro: "De la antrenamente" },
     facesNote:    { en: "Faces are blurred on purpose. The people in these photographs are training, not modelling.", fr: "Les visages sont floutés volontairement. Les personnes sur ces photographies s'entraînent, elles ne posent pas.", ja: "顔は意図的にぼかしています。写っているのはモデルではなく、練習している人たちです。", pt: "Os rostos foram desfocados de propósito. As pessoas nestas fotografias estão treinando, não posando.", ro: "Fețele sunt estompate intenționat. Oamenii din aceste fotografii se antrenează, nu pozează." },
+    // ── The trial video, 2026-11-07 ─────────────────────────────────────
+    // A file on this site (public/whats-new/trial-reel.mp4), not an embed:
+    // an embed from another host would put third-party requests on the page
+    // and make the privacy policy untrue. It never starts on its own.
+    videoTitle: { en: "The trial in 26 seconds", fr: "L'essai en 26 secondes", ja: "26秒でわかる試用の様子", pt: "O teste em 26 segundos", ro: "Testarea în 26 de secunde" },
+    videoLabel: { en: "Animated cut of the rashguard trial, 26 seconds, with music", fr: "Montage animé de l'essai des rashguards, 26 secondes, avec musique", ja: "ラッシュガード試用のアニメーション動画（26秒・音楽付き）", pt: "Vídeo animado do teste dos rashguards, 26 segundos, com música", ro: "Montaj animat al testării rashguard-urilor, 26 de secunde, cu muzică" },
+    videoLead: {
+      en: "A short animated cut of the trial photographs, with music. It ends with three more pieces — the short-sleeve rashguard, the 2-in-1 shorts and the compression shorts — shown as design previews, because none of them has been made yet. They are expected to go on trial in December 2026. Nothing in it is for sale.",
+      fr: "Un court montage animé réalisé à partir des photographies de l'essai, avec de la musique. Il se termine par trois autres pièces — le rashguard à manches courtes, le short 2-en-1 et le short de compression — présentées comme des aperçus de design, aucune n'ayant encore été fabriquée. Leur essai devrait débuter en décembre 2026. Rien n'y est en vente.",
+      ja: "トライアル中の写真をもとにした、音楽付きの短いアニメーションです。最後に、ショートスリーブのラッシュガード、2-in-1ショーツ、コンプレッションショーツの3点が登場しますが、いずれもまだ製造しておらず、デザインのプレビューです。試用は2026年12月に始まる予定です。動画の内容はいずれも販売していません。",
+      pt: "Um pequeno vídeo animado feito a partir das fotografias do teste, com música. Termina com mais três peças — o rashguard de manga curta, o short 2 em 1 e o short de compressão — mostradas como prévias de design, porque nenhuma foi fabricada ainda. A previsão é que entrem em teste em dezembro de 2026. Nada no vídeo está à venda.",
+      ro: "Un scurt montaj animat din fotografiile testării, cu muzică. Se încheie cu încă trei piese — rashguard-ul cu mânecă scurtă, șortul 2-în-1 și șortul de compresie — prezentate ca previzualizări de design, deoarece niciuna nu a fost încă fabricată. Testarea lor ar trebui să înceapă în decembrie 2026. Nimic din videoclip nu este de vânzare.",
+    },
+    videoFaces: { en: "In the video the people appear as illustrations, not as blurred photographs.", fr: "Dans la vidéo, les personnes apparaissent sous forme d'illustrations, et non de photographies floutées.", ja: "動画では、ぼかした写真ではなく、イラストとして人物を表現しています。", pt: "No vídeo, as pessoas aparecem como ilustrações, e não como fotografias desfocadas.", ro: "În videoclip, persoanele apar ca ilustrații, nu ca fotografii estompate." },
+    videoSound: { en: "It has music and does not start on its own.", fr: "Il a de la musique et ne démarre pas tout seul.", ja: "音楽付きです。自動再生はされません。", pt: "Tem música e não começa sozinho.", ro: "Are muzică și nu pornește singur." },
+    videoFallback: { en: "Your browser can't play this video.", fr: "Votre navigateur ne peut pas lire cette vidéo.", ja: "お使いのブラウザでは、この動画を再生できません。", pt: "O seu navegador não consegue reproduzir este vídeo.", ro: "Browserul tău nu poate reda acest videoclip." },
+    videoDownload: { en: "Download it (MP4)", fr: "Télécharger (MP4)", ja: "ダウンロード（MP4）", pt: "Baixar (MP4)", ro: "Descarcă (MP4)" },
     seeRashguard: { en: "See the rashguard in the shop", fr: "Voir le rashguard dans la boutique", ja: "ショップでラッシュガードを見る", pt: "Ver o rashguard na loja", ro: "Vezi rashguard-ul în magazin" },
   },
 

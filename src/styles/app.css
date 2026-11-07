@@ -2833,6 +2833,22 @@ a { color: var(--accent-soft); }
 .story-glance dl > div:last-child { padding-bottom: 0; }
 .story-glance dd { margin: 0.1875rem 0 0; }
 
+/* The Reel: a portrait player beside what it contains. On a narrow screen
+   the text wraps under the player, which never grows past a phone's width. */
+.story-video { margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.story-video__row {
+  display: flex; align-items: flex-start; flex-wrap: wrap;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+}
+.story-video__player {
+  display: block; flex: 0 1 20rem; width: 20rem; max-width: 100%; height: auto;
+  aspect-ratio: 9 / 16; border-radius: var(--radius); border: 1px solid var(--line);
+  background: var(--surface-sunk);
+}
+.story-video__text { flex: 1 1 18rem; min-width: 0; max-width: 34rem; font-size: 1.125rem; line-height: 1.65; }
+.story-video__text p { margin: 0 0 1.125rem; }
+.story-video__text a { color: var(--gold-soft); }
+
 /* Three columns of equal rows; one frame is two columns wide and one is two
    rows tall, so seven photographs fill a 3 × 3 block with no gap. */
 .story-gallery {
