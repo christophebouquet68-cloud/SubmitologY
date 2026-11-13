@@ -114,23 +114,23 @@ export const SIZE_GUIDES = {
     ],
   },
 
-  /** Women's 2-in-1, from the maker's women's sheet, copied as supplied on
-   *  2026-10-12. Both measurements run smaller than the men's chart's (M waist
-   *  64.4 against 78, length 24.1 against 34.5) — that is how the sheet has
-   *  them, so they are shown as supplied. No inch figures: the sheet gives
-   *  none. The size guide dialog offers this chart next to the men's
-   *  (`sizeGuideWomen` in data/shorts.js). */
+  /** Women's 2-in-1. Replaced 2026-11-13 with the maker's new women's sheet,
+   *  copied as supplied: XS to 3XL, waist 60.3 to 90.8 cm, length 28.2 to
+   *  34 cm. These run larger than the figures first supplied on 2026-10-12
+   *  (M waist 64.4, length 24.1), which are no longer shown. No inch figures:
+   *  the sheet gives none. The size guide dialog offers this chart next to
+   *  the men's (`sizeGuideWomen` in data/shorts.js). */
   "shorts-2in1-women": {
     type: "bottom",
     diagram: "shorts",
     rows: [
-      { size: "XS",  waist: 55.2, length: 21.6 },
-      { size: "S",   waist: 60.2, length: 22.9 },
-      { size: "M",   waist: 64.4, length: 24.1 },
-      { size: "L",   waist: 70.4, length: 25.4 },
-      { size: "XL",  waist: 75.6, length: 26.7 },
-      { size: "2XL", waist: 80.6, length: 28 },
-      { size: "3XL", waist: 85.7, length: 29.2 },
+      { size: "XS",  waist: 60.3, length: 28.2 },
+      { size: "S",   waist: 65.4, length: 29.2 },
+      { size: "M",   waist: 70.4, length: 30.1 },
+      { size: "L",   waist: 75.5, length: 31.1 },
+      { size: "XL",  waist: 80.6, length: 32 },
+      { size: "2XL", waist: 85.7, length: 33 },
+      { size: "3XL", waist: 90.8, length: 34 },
     ],
   },
 

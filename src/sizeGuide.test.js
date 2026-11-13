@@ -159,8 +159,8 @@ test("each shorts' size guide has a Men / Women switch that opens on the men's c
   fireEvent.click(within(dialog).getByRole("button", { name: "Women" }));
   // Women's 2-in-1: XS to 3XL, no inch figures on the maker's sheet.
   expect(within(dialog).getAllByRole("row").length).toBe(8);
-  expect(within(dialog).getByRole("row", { name: /^M 64.4 24.1$/ })).toBeTruthy();
-  expect(within(dialog).getByRole("row", { name: /^3XL 85.7 29.2$/ })).toBeTruthy();
+  expect(within(dialog).getByRole("row", { name: /^M 70.4 30.1$/ })).toBeTruthy();
+  expect(within(dialog).getByRole("row", { name: /^3XL 90.8 34$/ })).toBeTruthy();
   fireEvent.keyDown(document, { key: "Escape" });
 
   fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Compression Shorts" }));

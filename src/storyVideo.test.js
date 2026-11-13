@@ -48,8 +48,9 @@ test("the text beside the video says nothing is for sale, in every language", ()
 
 test("every new string and the What's New entry are written in all five languages", () => {
   VIDEO_KEYS.forEach((k) => LANGS.forEach((l) => expect((T.whatsNew[k][l] || "").length).toBeGreaterThan(3)));
-  const entry = UPDATES[0];
-  expect(entry.id).toBe("2026-11-07-trial-video");
+  // Found by id rather than taken as UPDATES[0]: later entries sit above it.
+  const entry = UPDATES.find((u) => u.id === "2026-11-07-trial-video");
+  expect(entry).toBeTruthy();
   expect(entry.kind).toBe("site");
   LANGS.forEach((l) => {
     expect(entry.title[l].length).toBeGreaterThan(3);

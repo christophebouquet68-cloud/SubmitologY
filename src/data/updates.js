@@ -40,6 +40,18 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-11-13-shorts-2in1-women-sizes",
+    date: "2026-11-13",
+    kind: "range",
+    image: SHOP + "shorts-2in1.jpg",
+    title: { en: "New women's size chart for the NoGi Shorts", fr: "Nouveau tableau de tailles femme pour le short NoGi", ja: "NoGiショーツのレディースサイズ表を更新しました", pt: "Nova tabela de medidas feminina para o Short NoGi", ro: "Tabel de mărimi nou pentru femei, la pantalonii scurți NoGi" },
+    items: [
+      { en: "The women's chart in the NoGi Shorts' Size guide has been replaced with the maker's new size sheet. It still runs XS to 3XL: waist from 60.3 to 90.8 cm and length from 28.2 to 34 cm", fr: "Le tableau femme du guide des tailles du short NoGi a été remplacé par la nouvelle fiche de tailles du fabricant. Il va toujours du XS au 3XL : tour de taille de 60,3 à 90,8 cm et longueur de 28,2 à 34 cm", ja: "NoGiショーツのサイズガイドにあるレディースの表を、メーカーの新しいサイズ表に差し替えました。サイズは引き続きXS〜3XLで、ウエストは60.3〜90.8cm、丈は28.2〜34cmです", pt: "A tabela feminina do Guia de medidas do Short NoGi foi substituída pela nova tabela do fabricante. Ela continua indo do XS ao 3XL: cintura de 60,3 a 90,8 cm e comprimento de 28,2 a 34 cm", ro: "Tabelul pentru femei din ghidul de mărimi al pantalonilor scurți NoGi a fost înlocuit cu noua fișă de mărimi a producătorului. Merge în continuare de la XS la 3XL: talie de la 60,3 la 90,8 cm și lungime de la 28,2 la 34 cm" },
+      { en: "The new figures are larger than the ones shown before, so if you looked at the old chart, check your size again. As always, the measurements are in centimetres and approximate", fr: "Les nouvelles valeurs sont plus grandes que celles affichées auparavant : si vous avez consulté l'ancien tableau, vérifiez à nouveau votre taille. Comme toujours, les mesures sont en centimètres et approximatives", ja: "新しい数値はこれまで掲載していたものより大きくなっています。以前の表をご覧になった方は、サイズをもう一度ご確認ください。これまでと同じく、寸法はcm表記の目安です", pt: "Os novos valores são maiores do que os mostrados antes; se você consultou a tabela antiga, confira seu tamanho de novo. Como sempre, as medidas estão em centímetros e são aproximadas", ro: "Valorile noi sunt mai mari decât cele afișate înainte, deci dacă ai consultat tabelul vechi, verifică-ți din nou mărimea. Ca întotdeauna, măsurile sunt în centimetri și aproximative" },
+      { en: "This is a size chart only: the shorts in the shop are still shown in one cut, and nothing is for sale", fr: "Il ne s'agit que d'un tableau de tailles : les shorts de la boutique restent présentés dans une seule coupe, et rien n'est en vente", ja: "更新したのはサイズ表のみです。ショップに掲載しているショーツは引き続き1種類のカットで、販売はしていません", pt: "É apenas uma tabela de medidas: os shorts da loja continuam sendo mostrados em um único corte, e nada está à venda", ro: "Este doar un tabel de mărimi: pantalonii scurți din magazin sunt prezentați în continuare într-un singur croi, iar nimic nu este de vânzare" },
+    ],
+  },
+  {
     id: "2026-11-07-trial-video",
     date: "2026-11-07",
     kind: "site",
