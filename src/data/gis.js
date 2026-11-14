@@ -31,8 +31,8 @@ export const GI_COLOURWAYS = [
   { id: "white" },
 ];
 
-/** public/ asset, so it goes through PUBLIC_URL to survive the "." homepage
+/** public/ asset, so it goes through BASE_URL to survive the "./" base
  *  setting used for static hosting. */
 export function giImage(colourId) {
-  return `${process.env.PUBLIC_URL}/shop/tshirts/gi-${colourId}.jpg`;
+  return `${import.meta.env.BASE_URL}shop/tshirts/gi-${colourId}.jpg`;
 }

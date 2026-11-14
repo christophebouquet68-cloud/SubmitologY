@@ -2,7 +2,7 @@ import { T, t } from "../i18n";
 import { DESTINATIONS, LEGAL_LINKS, ROUTES } from "../router";
 import { BUSINESS } from "../data/legal.js";
 
-const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
+const LOGO = `${import.meta.env.BASE_URL}logo512.png`;
 
 /** The footer is the site's safety net: every section appears here as a plain
  *  link, so no destination depends on someone finding the right dropdown. */

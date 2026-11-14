@@ -27,7 +27,7 @@ import { EX_FIGURES } from "../data/exercise-figures";
  *  also why the cue is never hidden behind the same toggle on its own.
  *
  *  INLINE SVG, NOT IMAGE FILES: no network request, so nothing to add to the
- *  privacy policy, nothing to route through PUBLIC_URL, and the figures print
+ *  privacy policy, nothing to route through BASE_URL, and the figures print
  *  with the S&C handout instead of dropping out of it.
  */
 

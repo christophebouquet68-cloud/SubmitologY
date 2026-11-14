@@ -38,7 +38,7 @@ export const BUSINESS = {
   instagramUrl: "https://www.instagram.com/submitology.sg/",
   // Generated from instagramUrl (not uploaded artwork) — regenerate if the
   // handle ever changes. Verified to decode back to the URL above.
-  instagramQr:  `${process.env.PUBLIC_URL}/social/instagram-qr.png`,
+  instagramQr:  `${import.meta.env.BASE_URL}social/instagram-qr.png`,
 };
 
 export const LAST_UPDATED = "6 September 2026";

@@ -32,8 +32,8 @@ cp .env.example .env.local
 Then edit `.env.local`:
 
 ```
-REACT_APP_SIGNUP_ENDPOINT=https://formspree.io/f/xxxxxxxx
-REACT_APP_SIGNUP_FIELD=email
+VITE_SIGNUP_ENDPOINT=https://formspree.io/f/xxxxxxxx
+VITE_SIGNUP_FIELD=email
 ```
 
 `.env.local` is gitignored. `.env.example` is committed and must never contain

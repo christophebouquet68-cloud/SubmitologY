@@ -1,7 +1,7 @@
 import { T, t } from "../i18n";
 
 /** Photographs for the kintsugi section: public/mission/, served from this site. */
-const MEDIA = `${process.env.PUBLIC_URL}/mission/`;
+const MEDIA = `${import.meta.env.BASE_URL}mission/`;
 
 export default function Mission({ lang }) {
   return (

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { T, t } from "../i18n";
 
-/* Webpack resolves and hashes this the same way it does the fonts and the
-   photographs, so the file survives the "." homepage setting used for static
+/* Vite resolves and hashes this the same way it does the fonts and the
+   photographs, so the file survives the "./" base setting used for static
    hosting and gets a cache-busting name on every re-encode.
 
    Re-encoded from the 320 kbps master in tools/audio-src/ down to 96 kbps
