@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { LANGUAGES, T, t } from "./i18n";
 import { ROUTES, useRoute, isActive } from "./router";
 import usePersistentState from "./hooks/usePersistentState";
+import useScrollMotion from "./hooks/useScrollMotion";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -85,6 +86,10 @@ export default function App() {
     if (segments[0] === "map" && segments[1]) return;
     window.scrollTo({ top: 0, behavior: "auto" });
   }, [path, segments]);
+
+  /* Band reveals and parallax, re-scanned on every page. Does nothing at all
+     when the visitor asks for reduced motion. */
+  useScrollMotion(path);
 
   /* Mark release notes as read once they've actually been opened. */
   useEffect(() => {

@@ -3099,3 +3099,79 @@ a.hero__trial:hover { border-color: var(--gold); }
   .kintsugi__row--flip .kfig { order: -1; }
   .kfig--square { max-width: 20rem; justify-self: start; }
 }
+
+/* ── Motion, 2026-11-14 ────────────────────────────────────────────────────
+   The three effects from the August revamp notes, in the order they were
+   specced: band reveal, parallax, video hero. No library. Driven by
+   hooks/useScrollMotion.js and components/HeroVideo.jsx.
+
+   The rule throughout: the script adds motion, the stylesheet never assumes
+   it. Nothing here hides content or enlarges a photograph unless the script
+   has run and marked the page, so a page with no JavaScript, a printout, or a
+   visitor who asked for reduced motion gets the site exactly as it was. */
+
+/* Band reveal — fade and an 8px rise, 400ms, staggered 60ms inside grids.
+   Only elements below the fold on arrival are ever marked pending. */
+[data-rv] {
+  transition:
+    opacity 400ms cubic-bezier(0.2, 0.6, 0.2, 1) var(--rv-delay, 0ms),
+    transform 400ms cubic-bezier(0.2, 0.6, 0.2, 1) var(--rv-delay, 0ms);
+}
+[data-rv="pending"] { opacity: 0; transform: translate3d(0, 8px, 0); }
+
+/* Parallax. The photograph is drawn taller than its band so it has room to
+   drift without showing an edge, and the script moves it by --py, which it
+   writes on the band. 64px of overhang on bands; 40px on the hero, whose
+   frame is close to the photo's own 16:9 and would visibly zoom with more.
+   Phones never get the flag (see the hook), so their crops are untouched. */
+html.has-parallax .band { overflow: clip; }
+html.has-parallax .band__photo { inset: -64px 0; }
+html.has-parallax .hero__photo,
+html.has-parallax .hero__video { inset: -40px 0; }
+html.has-parallax .band__photo,
+html.has-parallax .hero__photo,
+html.has-parallax .hero__video {
+  transform: translate3d(0, var(--py, 0px), 0);
+  will-change: transform;
+}
+
+/* Video hero. Sits over the crest photograph in the same layer, under the
+   same diagonal scrim, so the headline's measured contrast still holds: the
+   scrim was tuned against the white gi, and nothing in the loop is lighter.
+   Fades in only once it is actually playing, and out again when paused. */
+.hero__video {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 40%;
+  opacity: 0;
+  transition: opacity 700ms ease;
+  pointer-events: none;
+  background: transparent;
+}
+.hero__video.is-playing { opacity: 1; }
+
+/* WCAG 2.2.2: moving content that runs past five seconds needs a stop. Small,
+   in the corner the type doesn't use, and 44px like every other target. */
+.hero__video-toggle {
+  position: absolute; z-index: 3;
+  right: var(--pad-page); bottom: clamp(1.25rem, 3vw, 2rem);
+  width: 44px; height: 44px; padding: 0;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(233, 225, 210, 0.38);
+  background: rgba(8, 8, 10, 0.6);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.18s, border-color 0.18s;
+}
+.hero__video-toggle:hover { background: rgba(8, 8, 10, 0.85); border-color: rgba(233, 225, 210, 0.7); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-rv] { opacity: 1 !important; transform: none !important; }
+  .hero__video, .hero__video-toggle { display: none; }
+}
+@media print {
+  [data-rv] { opacity: 1 !important; transform: none !important; }
+  .hero__video, .hero__video-toggle { display: none; }
+  .band__photo, .hero__photo { transform: none !important; inset: 0 !important; }
+}

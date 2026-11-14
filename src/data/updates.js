@@ -40,6 +40,17 @@ export function formatDate(iso, lang, dateStyle = "medium") {
 
 export const UPDATES = [
   {
+    id: "2026-11-14-motion",
+    date: "2026-11-14",
+    kind: "site",
+    title: { en: "The home page moves a little", fr: "La page d'accueil prend un peu de mouvement", ja: "ホームページに少し動きを加えました", pt: "A página inicial ganhou um pouco de movimento", ro: "Pagina principală prinde puțină mișcare" },
+    items: [
+      { en: "On a computer, the top of the home page now plays seven silent, slowed-down seconds from our brand video behind the headline, on a loop: the gold line on the rashguards, a plate and a bowl mended in gold. No faces, no products, no sound. A button in the corner pauses it", fr: "Sur ordinateur, le haut de la page d'accueil diffuse désormais en boucle, derrière le titre, sept secondes muettes et ralenties de notre vidéo de marque : la ligne dorée des rashguards, une assiette et un bol réparés à l'or. Pas de visages, pas de produits, pas de son. Un bouton dans le coin permet de la mettre en pause", ja: "パソコンでは、ホームページ上部の見出しの背後で、ブランド動画から切り出した無音・スローの7秒間がループ再生されるようになりました。ラッシュガードの金のライン、金で継がれた皿と器。顔も商品も映らず、音もありません。右下のボタンで一時停止できます", pt: "No computador, o topo da página inicial agora mostra em loop, atrás do título, sete segundos sem som e em câmera lenta do nosso vídeo da marca: a linha dourada dos rashguards, um prato e uma tigela consertados com ouro. Sem rostos, sem produtos, sem som. Um botão no canto pausa o vídeo", ro: "Pe calculator, partea de sus a paginii principale redă acum în buclă, în spatele titlului, șapte secunde fără sunet, încetinite, din videoclipul nostru de brand: linia aurie de pe rashguard-uri, o farfurie și un bol reparate cu aur. Fără fețe, fără produse, fără sunet. Un buton din colț îl pune pe pauză" },
+      { en: "On phones, and for anyone whose device asks for reduced motion or reduced data, the video does not load and the photograph is shown as before", fr: "Sur téléphone, et pour toute personne dont l'appareil demande moins d'animations ou moins de données, la vidéo ne se charge pas et la photo s'affiche comme avant", ja: "スマートフォンでは、また端末で「視差効果を減らす」やデータセーバーを設定している場合は、動画は読み込まれず、これまでどおり写真が表示されます", pt: "No celular, e para quem tem o aparelho configurado para reduzir movimento ou dados, o vídeo não carrega e a foto aparece como antes", ro: "Pe telefon, și pentru oricine are dispozitivul setat să reducă animațiile sau consumul de date, videoclipul nu se încarcă și fotografia apare ca înainte" },
+      { en: "Sections across the site now fade gently into place as you scroll, and the wide photographs drift slightly behind the text. Both are switched off when your device asks for reduced motion", fr: "Sur tout le site, les sections apparaissent désormais en douceur au fil du défilement, et les grandes photos glissent légèrement derrière le texte. Les deux effets sont désactivés lorsque votre appareil demande moins d'animations", ja: "サイト全体で、スクロールに合わせて各セクションがふわりと表示され、横長の写真が文字の背後でわずかに動くようになりました。端末で「視差効果を減らす」を設定している場合は、どちらも無効になります", pt: "Em todo o site, as seções agora aparecem suavemente conforme você rola a página, e as fotos largas deslizam um pouco atrás do texto. Os dois efeitos são desligados quando o aparelho pede menos movimento", ro: "Pe tot site-ul, secțiunile apar acum treptat pe măsură ce derulezi, iar fotografiile late alunecă ușor în spatele textului. Ambele efecte sunt oprite când dispozitivul tău cere mai puține animații" },
+    ],
+  },
+  {
     id: "2026-11-13-shorts-2in1-women-sizes",
     date: "2026-11-13",
     kind: "range",

@@ -2,6 +2,7 @@ import { T, t, LANGUAGES } from "../i18n";
 import { DESTINATIONS, ROUTES } from "../router";
 import Seam from "../components/Seam";
 import HeroGraph from "../components/HeroGraph";
+import HeroVideo from "../components/HeroVideo";
 import { TECHMAP_NODES, TECH_TYPE_COLOR } from "../data/techmap";
 import { AGE_RANGES, LEVELS, PROGRAM_TYPES } from "../data/program";
 import { EX_FIGURES } from "../data/exercise-figures";
@@ -55,6 +56,10 @@ export default function Home({ lang, navigate }) {
           leaves orange free to own the shop band by itself. */}
       <section className="hero hero--photo">
         <div className="hero__photo" aria-hidden="true" />
+        {/* Seven silent seconds from the Reel over the photograph, on wide
+            screens only, with a pause button. The photograph stays the hero
+            wherever the video doesn't run. See components/HeroVideo.jsx. */}
+        <HeroVideo lang={lang} />
         <div className="hero__inner">
           <p className="eyebrow">{t(T.overview.tag, lang)}</p>
           {/* The two taglines are the same length and name two halves of one

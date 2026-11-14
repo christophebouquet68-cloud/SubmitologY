@@ -157,6 +157,10 @@ export const UI = {
   home: {
     everythingTitle: { en: "Everything on the site", fr: "Tout le site", ja: "サイトの全コンテンツ", pt: "Tudo no site", ro: "Tot ce e pe site" },
     everythingSub:   { en: "Six areas, eight sections. Each one is also in the menu at the top.", fr: "Six domaines, huit sections. Chacune est aussi dans le menu en haut.", ja: "6つの領域、8つのセクション。すべて上部メニューからもアクセスできます。", pt: "Seis áreas, oito seções. Cada uma também está no menu no topo.", ro: "Șase zone, opt secțiuni. Fiecare se află și în meniul de sus." },
+    // The pause/play button on the hero's background video (2026-11-14).
+    // Read as the button's accessible name, so they say what pressing does.
+    heroVideoPause: { en: "Pause the background video", fr: "Mettre en pause la vidéo d'arrière-plan", ja: "背景動画を一時停止", pt: "Pausar o vídeo de fundo", ro: "Pune pe pauză videoclipul de fundal" },
+    heroVideoPlay:  { en: "Play the background video", fr: "Lire la vidéo d'arrière-plan", ja: "背景動画を再生", pt: "Reproduzir o vídeo de fundo", ro: "Pornește videoclipul de fundal" },
   },
 
   // ── Technique map additions ────────────────────────────────────────────
