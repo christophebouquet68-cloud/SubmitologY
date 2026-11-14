@@ -4,7 +4,7 @@ import { DESTINATIONS, ROUTES, isActive } from "../router";
 import LangSelector from "./LangSelector";
 import SoundToggle from "./SoundToggle";
 
-const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
+const LOGO = `${import.meta.env.BASE_URL}logo512.png`;
 
 // The six top-level categories. Groups with a single destination render as a
 // plain link rather than a one-item dropdown — a menu that opens to reveal one

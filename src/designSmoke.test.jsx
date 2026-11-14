@@ -142,7 +142,7 @@ test("the pose data is untouched by the redraw", () => {
   expect(Object.keys(EX_FIGURES).length).toBe(46);
 });
 
-test("the technique map wears a white belt that takes stripes as you drill", () => {
+test("the technique map wears a white belt that takes stripes as you drill", async () => {
   // jsdom has no matchMedia, and the map asks for one to choose between the
   // desktop sidebar and the phone bottom sheet.
   window.matchMedia = (query) => ({
@@ -150,8 +150,10 @@ test("the technique map wears a white belt that takes stripes as you drill", () 
     addEventListener: () => {}, removeEventListener: () => {},
     addListener: () => {}, removeListener: () => {}, dispatchEvent: () => false,
   });
-  const TechniqueMap = require("./pages/TechniqueMap").default;
-  const { NODE_IDS } = require("./data/techmap");
+  // Imported here rather than at the top, after matchMedia exists (was a
+  // require() before the move to Vite; test files are ES modules now).
+  const TechniqueMap = (await import("./pages/TechniqueMap")).default;
+  const { NODE_IDS } = await import("./data/techmap");
 
   // No progress, no belt: a rail showing nothing is decoration.
   const blank = render(<TechniqueMap lang="en" navigate={() => {}} />).container;

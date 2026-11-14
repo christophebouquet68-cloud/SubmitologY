@@ -419,7 +419,7 @@ a { color: var(--accent-soft); }
 
    Gradients rather than an image: no request, so the privacy policy's
    "no third-party requests" claim is untouched, and nothing to route through
-   PUBLIC_URL. A separate fixed layer rather than a background on .shell,
+   BASE_URL. A separate fixed layer rather than a background on .shell,
    because .shell scrolls and a scrolling 4px weave shimmers; fixed, it sits
    still while the content moves over it. It is also why background-attachment
    is not used — that is the same effect with a repaint cost on mobile Safari.

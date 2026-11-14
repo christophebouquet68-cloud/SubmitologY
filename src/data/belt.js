@@ -17,8 +17,8 @@ export const BELT_BLURB = {
   ro: "Toate cele cinci centuri pentru adulți — albă, albastră, mov, maro și neagră — în aceeași țesătură de bumbac, fiecare cu eticheta țesută SubmitologY și un fir auriu înfășurat la vârf.",
 };
 
-/** public/ asset, so it goes through PUBLIC_URL to survive the "." homepage
+/** public/ asset, so it goes through BASE_URL to survive the "./" base
  *  setting used for static hosting. */
 export function beltImage() {
-  return `${process.env.PUBLIC_URL}/shop/tshirts/belt.jpg`;
+  return `${import.meta.env.BASE_URL}shop/tshirts/belt.jpg`;
 }

@@ -28,9 +28,15 @@ in the Strength & Conditioning builder.
 
 ```bash
 npm install
-npm start        # dev server
+npm start        # dev server (Vite) — `npm run dev` does the same
+npm test         # the test suite, once (Vitest)
 npm run build    # production bundle in build/
+npm run preview  # serves build/ locally, as Vercel will
 ```
+
+Built with Vite since 2026-11-14 (Create React App before that). The output
+folder is still `build/`, so `.gitignore` and the Vercel project did not
+change; `vercel.json` pins the build command and folder anyway.
 
 No new dependencies were added.
 
@@ -305,8 +311,6 @@ targets and correct behaviour in clusters.
 - Technique names and descriptions are still English-only; the UI chrome is
   translated into all five languages. Worth either translating the content or
   saying so explicitly in the UI.
-- `react-scripts` 5.0.1 is unmaintained. Migrating to Vite is roughly a
-  half-day and cuts dev-server start to under a second.
 - Fill in the remaining `{{placeholder}}`s in `src/data/legal.js` (registered
   name, UEN, address, Instagram handle, reply-time and last-updated date).
   `BUSINESS.general` and `BUSINESS.privacy` are already real —

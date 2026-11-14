@@ -69,7 +69,7 @@ test("no two nodes land closer than the map's ~52px hit radius", () => {
 
 test("the layout is deterministic, so spatial memory survives a reload", () => {
   const snapshot = JSON.stringify(TECHMAP_LAYOUT);
-  jest.resetModules();
+  vi.resetModules();
   return import("./data/techmap").then((again) => {
     expect(JSON.stringify(again.TECHMAP_LAYOUT)).toBe(snapshot);
   });
@@ -185,7 +185,7 @@ test("the cue is hidden until asked for, and the diagram comes with it", () => {
 });
 
 test("logging a set fills a pip and starts the rest clock", () => {
-  jest.useFakeTimers();
+  vi.useFakeTimers();
   buildOnPage();
   const tracker = document.querySelector(".tracker");
   expect(tracker.querySelectorAll(".tracker__pip").length).toBe(2); // Beginner: 2 × 10
@@ -195,20 +195,20 @@ test("logging a set fills a pip and starts the rest clock", () => {
   expect(tracker.querySelectorAll(".tracker__pip.is-done").length).toBe(1);
   expect(tracker.querySelector(".tracker__status").textContent).toMatch(/Rest 1:00/);
 
-  act(() => { jest.advanceTimersByTime(60000); });
+  act(() => { vi.advanceTimersByTime(60000); });
   expect(tracker.querySelector(".tracker__status").textContent).toBe("1 / 2 sets");
-  jest.useRealTimers();
+  vi.useRealTimers();
 });
 
 test("the rest clock does not run after the final set", () => {
-  jest.useFakeTimers();
+  vi.useFakeTimers();
   buildOnPage();
   const tracker = document.querySelector(".tracker");
   fireEvent.click(tracker.querySelector(".tracker__btn"));
-  act(() => { jest.advanceTimersByTime(60000); });
+  act(() => { vi.advanceTimersByTime(60000); });
   fireEvent.click(tracker.querySelector(".tracker__btn"));
   expect(tracker.querySelector(".tracker__status").textContent).toBe("All done");
-  jest.useRealTimers();
+  vi.useRealTimers();
 });
 
 test("tracker progress is not written to localStorage", () => {
@@ -219,11 +219,11 @@ test("tracker progress is not written to localStorage", () => {
   // The keys carry usePersistentState's "submitology:" namespace, so the two
   // the builder legitimately writes are spelled out in full here rather than
   // by their bare names.
-  jest.useFakeTimers();
+  vi.useFakeTimers();
   const before = new Set(Object.keys(window.localStorage));
   buildOnPage();
   fireEvent.click(document.querySelector(".tracker__btn"));
   const added = Object.keys(window.localStorage).filter((k) => !before.has(k));
   expect(added.sort()).toEqual(["submitology:sc-built", "submitology:sc-choice"]);
-  jest.useRealTimers();
+  vi.useRealTimers();
 });

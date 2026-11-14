@@ -22,10 +22,10 @@ const TYPE_COUNTS = TYPES.reduce((acc, ty) => {
   return acc;
 }, {});
 
-// public/ asset, so it must go through PUBLIC_URL to survive the "." homepage
+// public/ asset, so it must go through BASE_URL to survive the "./" base
 // setting used for static hosting. (The photographs are different — they live
-// in src/photo/ and are resolved by webpack from the stylesheet.)
-const LOGO = `${process.env.PUBLIC_URL}/logo512.png`;
+// in src/photo/ and are resolved by Vite from the stylesheet.)
+const LOGO = `${import.meta.env.BASE_URL}logo512.png`;
 
 // Groups in reading order for the "everything on the site" index.
 const GROUP_ORDER = ["train", "shop", "mission", "news", "freebies", "about"];

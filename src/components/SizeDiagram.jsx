@@ -21,7 +21,7 @@
  *  exactly what the drawing shows, so announcing it as an image would only
  *  repeat them.
  *
- *  INLINE SVG: no request, nothing to route through PUBLIC_URL, and no image
+ *  INLINE SVG: no request, nothing to route through BASE_URL, and no image
  *  file that could quietly be swapped back for a maker's sheet.
  */
 

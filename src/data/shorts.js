@@ -58,5 +58,5 @@ export const SHORTS = [
 /** Same contract as teeImage() / rashguardImage(): the id is the filename, so
  *  a rename here silently changes which garment appears under which name. */
 export function shortsImage(id) {
-  return `${process.env.PUBLIC_URL}/shop/tshirts/${id}.jpg`;
+  return `${import.meta.env.BASE_URL}shop/tshirts/${id}.jpg`;
 }

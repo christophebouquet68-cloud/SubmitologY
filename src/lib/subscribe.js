@@ -15,7 +15,7 @@
 //   to exactly that, and must stay written to it.
 //
 //   ⚠️  The recipient address is configured in the provider's dashboard, never
-//   here. Anything in a REACT_APP_* variable is compiled into the public
+//   here. Anything in a VITE_* variable is compiled into the public
 //   JavaScript bundle, so putting a real mailbox in one publishes it to every
 //   scraper on the web. The form id below is opaque and safe to expose; the
 //   address it points at is not stored in this repository at all.
@@ -35,8 +35,8 @@
 //   3. Copy the form id and put the endpoint in `.env.local`, which is
 //      gitignored (see .env.example):
 //
-//        REACT_APP_SIGNUP_ENDPOINT=https://formspree.io/f/YOUR_FORM_ID
-//        REACT_APP_SIGNUP_FIELD=email
+//        VITE_SIGNUP_ENDPOINT=https://formspree.io/f/YOUR_FORM_ID
+//        VITE_SIGNUP_FIELD=email
 //
 //   4. Set the same two variables in the host's build settings. A variable
 //      that exists locally and not on the host produces a site that works in
@@ -70,14 +70,14 @@
 // work. Silently dropping signups is the worst of the three options; telling a
 // visitor it worked when it didn't is the second worst.
 
-const ENDPOINT = process.env.REACT_APP_SIGNUP_ENDPOINT;
-const FIELD = process.env.REACT_APP_SIGNUP_FIELD || "email";
+const ENDPOINT = import.meta.env.VITE_SIGNUP_ENDPOINT;
+const FIELD = import.meta.env.VITE_SIGNUP_FIELD || "email";
 
 export const SIGNUP_CONFIGURED = Boolean(ENDPOINT);
 
 if (!SIGNUP_CONFIGURED && typeof console !== "undefined") {
   console.warn(
-    "[SubmitologY] REACT_APP_SIGNUP_ENDPOINT is not set — the launch signup " +
+    "[SubmitologY] VITE_SIGNUP_ENDPOINT is not set — the launch signup " +
     "form will report an error instead of collecting addresses. " +
     "See src/lib/subscribe.js."
   );

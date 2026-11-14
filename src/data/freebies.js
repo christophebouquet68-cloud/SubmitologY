@@ -26,7 +26,7 @@
 //     the download — the poster says it too, but a visitor should not have to
 //     open the file to learn it.
 
-const BASE = `${process.env.PUBLIC_URL}/freebies/`;
+const BASE = `${import.meta.env.BASE_URL}freebies/`;
 
 /** Order of the sections on the page. */
 export const SECTIONS = ["kids", "everyone"];

@@ -95,7 +95,9 @@ test("the two rashguard cuts open the same chart, and it says so", () => {
 test("the 2-in-1 shorts show the maker's inch figure beside the waist; the compression shorts have none", () => {
   render(<Shop lang="en" />);
   fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Shorts" }));
-  expect(within(screen.getByRole("dialog")).getByRole("row", { name: /^XS 70 · 27.5 in 31.5$/ })).toBeTruthy();
+  // " ?·": newer jsdom drops the space before the inch figure when it works
+  // out a row's accessible name; browsers keep it. The markup is unchanged.
+  expect(within(screen.getByRole("dialog")).getByRole("row", { name: /^XS 70 ?· 27.5 in 31.5$/ })).toBeTruthy();
   fireEvent.keyDown(document, { key: "Escape" });
 
   fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Compression Shorts" }));
@@ -155,7 +157,7 @@ test("each shorts' size guide has a Men / Women switch that opens on the men's c
   fireEvent.click(screen.getByRole("button", { name: "Size guide — Kintsugi NoGi Shorts" }));
   let dialog = screen.getByRole("dialog");
   expect(within(dialog).getByRole("button", { name: "Men" }).getAttribute("aria-pressed")).toBe("true");
-  expect(within(dialog).getByRole("row", { name: /^M 78 · 31 in 34.5$/ })).toBeTruthy();
+  expect(within(dialog).getByRole("row", { name: /^M 78 ?· 31 in 34.5$/ })).toBeTruthy();
   fireEvent.click(within(dialog).getByRole("button", { name: "Women" }));
   // Women's 2-in-1: XS to 3XL, no inch figures on the maker's sheet.
   expect(within(dialog).getAllByRole("row").length).toBe(8);

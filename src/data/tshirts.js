@@ -75,8 +75,8 @@ export const TEE_COLOURWAYS = [
 
 export const DEFAULT_COLOURWAY = "white";
 
-/** public/ asset, so it goes through PUBLIC_URL to survive the "." homepage
+/** public/ asset, so it goes through BASE_URL to survive the "./" base
  *  setting used for static hosting. */
 export function teeImage(designId, colourId) {
-  return `${process.env.PUBLIC_URL}/shop/tshirts/${designId}-${colourId}.jpg`;
+  return `${import.meta.env.BASE_URL}shop/tshirts/${designId}-${colourId}.jpg`;
 }

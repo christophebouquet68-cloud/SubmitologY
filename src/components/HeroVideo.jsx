@@ -35,7 +35,7 @@ import { T, t } from "../i18n";
 // of the visit, in memory only: local storage would mean a new line in the
 // privacy policy, for a preference that matters for one visit.
 
-const SRC = `${process.env.PUBLIC_URL}/photo/hero-loop.mp4`;
+const SRC = `${import.meta.env.BASE_URL}photo/hero-loop.mp4`;
 const WANTED = "(min-width: 721px) and (prefers-reduced-motion: no-preference)";
 
 let pausedThisVisit = false;

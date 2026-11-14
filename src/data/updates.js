@@ -24,9 +24,9 @@
 import { T } from "../i18n";
 import { RASHGUARD_DESIGN } from "./rashguards";
 
-/** public/ assets, so they go through PUBLIC_URL like the shop images. */
-const NEWS = `${process.env.PUBLIC_URL}/whats-new/`;
-const SHOP = `${process.env.PUBLIC_URL}/shop/tshirts/`;
+/** public/ assets, so they go through BASE_URL like the shop images. */
+const NEWS = `${import.meta.env.BASE_URL}whats-new/`;
+const SHOP = `${import.meta.env.BASE_URL}shop/tshirts/`;
 
 /** Order of the filter pills and of the sections on the page. */
 export const KINDS = ["mat", "range", "site"];
